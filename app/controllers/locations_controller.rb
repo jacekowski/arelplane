@@ -30,7 +30,7 @@ class LocationsController < ApplicationController
       if Location.count > 10
         return
       else
-        locations = File.read(params["location_db"])
+        locations = File.read(params["location_db"].tempfile)
         csv = CSV.parse(locations, :headers => true)
         csv.each do |row|
           Location.create!(row.to_hash)
