@@ -1,3 +1,5 @@
+require 'csv'
+
 class LocationsController < ApplicationController
   before_action :set_location, only: [:show, :edit, :update, :destroy]
 
@@ -24,15 +26,28 @@ class LocationsController < ApplicationController
   # POST /locations
   # POST /locations.json
   def create
-    @location = Location.new(location_params)
-
-    respond_to do |format|
-      if @location.save
-        format.html { redirect_to @location, notice: 'Location was successfully created.' }
-        format.json { render :show, status: :created, location: @location }
+    if params["location_db"]
+      if Location.count > 10
+        return
       else
-        format.html { render :new }
-        format.json { render json: @location.errors, status: :unprocessable_entity }
+        byebug
+        locations = File.read(params["location_db"])
+        csv = CSV.parse(locations, :headers => true)
+        csv.each do |row|
+          Location.create!(row.to_hash)
+        end
+      end
+    else
+      @location = Location.new(location_params)
+
+      respond_to do |format|
+        if @location.save
+          format.html { redirect_to @location, notice: 'Location was successfully created.' }
+          format.json { render :show, status: :created, location: @location }
+        else
+          format.html { render :new }
+          format.json { render json: @location.errors, status: :unprocessable_entity }
+        end
       end
     end
   end

@@ -1,5 +1,10 @@
 <p id="notice"><%= notice %></p>
 
+<%= form_with(url: :locations, local: true) do |form| %>
+  <%= form.file_field :location_db %>
+  <%= form.submit %>
+<% end %>
+
 <h1>Locations</h1>
 
 <table>
