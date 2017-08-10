@@ -12,7 +12,9 @@
  //
  // 16px == 1rem so 16px*0.0625 = 1rem
  //
+ // Custom bootstrap variables must be set or imported *before* bootstrap.
  @import "map";
+ @import "bootstrap";
  @import "flights";
  @import "locations";
  @import "users";
