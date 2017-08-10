@@ -26,32 +26,34 @@ class FlightsController < ApplicationController
   # POST /flights
   # POST /flights.json
   def create
-    entries = File.read(params["logbook"].tempfile)
-    csv = CSV.parse(entries, :headers => true)
-    csv.each do |row|
-      r = row.to_hash
-      f = Flight.create(
-        flight_date: r['Date'],
-        aircraft_id: r['AircraftID'],
-        from_id: Location.find_by(identifier: r['From']).try(:id),
-        to_id: Location.find_by(identifier: r['To']).try(:id),
-        time_out: r['TimeOut'],
-        time_in: r['TimeIn'],
-        total_time: r['TotalTime'],
-        pic: r['PIC'],
-        distance: r['distance']
-      )
-    end
+    if params["logbook"]
+      entries = File.read(params["logbook"].tempfile)
+      csv = CSV.parse(entries, :headers => true)
+      csv.each do |row|
+        r = row.to_hash
+        f = Flight.create(
+          flight_date: r['Date'],
+          aircraft_id: r['AircraftID'],
+          from_id: Location.find_by(identifier: r['From']).try(:id),
+          to_id: Location.find_by(identifier: r['To']).try(:id),
+          time_out: r['TimeOut'],
+          time_in: r['TimeIn'],
+          total_time: r['TotalTime'],
+          pic: r['PIC'],
+          distance: r['distance']
+        )
+      end
+    else
+      @flight = Flight.new(flight_params)
 
-    @flight = Flight.new(flight_params)
-
-    respond_to do |format|
-      if @flight.save
-        format.html { redirect_to @flight, notice: 'Flight was successfully created.' }
-        format.json { render :show, status: :created, location: @flight }
-      else
-        format.html { render :new }
-        format.json { render json: @flight.errors, status: :unprocessable_entity }
+      respond_to do |format|
+        if @flight.save
+          format.html { redirect_to @flight, notice: 'Flight was successfully created.' }
+          format.json { render :show, status: :created, location: @flight }
+        else
+          format.html { render :new }
+          format.json { render json: @flight.errors, status: :unprocessable_entity }
+        end
       end
     end
   end

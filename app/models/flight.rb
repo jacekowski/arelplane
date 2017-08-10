@@ -12,6 +12,7 @@ class Flight < ApplicationRecord
 
       flights << [[from_lat, from_long], [to_lat, to_long]]
     end
+    flights
   end
 
   def self.visited_airports
@@ -22,8 +23,10 @@ class Flight < ApplicationRecord
       to_lat = flight.to.latitude
       to_long = flight.to.longitude
 
-      locations[flight.from.identifer] = [from_lat, from_long]
-      locations[flight.to.identifer] = [to_lat, to_long]
+      locations[flight.from.identifier] = [from_lat, from_long]
+      locations[flight.to.identifier] = [to_lat, to_long]
     end
+    locations
   end
+
 end

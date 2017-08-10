@@ -1,3 +1,6 @@
-
+<%= content_tag :div, id: "visited_airports", data: {airports: Flight.visited_airports} do %>
+<% end %>
+<%= content_tag :div, id: "trip_lines", data: {trips: Flight.trips_lat_long} do %>
+<% end %>
 
 <div id="mapid"></div>

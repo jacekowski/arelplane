@@ -28,8 +28,8 @@
       <tr>
         <td><%= flight.flight_date %></td>
         <td><%= flight.aircraft_id %></td>
-        <td><%= flight.from_id %></td>
-        <td><%= flight.to_id %></td>
+        <td><%= Location.find(flight.from_id).identifier %></td>
+        <td><%= Location.find(flight.to_id).identifier %></td>
         <td><%= flight.time_out %></td>
         <td><%= flight.time_in %></td>
         <td><%= flight.total_time %></td>
