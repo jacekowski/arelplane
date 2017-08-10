@@ -30,7 +30,7 @@ gem 'jbuilder', '~> 2.5'
 
 group :production do
   gem 'pg'
-  gem 'webpacker'
+  # gem 'webpacker'
 end
 
 group :development, :test do
