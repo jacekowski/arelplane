@@ -30,7 +30,6 @@ class LocationsController < ApplicationController
       if Location.count > 10
         return
       else
-        byebug
         locations = File.read(params["location_db"])
         csv = CSV.parse(locations, :headers => true)
         csv.each do |row|
