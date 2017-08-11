@@ -27,14 +27,10 @@ class LocationsController < ApplicationController
   # POST /locations.json
   def create
     if params["location_db"]
-      if Location.count > 10
-        return
-      else
-        locations = File.read(params["location_db"].tempfile)
-        csv = CSV.parse(locations, :headers => true)
-        csv.each do |row|
-          Location.create!(row.to_hash)
-        end
+      locations = File.read(params["location_db"].tempfile)
+      csv = CSV.parse(locations, :headers => true)
+      csv.each do |row|
+        Location.find_or_create_by(row.to_hash)
       end
     else
       @location = Location.new(location_params)

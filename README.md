@@ -5,4 +5,4 @@
 * Make nicer looking pins and lines
 * Add ability for other people to create their own maps if interest is shown.
 
-Airport data from: http://ourairports.com/data/
+Airport data from: http://ourairports.com/data, http://www.wayforward.net/avdata/

@@ -32,30 +32,30 @@
   </thead>
 
   <tbody>
-    <% @locations.each do |location| %>
+    <%# @locations.each do |location| %>
       <tr>
-        <td><%= location.identifier %></td>
-        <td><%= location.location_type %></td>
-        <td><%= location.name %></td>
-        <td><%= location.latitude %></td>
-        <td><%= location.longitude %></td>
-        <td><%= location.elevation %></td>
-        <td><%= location.continent %></td>
-        <td><%= location.iso_country %></td>
-        <td><%= location.iso_region %></td>
-        <td><%= location.municipality %></td>
-        <td><%= location.scheduled_service %></td>
-        <td><%= location.gps_code %></td>
-        <td><%= location.iata_code %></td>
-        <td><%= location.local_code %></td>
-        <td><%= location.home_link %></td>
-        <td><%= location.wikipedia_link %></td>
-        <td><%= location.keywords %></td>
-        <td><%= link_to 'Show', location %></td>
-        <td><%= link_to 'Edit', edit_location_path(location) %></td>
-        <td><%= link_to 'Destroy', location, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%#= location.identifier %></td>
+        <td><%#= location.location_type %></td>
+        <td><%#= location.name %></td>
+        <td><%#= location.latitude %></td>
+        <td><%#= location.longitude %></td>
+        <td><%#= location.elevation %></td>
+        <td><%#= location.continent %></td>
+        <td><%#= location.iso_country %></td>
+        <td><%#= location.iso_region %></td>
+        <td><%#= location.municipality %></td>
+        <td><%#= location.scheduled_service %></td>
+        <td><%#= location.gps_code %></td>
+        <td><%#= location.iata_code %></td>
+        <td><%#= location.local_code %></td>
+        <td><%#= location.home_link %></td>
+        <td><%#= location.wikipedia_link %></td>
+        <td><%#= location.keywords %></td>
+        <td><%#= link_to 'Show', location %></td>
+        <td><%#= link_to 'Edit', edit_location_path(location) %></td>
+        <td><%#= link_to 'Destroy', location, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
-    <% end %>
+    <%# end %>
   </tbody>
 </table>
 
