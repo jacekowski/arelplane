@@ -2,6 +2,13 @@
 <html>
   <head>
     <title>LogbookViz</title>
+    <meta property="og:title" content="LogbookViz" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="<%= request.original_url %>" />
+    <meta property="og:image" content="<%= image_tag "demo-img.png" %>" />
+    <meta property="og:description" content="A visual logbook!" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content="LogbookViz" />
     <%= csrf_meta_tags %>
     <%= favicon_link_tag 'favicon.ico' %>
     <%= stylesheet_link_tag    'application', media: 'all' %>
