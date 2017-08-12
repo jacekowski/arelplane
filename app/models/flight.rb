@@ -31,11 +31,21 @@ class Flight < ApplicationRecord
       to_lat = flight.to.latitude
       to_long = flight.to.longitude
 
-      locations[flight.from.identifier] = [from_lat, from_long]
-      locations[flight.to.identifier] = [to_lat, to_long]
+      if data = locations[flight.from.identifier]
+        data[1] += 1
+      else
+        locations[flight.from.identifier] = [[from_lat, from_long], 0]
+      end
+      if data = locations[flight.to.identifier]
+        data[1] += 1
+      else
+        locations[flight.to.identifier] = [[to_lat, to_long], 0]
+      end
     end
     locations
   end
+
+# {khpn: [[lat,long,]12]}
 
   def self.visited_waypoints
     waypoints = {}
