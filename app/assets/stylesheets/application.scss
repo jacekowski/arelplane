@@ -15,6 +15,7 @@
  // Custom bootstrap variables must be set or imported *before* bootstrap.
  @import "map";
  @import "bootstrap";
+ @import "bootstrap-overrides";
  @import "flights";
  @import "locations";
  @import "users";
