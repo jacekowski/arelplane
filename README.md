@@ -1,9 +1,12 @@
 # README
 
 ## TODO:
-* Add route join table so I can parse routes and display more interesting paths
-* Make nicer looking pins and lines
-* Add ability for other people to create their own maps if interest is shown.
+* Add ability for other people to create their own maps
+  * Upgrade user model to devise
+  * change homepage to login/signup where current interest form is
+  * Create user page when a users map shows up and they can upload flights manually or by foreflight spreadsheet.
+  * lock down locations routes
+  * create username slugs 
 
 Airport data from: http://ourairports.com/data, http://www.wayforward.net/avdata/
 

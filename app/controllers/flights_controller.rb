@@ -27,36 +27,10 @@ class FlightsController < ApplicationController
   # POST /flights.json
   def create
     if params["logbook"]
-      entries = File.read(params["logbook"].tempfile)
-      csv = CSV.parse(entries, :headers => true)
-      csv.each do |row|
-        r = row.to_hash
-        f = Flight.find_or_initialize_by(
-          flight_date: r['Date'],
-          aircraft_id: r['AircraftID'],
-          from_id: Location.find_by(identifier: r['From']).try(:id),
-          to_id: Location.find_by(identifier: r['To']).try(:id),
-          time_out: r['TimeOut'],
-          time_in: r['TimeIn'],
-          total_time: r['TotalTime'],
-          pic: r['PIC'],
-          distance: r['distance']
-        )
-        if f.save
-          if route = r['Route']
-            route = route.split(" ")
-            # save route, but check if first and last values are same as start and end.
-            if route.first == r['From'] then route.shift end
-            if route.last == r['To'] then route.pop end
-            route.each do |waypoint|
-              f.waypoints.create(location_id: Location.find_by(identifier: waypoint).try(:id))
-            end
-          end
-        end
-      end
+      Flight.parse_logbook(params["logbook"].tempfile)
+      # notify success or failure
     else
       @flight = Flight.new(flight_params)
-
       respond_to do |format|
         if @flight.save
           format.html { redirect_to @flight, notice: 'Flight was successfully created.' }

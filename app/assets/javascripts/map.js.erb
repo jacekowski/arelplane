@@ -20,6 +20,7 @@ $(document).ready(function(){
   });
 
   var mymap = L.map('mapid');
+
   var markers = [];
   for(var key in waypoints) {
     var waypoint = L.marker([waypoints[key][0], waypoints[key][1]], {title: key, icon: waypointIcon}).addTo(mymap);
