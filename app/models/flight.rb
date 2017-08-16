@@ -4,9 +4,6 @@ class Flight < ApplicationRecord
 
   has_many :waypoints, foreign_key: "flight_id", class_name: "FlightWaypoint"
 
-  
-
-
   def self.trips_lat_long
     flights = []
     all.each do |flight|
