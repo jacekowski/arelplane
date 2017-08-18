@@ -1,0 +1,19 @@
+<%= content_tag :div, id: "visited_airports", data: {airports: Flight.visited_airports} do %>
+<% end %>
+<%= content_tag :div, id: "visited_waypoints", data: {waypoints: Flight.visited_waypoints} do %>
+<% end %>
+<%= content_tag :div, id: "trip_lines", data: {trips: Flight.trips_lat_long} do %>
+<% end %>
+
+<div class='container-fluid'>
+  <div class='row'>
+    <div class='col-2'>
+      <div class='col-12' id='sticky-sidebar'>
+        <%= current_user.email %>
+      </div>
+    </div>
+    <div class='col-10' id='main'>
+      <div class='user-map' id='mapid'></div>
+    </div>
+  </div>
+</div>
