@@ -17,21 +17,17 @@
     <div class='col-6'>
       <div class='form-inline'>
         <% if user_signed_in? %>
-          <li>
             <%= link_to('Logout', destroy_user_session_path, method: :delete, class: 'btn btn-primary') %>
-          </li>
         <% else %>
-          <li>
             <%= form_with(model: User, url: registration_path(:user), local: true) do |form| %>
               <div class='form-inline'>
                 <%= form.email_field :email, placeholder: 'email', class: 'form-control' %>
                 <%= form.password_field :password, placeholder: 'password', class: 'form-control' %>
                 <%#= link_to "Forgot your password?", new_password_path(:user) %>
                 <%= form.submit 'Register', class: 'btn btn-primary' %>
-                Already have an account? <button data-toggle="modal" data-target="#loginModal">login</button>
               </div>
             <% end %>
-          </li>
+            <p class='sub-header'> Already have an account? <a href="#" data-toggle='modal' data-target='#loginModal'>login</a></p>
         <% end %>
       </div>
     </div>
@@ -39,3 +35,5 @@
 </div>
 
 <div id="mapid"></div>
+
+<%= render 'login_modal' %>
