@@ -26,8 +26,9 @@ class FlightsController < ApplicationController
   # POST /flights
   # POST /flights.json
   def create
+    byebug
     if params["logbook"]
-      Flight.parse_logbook(params["logbook"].tempfile)
+      Flight.parse_logbook(params["logbook"].tempfile, current_user)
       # notify success or failure
     else
       @flight = Flight.new(flight_params)

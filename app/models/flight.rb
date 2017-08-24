@@ -1,6 +1,7 @@
 class Flight < ApplicationRecord
   belongs_to :from, class_name: 'Location', foreign_key: 'from_id'
   belongs_to :to, class_name: 'Location', foreign_key: 'to_id'
+  belongs_to :user
 
   has_many :waypoints, foreign_key: "flight_id", class_name: "FlightWaypoint"
 
@@ -55,7 +56,7 @@ class Flight < ApplicationRecord
     waypoints
   end
 
-  def self.parse_logbook(logbook_csv)
+  def self.parse_logbook(logbook_csv, user)
     CSV.foreach(logbook_csv, headers: [
       :flight_date,
       :aircraft_id,
@@ -76,6 +77,7 @@ class Flight < ApplicationRecord
       ]) do |row|
         r = row.to_hash
         f = Flight.find_or_initialize_by(
+          user_id: user.id,
           flight_date: r[:flight_date],
           aircraft_id: r[:aircraft_id],
           from_id: Location.find_by(identifier: r[:from_id]).try(:id),

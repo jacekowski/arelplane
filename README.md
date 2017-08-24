@@ -2,8 +2,6 @@
 
 ## TODO:
 * Add ability for other people to create their own maps
-  * Upgrade user model to devise
-  * change homepage to login/signup where current interest form is
   * Create user page when a users map shows up and they can upload flights manually or by foreflight spreadsheet.
   * lock down locations routes
   * create username slugs 
