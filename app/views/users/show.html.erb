@@ -1,8 +1,8 @@
-<%= content_tag :div, id: "visited_airports", data: {airports: Flight.visited_airports} do %>
+<%= content_tag :div, id: "visited_airports", data: {airports: @user.visited_airports} do %>
 <% end %>
-<%= content_tag :div, id: "visited_waypoints", data: {waypoints: Flight.visited_waypoints} do %>
+<%= content_tag :div, id: "visited_waypoints", data: {waypoints: @user.visited_waypoints} do %>
 <% end %>
-<%= content_tag :div, id: "trip_lines", data: {trips: Flight.trips_lat_long} do %>
+<%= content_tag :div, id: "trip_lines", data: {trips: @user.trips_lat_long} do %>
 <% end %>
 
 <div class='container-fluid'>

@@ -3,49 +3,51 @@ $(document).ready(function(){
   var waypoints = $('#visited_waypoints').data('waypoints');
   var trips = $('#trip_lines').data('trips');
 
-  var waypointIcon = L.icon({
-    iconUrl: "<%= asset_path('waypoint.png') %>",
+  if(Object.keys(locations).length < 1){
+    var mymap = L.map('mapid').setView([40.714216, -73.998817], 13);
+  } else {
+    var waypointIcon = L.icon({
+      iconUrl: "<%= asset_path('waypoint.png') %>",
 
-    iconSize:     [50, 50], // size of the icon
-    iconAnchor:   [25, 25], // point of the icon which will correspond to marker's location
-    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-  });
+      iconSize:     [50, 50], // size of the icon
+      iconAnchor:   [25, 25], // point of the icon which will correspond to marker's location
+      popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+    });
 
-  var airportIcon = L.icon({
-    iconUrl: "<%= asset_path('airport.png') %>",
+    var airportIcon = L.icon({
+      iconUrl: "<%= asset_path('airport.png') %>",
 
-    iconSize:     [50, 50],
-    iconAnchor:   [25, 25],
-    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-  });
+      iconSize:     [50, 50],
+      iconAnchor:   [25, 25],
+      popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+    });
 
-  var mymap = L.map('mapid');
+    var mymap = L.map('mapid');
 
-  var markers = [];
-  for(var key in waypoints) {
-    var waypoint = L.marker([waypoints[key][0], waypoints[key][1]], {title: key, icon: waypointIcon}).addTo(mymap);
-    markers.push(waypoint);
-  }
-  for (var key in locations) {
-    var pinCount = locations[key][1]
-    var marker = L.marker([locations[key][0][0], locations[key][0][1]], {title: key, opacity:0.4+(pinCount/100), icon: airportIcon}).addTo(mymap);
-    markers.push(marker);
-  }
-
-  for (var i = 0; i < trips.length; i++) {
-    if (trips[i].length >= 2) {
-      var polylinePoints = [];
-      for(var j = 0; j < trips[i].length; j++) {
-        polylinePoints.push(trips[i][j]);
-      }
-      var polyline = L.polyline(polylinePoints, {color:'#00E6F0', opacity:0.15}).addTo(mymap);
+    var markers = [];
+    for(var key in waypoints) {
+      var waypoint = L.marker([waypoints[key][0], waypoints[key][1]], {title: key, icon: waypointIcon}).addTo(mymap);
+      markers.push(waypoint);
     }
+    for (var key in locations) {
+      var pinCount = locations[key][1]
+      var marker = L.marker([locations[key][0][0], locations[key][0][1]], {title: key, opacity:0.4+(pinCount/100), icon: airportIcon}).addTo(mymap);
+      markers.push(marker);
+    }
+
+    for (var i = 0; i < trips.length; i++) {
+      if (trips[i].length >= 2) {
+        var polylinePoints = [];
+        for(var j = 0; j < trips[i].length; j++) {
+          polylinePoints.push(trips[i][j]);
+        }
+        var polyline = L.polyline(polylinePoints, {color:'#00E6F0', opacity:0.15}).addTo(mymap);
+      }
+    }
+
+    var placeMarks = new L.featureGroup(markers);
+    mymap.fitBounds(placeMarks.getBounds().pad(0.1));
   }
-
-  var placeMarks = new L.featureGroup(markers);
-  mymap.fitBounds(placeMarks.getBounds().pad(0.1));
-
-  // var polyline = L.polyline([[51.5, -0.09],[51.6, -0.09]], {color: '#00FFFF'}).addTo(mymap);
 
   // MapBox Dark Map (Costs money after 50,000 impressions)
     L.tileLayer('https://api.mapbox.com/styles/v1/ericavirtue/cj68pt4dw1lhh2rl564465xca/tiles/256/{z}/{x}/{y}?access_token={accessToken}', {
