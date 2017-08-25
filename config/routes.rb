@@ -10,6 +10,6 @@ Rails.application.routes.draw do
   root to: 'pages#index'
 
   resources :users, only: [:create, :show]
-  resources :flights
+  resources :flights, only: [:index, :show, :create, :destroy]
   # resources :locations
 end

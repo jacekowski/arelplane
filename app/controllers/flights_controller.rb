@@ -2,11 +2,12 @@ require 'csv'
 
 class FlightsController < ApplicationController
   before_action :set_flight, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
 
   # GET /flights
   # GET /flights.json
   def index
-    @flights = Flight.all
+    @flights = current_user.flights.all
   end
 
   # GET /flights/1
@@ -16,7 +17,7 @@ class FlightsController < ApplicationController
 
   # GET /flights/new
   def new
-    @flight = Flight.new
+    @flight = current_user.flights.new
   end
 
   # GET /flights/1/edit
@@ -26,21 +27,20 @@ class FlightsController < ApplicationController
   # POST /flights
   # POST /flights.json
   def create
-    byebug
     if params["logbook"]
       Flight.parse_logbook(params["logbook"].tempfile, current_user)
-      # notify success or failure
+      redirect_to flights_path
     else
-      @flight = Flight.new(flight_params)
-      respond_to do |format|
-        if @flight.save
-          format.html { redirect_to @flight, notice: 'Flight was successfully created.' }
-          format.json { render :show, status: :created, location: @flight }
-        else
-          format.html { render :new }
-          format.json { render json: @flight.errors, status: :unprocessable_entity }
-        end
-      end
+      # @flight = current_user.flights.new(flight_params)
+      # respond_to do |format|
+      #   if @flight.save
+      #     format.html { redirect_to @flight, notice: 'Flight was successfully created.' }
+      #     format.json { render :show, status: :created, location: @flight }
+      #   else
+      #     format.html { render :new }
+      #     format.json { render json: @flight.errors, status: :unprocessable_entity }
+      #   end
+      # end
     end
   end
 

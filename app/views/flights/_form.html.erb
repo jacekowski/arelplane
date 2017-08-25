@@ -22,12 +22,12 @@
   </div>
 
   <div class="field">
-    <%= form.label :from_id %>
-    <%= form.number_field :from_id, id: :flight_from_id %>
+    <%= form.label :from_airport %>
+    <%= form.collection_select 'locations', Location.all, :id, :identifier, { include_blank: true} %>
   </div>
 
   <div class="field">
-    <%= form.label :to_id %>
+    <%= form.label :to_airport %>
     <%= form.number_field :to_id, id: :flight_to_id %>
   </div>
 
