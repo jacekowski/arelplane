@@ -4,7 +4,8 @@
 * Add ability for other people to create their own maps
   * Create user page when a users map shows up and they can upload flights manually or by foreflight spreadsheet.
   * lock down locations routes
-  * create username slugs 
+  * create username slugs
+  * delete show flights option on flights page
 
 Airport data from: http://ourairports.com/data, http://www.wayforward.net/avdata/
 
