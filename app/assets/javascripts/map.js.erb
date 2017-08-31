@@ -47,6 +47,7 @@ $(document).ready(function(){
 
     var placeMarks = new L.featureGroup(markers);
     mymap.fitBounds(placeMarks.getBounds().pad(0.1));
+    mymap.scrollWheelZoom.disable();
   }
 
   // MapBox Dark Map (Costs money after 50,000 impressions)
