@@ -56,4 +56,44 @@ class User < ApplicationRecord
     end
     waypoints
   end
+
+  def top_location
+    locations = Hash.new(0)
+    flights.all.each do |flight|
+      locations[flight.to] += 1
+      locations[flight.from] += 1
+    end
+    locations.key(locations.values.max)
+  end
+
+  def num_regions
+    regions = []
+    flights.all.each do |flight|
+      regions << flight.to.iso_region
+      regions << flight.from.iso_region
+    end
+    regions.uniq.count
+  end
+
+  def top_aircraft
+    aircraft = Hash.new(0)
+    flights.all.each do |flight|
+      aircraft[flight.aircraft_id] += 1
+    end
+    aircraft.key(aircraft.values.max)
+  end
+
+  def num_locations
+    locations = []
+    flights.all.each do |flight|
+      locations << flight.to
+      locations << flight.from
+    end
+    locations.uniq.count
+  end
+
+  def total_flight_hours
+    flights.pluck(:total_time).sum
+  end
+
 end

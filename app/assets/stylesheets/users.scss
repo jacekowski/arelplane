@@ -7,31 +7,32 @@
 
 #user-sticky-sidebar {
   background-color: #343234;
+  z-index: -2;
 }
 
 #top-background-flag {
-  border-top: 2px solid #C2C2C2;
-  background: linear-gradient(
-    to bottom right,
-    #5DCAD3 50%,
-    transparent 50.5%
-  )
-  no-repeat bottom, /* bottom part */
-  linear-gradient(100deg, #5DCAD3, #5DCAD3) no-repeat top;
-  /* top portion */
-  padding-bottom: 3.5rem;
-  background-size: 100% 3rem, 100% calc(100% - 3rem)
+  border-top: 2px solid #C2C2C2; /* top border on the parent */
+  position: relative;
+  height: 10rem;
+  overflow: hidden;
 }
 
 #top-background-flag:after {
-  content: "";
-  background-color: #C2C2C2;
-  height: 2px;
-  width: 101%;
+  background-color: #5DCAD3;
+  -webkit-transform: skewY(-8deg);
+  -moz-transform: skewY(-8deg);
+  -ms-transform: skewY(-8deg);
+  -o-transform: skewY(-8deg);
+  transform: skewY(-8deg);
+  transform-origin: bottom left;
+  border-bottom: 2px solid #C2C2C2; /* bottom border skews with the object */
+  content: ' ';
+  display: block;
+  height: 100%;
+  width: 100%;
   position: absolute;
-  left: -2px;
-  bottom: 1.4rem;
-  transform: rotate(-7.6deg);
+  z-index: -1;
+  bottom: 0;
 }
 
 #mid-background-flag {

@@ -30,7 +30,7 @@
         <div class='col-12'>
           <div class='float-right mr-3'>
             <div class='light-header'>
-              New York
+              <%= @user.top_location.iso_region %>
             </div>
             <div class='light-sub-text'>
               Top State/Region
@@ -42,7 +42,7 @@
         <div class='col-12'>
           <div class='float-right mr-3'>
             <div class='light-header'>
-              KHPN
+              <%= @user.top_location.identifier %>
             </div>
             <div class='light-sub-text'>
               Top Airport
@@ -54,7 +54,7 @@
         <div class='col-12'>
           <div class='float-right mr-3'>
             <div class='light-header'>
-              Piper Archer
+              <%= @user.top_aircraft %>
             </div>
             <div class='light-sub-text'>
               Top Aircraft
@@ -70,7 +70,7 @@
               <div class='row mt-3'>
                 <div class='col-6'>
                   <div class='header-text'>
-                    1.5K
+                    <%= @user.flights.count %>
                   </div>
                   <div class='sub-text'>
                     Flights
@@ -78,7 +78,7 @@
                 </div>
                 <div class='col-6'>
                   <div class='header-text'>
-                    35
+                    <%= @user.num_locations %>
                   </div>
                   <div class='sub-text'>
                     Airports
@@ -88,7 +88,7 @@
               <div class='row'>
                 <div class='col-6'>
                   <div class='header-text'>
-                    400
+                    <%= @user.total_flight_hours %>
                   </div>
                   <div class='sub-text'>
                     Hours
@@ -96,7 +96,7 @@
                 </div>
                 <div class='col-6'>
                   <div class='header-text'>
-                    3
+                    <%= @user.num_regions %>
                   </div>
                   <div class='sub-text'>
                     Regions
