@@ -17,6 +17,14 @@ h6 {
   font-weight: 300;
 }
 
+.align-right {
+  text-align: right;
+}
+
+.align-center {
+  text-align: center;
+}
+
 .sub-header {
   color: white;
 }
@@ -48,7 +56,6 @@ h6 {
   font-family: 'Nunito Sans', sans-serif;
   font-weight: 800;
   font-size: 1.5rem;
-  text-align: right;
 }
 
 .light-sub-text {
@@ -56,7 +63,6 @@ h6 {
   font-family: 'Nunito Sans', sans-serif;
   font-weight: 200;
   font-size: 1.12rem;
-  text-align: right;
 }
 
 .remove-lr-padding {

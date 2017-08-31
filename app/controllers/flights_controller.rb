@@ -29,7 +29,7 @@ class FlightsController < ApplicationController
   def create
     if params["logbook"]
       Flight.parse_logbook(params["logbook"].tempfile, current_user)
-      redirect_to flights_path
+      redirect_to user_path(current_user.id)
     else
       # @flight = current_user.flights.new(flight_params)
       # respond_to do |format|

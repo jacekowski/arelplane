@@ -3,7 +3,7 @@ class Flight < ApplicationRecord
   belongs_to :to, class_name: 'Location', foreign_key: 'to_id'
   belongs_to :user
 
-  has_many :waypoints, foreign_key: "flight_id", class_name: "FlightWaypoint"
+  has_many :waypoints, foreign_key: "flight_id", class_name: "FlightWaypoint", dependent: :destroy
 
   # Homepage map
   def self.trips_lat_long

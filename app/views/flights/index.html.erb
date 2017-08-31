@@ -1,11 +1,6 @@
 <p id="notice"><%= notice %></p>
 
-<%= form_with(url: :flights, local: true) do |form| %>
-  <%= form.file_field :logbook %>
-  <%= form.submit class:'btn btn-primary' %>
-<% end %>
-
-<h1>Flights</h1>
+<h1 class='light-header'>Flights</h1>
 
 <table class='table table-inverse'>
   <thead>
@@ -35,7 +30,6 @@
         <td><%= flight.total_time %></td>
         <td><%= flight.pic %></td>
         <td><%= flight.distance %></td>
-        <td><%= link_to 'Show', flight %></td>
         <td><%= link_to 'Destroy', flight, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
