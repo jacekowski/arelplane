@@ -28,3 +28,38 @@ h6 {
   font-size: 1.5rem;
   letter-spacing: 0.25rem;
 }
+
+.header-text {
+  color: #191A1A;
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 800;
+  font-size: 2.25rem;
+}
+
+.sub-text {
+  color: #343332;
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 300;
+  font-size: 1.12rem;
+}
+
+.light-header {
+  color: white;
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 800;
+  font-size: 1.5rem;
+  text-align: right;
+}
+
+.light-sub-text {
+  color: #C2C2C2;
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 200;
+  font-size: 1.12rem;
+  text-align: right;
+}
+
+.remove-lr-padding {
+  padding-right: 0;
+  padding-left: 0;
+}

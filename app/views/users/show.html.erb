@@ -15,24 +15,107 @@
     </div>
   </div>
   <div class='row'>
-    <div class='col-2'>
-      <div class='col-12' id='user-sticky-sidebar'>
-        <div class=''>
-          <%= @user.name %>
+    <div class='col-3 remove-lr-padding' id='user-sticky-sidebar'>
+      <div class='col-12 remove-lr-padding'>
+        <div id='top-background-flag'>
+          <div class='header-text pl-3 pt-4'>
+            <%= @user.name %>
+          </div>
+          <div class='sub-text pl-3'>
+            Joined <%= @user.created_at.strftime('%B %e, %Y') %>
+          </div>
         </div>
-        <div class=''>
-          Joined <%= @user.created_at %>
-        </div>
-        <% if @user == current_user %>
-          <%= form_with(url: :flights, local: true) do |form| %>
-            <%= form.file_field :logbook %>
-            <%= form.submit class:'btn btn-primary' %>
-          <% end %>
-          View your <%= link_to 'flights', flights_path %>
-        <% end %>
       </div>
+      <div class='row'>
+        <div class='col-12'>
+          <div class='float-right mr-3'>
+            <div class='light-header'>
+              New York
+            </div>
+            <div class='light-sub-text'>
+              Top State/Region
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class='row mt-3'>
+        <div class='col-12'>
+          <div class='float-right mr-3'>
+            <div class='light-header'>
+              KHPN
+            </div>
+            <div class='light-sub-text'>
+              Top Airport
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class='row mt-3'>
+        <div class='col-12'>
+          <div class='float-right mr-3'>
+            <div class='light-header'>
+              Piper Archer
+            </div>
+            <div class='light-sub-text'>
+              Top Aircraft
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-3"></div>
+      <div class='row'>
+        <div class='col-12'>
+          <div id='mid-background-flag'>
+            <div id='background-flag-text'>
+              <div class='row mt-3'>
+                <div class='col-6'>
+                  <div class='header-text'>
+                    1.5K
+                  </div>
+                  <div class='sub-text'>
+                    Flights
+                  </div>
+                </div>
+                <div class='col-6'>
+                  <div class='header-text'>
+                    35
+                  </div>
+                  <div class='sub-text'>
+                    Airports
+                  </div>
+                </div>
+              </div>
+              <div class='row'>
+                <div class='col-6'>
+                  <div class='header-text'>
+                    400
+                  </div>
+                  <div class='sub-text'>
+                    Hours
+                  </div>
+                </div>
+                <div class='col-6'>
+                  <div class='header-text'>
+                    3
+                  </div>
+                  <div class='sub-text'>
+                    Regions
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <%# if @user == current_user %>
+        <%#= form_with(url: :flights, local: true) do |form| %>
+          <%#= form.file_field :logbook %>
+          <%#= form.submit class:'btn btn-primary' %>
+        <%# end %>
+        <!-- View your <%#= link_to 'flights', flights_path %> -->
+      <%# end %>
     </div>
-    <div class='col-10' id='user-main'>
+    <div class='col-9 remove-lr-padding' id='user-map'>
       <div class='user-map' id='mapid'></div>
     </div>
   </div>
