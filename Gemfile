@@ -39,6 +39,9 @@ gem 'devise'
 # Exception reporting
 gem "bugsnag"
 
+# sending email
+gem 'postmark-rails'
+
 group :production do
   gem 'pg'
 end
