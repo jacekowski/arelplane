@@ -13,5 +13,5 @@
 //= require jquery
 //= require tether
 //= require rails-ujs
-//= require_tree .
 //= require bootstrap-sprockets
+//= require_tree .
