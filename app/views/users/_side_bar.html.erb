@@ -1,0 +1,117 @@
+<!-- <div class='col-md-3 col-12 remove-lr-padding' id='user-sticky-sidebar'> -->
+  <div class='col-12 remove-lr-padding'>
+    <div id='top-background-flag'>
+      <div class='header-text pl-3 pt-4'>
+        <%= @user.name %>
+      </div>
+      <div class='sub-text pl-3'>
+        Joined <%= @user.created_at.strftime('%B %e, %Y') %>
+      </div>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-12'>
+      <div class='float-right mr-3'>
+        <div class='light-header align-right'>
+          <%= @user.top_location.try(:iso_region) || 'No Flights' %>
+        </div>
+        <div class='light-sub-text align-right'>
+          Top State/Region
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class='row mt-3'>
+    <div class='col-12'>
+      <div class='float-right mr-3'>
+        <div class='light-header align-right'>
+          <%= @user.top_location.try(:identifier) || 'No Flights' %>
+        </div>
+        <div class='light-sub-text align-right'>
+          Top Airport
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class='row mt-3'>
+    <div class='col-12'>
+      <div class='float-right mr-3'>
+        <div class='light-header align-right'>
+          <%= @user.top_aircraft || 'No Flights' %>
+        </div>
+        <div class='light-sub-text align-right'>
+          Top Aircraft
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-3"></div>
+  <div class='row'>
+    <div class='col-12'>
+      <div id='mid-background-flag'>
+        <div id='background-flag-text'>
+          <div class='row mt-3'>
+            <div class='col-6'>
+              <div class='header-text'>
+                <%= @user.flights.count || 'No Flights' %>
+              </div>
+              <div class='sub-text'>
+                Flights
+              </div>
+            </div>
+            <div class='col-6'>
+              <div class='header-text'>
+                <%= @user.num_locations %>
+              </div>
+              <div class='sub-text'>
+                Airports
+              </div>
+            </div>
+          </div>
+          <div class='row'>
+            <div class='col-6'>
+              <div class='header-text'>
+                <%= @user.total_flight_hours %>
+              </div>
+              <div class='sub-text'>
+                Hours
+              </div>
+            </div>
+            <div class='col-6'>
+              <div class='header-text'>
+                <%= @user.num_regions %>
+              </div>
+              <div class='sub-text'>
+                Regions
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% if @user == current_user %>
+  <div class='row mt-5'>
+    <div class='col-12'>
+      <p class='light-sub-text align-center'>Upload your ForeFlight logbook file</p>
+      <div class='align-center'>
+        <%= form_with(url: :flights, local: true) do |form| %>
+          <%= form.file_field :logbook, class: 'btn btn-secondary' %>
+          <%= form.submit class:'btn btn-primary mt-md-3' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class='row mt-2 mb-2 align-center'>
+    <div class="col-12">
+      <p class='light-sub-text'>Feature requests? Questions?</p>
+      <div class="fb-messengermessageus"
+        messenger_app_id="720812044763701"
+        page_id="965418793603934"
+        color="blue"
+        size="large" >
+      </div>
+    </div>
+  </div>
+  <% end %>
+<!-- </div> -->

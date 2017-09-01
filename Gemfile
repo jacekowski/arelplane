@@ -36,6 +36,9 @@ end
 # Authentication/Authorization
 gem 'devise'
 
+# Exception reporting
+gem "bugsnag"
+
 group :production do
   gem 'pg'
 end
