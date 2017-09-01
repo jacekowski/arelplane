@@ -2,11 +2,12 @@ require 'csv'
 
 class FlightsController < ApplicationController
   before_action :set_flight, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
 
   # GET /flights
   # GET /flights.json
   def index
-    @flights = Flight.all
+    @flights = current_user.flights.all
   end
 
   # GET /flights/1
@@ -16,7 +17,7 @@ class FlightsController < ApplicationController
 
   # GET /flights/new
   def new
-    @flight = Flight.new
+    @flight = current_user.flights.new
   end
 
   # GET /flights/1/edit
@@ -27,45 +28,19 @@ class FlightsController < ApplicationController
   # POST /flights.json
   def create
     if params["logbook"]
-      entries = File.read(params["logbook"].tempfile)
-      csv = CSV.parse(entries, :headers => true)
-      csv.each do |row|
-        r = row.to_hash
-        f = Flight.find_or_initialize_by(
-          flight_date: r['Date'],
-          aircraft_id: r['AircraftID'],
-          from_id: Location.find_by(identifier: r['From']).try(:id),
-          to_id: Location.find_by(identifier: r['To']).try(:id),
-          time_out: r['TimeOut'],
-          time_in: r['TimeIn'],
-          total_time: r['TotalTime'],
-          pic: r['PIC'],
-          distance: r['distance']
-        )
-        if f.save
-          if route = r['Route']
-            route = route.split(" ")
-            # save route, but check if first and last values are same as start and end.
-            if route.first == r['From'] then route.shift end
-            if route.last == r['To'] then route.pop end
-            route.each do |waypoint|
-              f.waypoints.create(location_id: Location.find_by(identifier: waypoint).try(:id))
-            end
-          end
-        end
-      end
+      Flight.parse_logbook(params["logbook"].tempfile, current_user)
+      redirect_to user_path(current_user.id)
     else
-      @flight = Flight.new(flight_params)
-
-      respond_to do |format|
-        if @flight.save
-          format.html { redirect_to @flight, notice: 'Flight was successfully created.' }
-          format.json { render :show, status: :created, location: @flight }
-        else
-          format.html { render :new }
-          format.json { render json: @flight.errors, status: :unprocessable_entity }
-        end
-      end
+      # @flight = current_user.flights.new(flight_params)
+      # respond_to do |format|
+      #   if @flight.save
+      #     format.html { redirect_to @flight, notice: 'Flight was successfully created.' }
+      #     format.json { render :show, status: :created, location: @flight }
+      #   else
+      #     format.html { render :new }
+      #     format.json { render json: @flight.errors, status: :unprocessable_entity }
+      #   end
+      # end
     end
   end
 

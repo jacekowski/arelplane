@@ -1,3 +1,66 @@
-// Place all the styles related to the users controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+#user-map {}
+
+.user-map {
+  min-height: 100%;
+  min-width: 100%;
+}
+
+#user-sticky-sidebar {
+  background-color: #343234;
+  z-index: 0;
+}
+
+#top-background-flag {
+  border-top: 2px solid #C2C2C2; /* top border on the parent */
+  position: relative;
+  height: 10rem;
+  overflow: hidden;
+}
+
+#top-background-flag:after {
+  background-color: #5DCAD3;
+  -webkit-transform: skewY(-8deg);
+  -moz-transform: skewY(-8deg);
+  -ms-transform: skewY(-8deg);
+  -o-transform: skewY(-8deg);
+  transform: skewY(-8deg);
+  transform-origin: bottom left;
+  border-bottom: 2px solid #C2C2C2; /* bottom border skews with the object */
+  content: ' ';
+  display: block;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: -1;
+  bottom: 0;
+}
+
+#mid-background-flag {
+  background-color: #5DCAD3;
+  height: 15rem;
+  -webkit-transform: skewY(8deg);
+  -moz-transform: skewY(8deg);
+  -ms-transform: skewY(8deg);
+  -o-transform: skewY(8deg);
+  transform: skewY(8deg);
+  border-top: 2px solid #C2C2C2;
+  border-bottom: 2px solid #C2C2C2;
+}
+
+#background-flag-text {
+  -webkit-transform: skewY(-8deg);
+  -moz-transform: skewY(-8deg);
+  -ms-transform: skewY(-8deg);
+  -o-transform: skewY(-8deg);
+  transform: skewY(-8deg);
+  padding: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .user-map {
+    min-height: 60vh;
+  }
+}

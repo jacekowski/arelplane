@@ -8,19 +8,28 @@
 <div class='container mt-2 mb-2'>
   <div class='row'>
     <div class="col">
-      <h6><center>Are you a pilot who keeps a digital logbook? Want to make your own map of all your flights? Let me know!</center></h6>
+      <% if !user_signed_in? %>
+        <p class='light-sub-text align-center'>Are you a pilot who keeps a digital logbook? Want to make your own map of all your flights? Create an account!</p>
+      <% end %>
     </div>
   </div>
   <div class='row justify-content-center'>
-    <div class='col-4'>
-      <%= form_with(model: User.new, local: true) do |form| %>
-        <div class='form-inline'>
-          <%= form.email_field :email, placeholder: 'email', class: 'form-control mt-2' %>
-          <%= form.submit "Submit", class: 'btn btn-primary ml-lg-2 mt-2' %>
-        </div>
-      <% end %>
+    <div class='col-8'>
+      <div class='form-inline'>
+          <%= form_with model: User.new, local: true, url: user_registration_path do |form| %>
+            <div class='form-inline'>
+              <%= form.email_field :email, placeholder: 'email', class: 'form-control' %>
+              <%= form.text_field :name, placeholder: 'name', class: 'form-control' %>
+              <%= form.password_field :password, placeholder: 'password', class: 'form-control' %>
+              <%= form.submit 'Register', class: 'btn btn-primary' %>
+            </div>
+            <p class='light-sub-text'> Already have an account? <a href="#" data-toggle='modal' data-target='#loginModal'>login</a></p>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>
 
-<div id="mapid"></div>
+<div class='homepage-map' id='mapid'></div>
+
+<%= render 'login_modal' %>

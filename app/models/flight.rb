@@ -1,9 +1,11 @@
 class Flight < ApplicationRecord
   belongs_to :from, class_name: 'Location', foreign_key: 'from_id'
   belongs_to :to, class_name: 'Location', foreign_key: 'to_id'
+  belongs_to :user
 
-  has_many :waypoints, foreign_key: "flight_id", class_name: "FlightWaypoint"
+  has_many :waypoints, foreign_key: "flight_id", class_name: "FlightWaypoint", dependent: :destroy
 
+  # Homepage map
   def self.trips_lat_long
     flights = []
     all.each do |flight|
@@ -45,8 +47,6 @@ class Flight < ApplicationRecord
     locations
   end
 
-# {khpn: [[lat,long,]12]}
-
   def self.visited_waypoints
     waypoints = {}
     all.each do |flight|
@@ -55,6 +55,57 @@ class Flight < ApplicationRecord
       end
     end
     waypoints
+  end
+
+  def self.parse_logbook(logbook_csv, user)
+    CSV.foreach(logbook_csv, headers: [
+      :flight_date,
+      :aircraft_id,
+      :from_id,
+      :to_id,
+      :route,
+      :time_out,
+      :time_in,
+      :on_duty,
+      :off_duty,
+      :total_time,
+      :pic,
+      :sic,
+      :night,
+      :solo,
+      :cross_country,
+      :distance
+      ]) do |row|
+        r = row.to_hash
+        f = Flight.find_or_initialize_by(
+          user_id: user.id,
+          flight_date: r[:flight_date],
+          aircraft_id: r[:aircraft_id],
+          from_id: Location.find_by(identifier: r[:from_id]).try(:id),
+          to_id: Location.find_by(identifier: r[:to_id]).try(:id),
+          time_out: r[:time_out],
+          time_in: r[:time_in],
+          total_time: r[:total_time],
+          pic: r[:pic],
+          distance: r[:distance]
+        )
+      if f.save
+        f.add_waypoints(r)
+      end
+    end
+  end
+
+  def add_waypoints(logbook_row)
+    if route = logbook_row[:route]
+      route = route.split(" ")
+      # save route, but check if first and last values are same as start and end.
+      if route.first == logbook_row['From'] then route.shift end
+      if route.last == logbook_row['To'] then route.pop end
+      route.each do |waypoint|
+        waypoints.create(location_id: Location.find_by(identifier: waypoint).try(:id))
+      end
+    end
+
   end
 
 end

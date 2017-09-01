@@ -1,0 +1,29 @@
+<%= content_tag :div, id: "visited_airports", data: {airports: @user.visited_airports} do %>
+<% end %>
+<%= content_tag :div, id: "visited_waypoints", data: {waypoints: @user.visited_waypoints} do %>
+<% end %>
+<%= content_tag :div, id: "trip_lines", data: {trips: @user.trips_lat_long} do %>
+<% end %>
+
+<div class='container-fluid'>
+  <div class='row'>
+    <div class='col-6'>
+      <div class='header-title mt-3 mb-3'>TRAVERSE</div>
+    </div>
+    <div class='col-6'>
+      <%= link_to('Logout', destroy_user_session_path, method: :delete, class: 'btn btn-primary float-right mt-3 mb-3') %>
+      <%= link_to 'manage flights', flights_path, class: 'float-right mt-sm-4 mb-sm-3 mr-sm-3' %>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-md-3 col-12 d-none d-md-block remove-lr-padding' id='user-sticky-sidebar'>
+      <%= render 'users/side_bar' %>
+    </div>
+    <div class='col-md-9 col-12 remove-lr-padding' id='user-map'>
+      <div class='user-map' id='mapid'></div>
+    </div>
+    <div class='col-md-3 col-12 d-md-none remove-lr-padding' id='user-sticky-sidebar'>
+      <%= render 'users/side_bar' %>
+    </div>
+  </div>
+</div>
