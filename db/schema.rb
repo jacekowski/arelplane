@@ -12,6 +12,9 @@
 
 ActiveRecord::Schema.define(version: 20170824212340) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "flight_waypoints", force: :cascade do |t|
     t.integer "location_id"
     t.integer "flight_id"
