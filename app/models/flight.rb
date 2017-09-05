@@ -93,9 +93,9 @@ class Flight < ApplicationRecord
           distance: r[:distance]
         )
       if f.new_record?
+        f.save
         f.add_waypoints(r)
       end
-      f.save
     end
   end
 
