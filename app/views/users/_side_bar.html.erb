@@ -97,7 +97,7 @@
       <div class='align-center'>
         <%= form_with(url: :flights, local: true) do |form| %>
           <%= form.file_field :logbook, class: 'btn btn-secondary' %>
-          <%= form.submit class:'btn btn-primary mt-md-3' %>
+          <%= form.submit class:'btn btn-primary mt-md-3 mt-1', id: 'upload-logbook-btn', disabled: true %>
         <% end %>
       </div>
     </div>
