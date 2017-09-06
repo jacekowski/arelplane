@@ -82,7 +82,7 @@ class Flight < ApplicationRecord
         next unless (date_format_one =~ r[:flight_date] || date_format_two =~ r[:flight_date])
         f = Flight.find_or_initialize_by(
           user_id: user.id,
-          flight_date: r[:flight_date],
+          flight_date: r[:flight_date].to_date,
           aircraft_id: r[:aircraft_id],
           from_id: Location.find_by(identifier: r[:from_id]).try(:id),
           to_id: Location.find_by(identifier: r[:to_id]).try(:id),
