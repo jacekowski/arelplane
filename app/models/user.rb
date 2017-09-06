@@ -95,7 +95,7 @@ class User < ApplicationRecord
   end
 
   def total_flight_hours
-    flights.pluck(:total_time).sum.round(1)
+    flights.pluck(:total_time).compact.sum.round(1)
   end
 
 end
