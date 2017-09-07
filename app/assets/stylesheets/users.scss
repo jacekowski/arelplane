@@ -59,6 +59,19 @@
   text-align: center;
 }
 
+#foreflight-form {
+  display: none;
+}
+
+#logtenpro-form {
+  display: none;
+}
+
+.lb-provider-name {
+  color: #7F7F7F;
+  font-size: 1rem;
+}
+
 @media (max-width: 768px) {
   .user-map {
     min-height: 60vh;

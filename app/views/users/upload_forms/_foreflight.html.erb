@@ -1,0 +1,4 @@
+<%= form_with(url: :flights, local: true, html: {id: 'foreflight-form', class: 'mt-2'}) do |form| %>
+  <%= form.file_field :foreflight, class: 'btn btn-secondary' %>
+  <%= form.submit class:'btn btn-primary', id: 'upload-logbook-btn', disabled: true %>
+<% end %>

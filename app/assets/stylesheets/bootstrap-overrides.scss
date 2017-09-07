@@ -3,6 +3,18 @@
   border-color: #00CED6;
 }
 
+.bg-dark {
+  background-color: #191A1A !important;
+}
+
+.navbar-brand {
+  color: white;
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight: 900;
+  font-size: 1.5rem;
+  letter-spacing: 0.25rem;
+}
+
 .btn-primary:hover {
   background-color: #00E6F0;
   border-color: #00E6F0;
@@ -16,4 +28,13 @@
 .container {
   padding-top: 5px;
   padding-bottom: 10px;
+}
+
+.modal-title {
+  color: #262626;
+  font-size: 1rem;
+}
+
+.modal-header {
+  height: 2.7rem;
 }

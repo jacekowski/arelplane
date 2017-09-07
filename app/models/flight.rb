@@ -57,9 +57,7 @@ class Flight < ApplicationRecord
     waypoints
   end
 
-  def self.parse_logbook(logbook_csv, user)
-    date_format_one = /^\d{4}-{1}\d{2}-{1}\d{2}$/
-    date_format_two = /^\d{2}\/{1}\d{2}\/{1}\d{4}$/
+  def self.parse_foreflight(logbook_csv, user)
     CSV.foreach(logbook_csv, headers: [
       :flight_date,
       :aircraft_id,
@@ -79,7 +77,7 @@ class Flight < ApplicationRecord
       :distance
       ]) do |row|
         r = row.to_hash
-        next unless (date_format_one =~ r[:flight_date] || date_format_two =~ r[:flight_date])
+        next unless date_format_one =~ r[:flight_date]
         f = Flight.find_or_initialize_by(
           user_id: user.id,
           flight_date: r[:flight_date].to_date,
@@ -99,6 +97,25 @@ class Flight < ApplicationRecord
     end
   end
 
+  def self.parse_logtenpro(logbook_csv, user)
+    CSV.foreach(logbook_csv, { col_sep: "\t", headers: true}) do |row|
+        r = row.to_hash
+        next unless date_format_one =~ r["Date"]
+        f = Flight.find_or_initialize_by(
+          user_id: user.id,
+          flight_date: r["Date"].to_date,
+          aircraft_id: r["Aircraft ID"],
+          from_id: Location.find_by(identifier: r["From"]).try(:id),
+          to_id: Location.find_by(identifier: r["To"]).try(:id),
+          total_time: r["Total Time"],
+          pic: r["PIC"],
+        )
+      if f.new_record?
+        f.save
+      end
+    end
+  end
+
   def add_waypoints(logbook_row)
     if route = logbook_row[:route]
       route = route.split(" ")
@@ -109,7 +126,15 @@ class Flight < ApplicationRecord
         waypoints.create(location_id: Location.find_by(identifier: waypoint).try(:id))
       end
     end
+  end
 
+private
+  def self.date_format_one
+    /^\d{4}-{1}\d{2}-{1}\d{2}$/
+  end
+
+  def self.date_format_two
+    /^\d{2}\/{1}\d{2}\/{1}\d{4}$/
   end
 
 end

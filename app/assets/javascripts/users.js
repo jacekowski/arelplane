@@ -3,6 +3,7 @@
 
 $(document).ready(function() {
   $("#upload-logbook-btn").click(function(){
+    $('#logbookUploadModal').modal('hide');
     $( "div.user-map" ).replaceWith( "<div class='row align-items-center' style='height: 100%;'>\
         <div class='col-12'>\
           <div class='card border-info mb-3 mx-auto' style='max-width: 40rem;'>\
@@ -19,4 +20,22 @@ $(document).ready(function() {
   $('input:file').on("change", function() {
     $('input:submit').prop('disabled', !$(this).val());
   });
+
+  function fadeInOrOut(form){
+    if ($(form).is(":visible")) {
+      $(form).fadeOut();
+    } else {
+      $(form).fadeIn();
+    }
+  }
+
+  $("#foreflight-lb").click(function(){
+    var form = "form#foreflight-form"
+    fadeInOrOut(form)
+  })
+
+  $("#logtenpro-lb").click(function(){
+    var form = "form#logtenpro-form"
+    fadeInOrOut(form)
+  })
 });

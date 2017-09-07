@@ -7,15 +7,6 @@
 
 <div class='container-fluid'>
   <div class='row'>
-    <div class='col-6'>
-      <div class='header-title mt-3 mb-3'>ARELPLANE</div>
-    </div>
-    <div class='col-6'>
-      <%= link_to('Logout', destroy_user_session_path, method: :delete, class: 'btn btn-primary float-right mt-3 mb-3') %>
-      <%= link_to 'manage flights', flights_path, class: 'float-right mt-sm-4 mb-sm-3 mr-sm-3' %>
-    </div>
-  </div>
-  <div class='row'>
     <div class='col-md-3 col-12 d-none d-md-block remove-lr-padding' id='user-sticky-sidebar'>
       <%= render 'users/side_bar' %>
     </div>
@@ -27,3 +18,5 @@
     </div>
   </div>
 </div>
+
+<%= render 'users/logbook_upload_modal' %>
