@@ -1,4 +1,8 @@
-<%= form_with(url: :flights, local: true, html: {id: 'foreflight-form', class: 'mt-2'}) do |form| %>
-  <%= form.file_field :foreflight, class: 'btn btn-secondary' %>
-  <%= form.submit class:'btn btn-primary', id: 'upload-logbook-btn', disabled: true %>
-<% end %>
+<div class="row m-2 h-100" id="foreflight-form">
+  <div class="col-12 my-auto">
+    <%= form_with(url: :flights, local: true) do |form| %>
+      <%= form.file_field :foreflight, class: 'btn btn-secondary form-group' %>
+      <%= form.submit 'Submit', class:'btn btn-primary float-right upload-logbook-btn', disabled: true %>
+    <% end %>
+  </div>
+</div>

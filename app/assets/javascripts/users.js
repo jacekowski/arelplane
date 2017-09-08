@@ -2,7 +2,7 @@
 // All this logic will automatically be available in application.js.
 
 $(document).ready(function() {
-  $("#upload-logbook-btn").click(function(){
+  $(".upload-logbook-btn").click(function(){
     $('#logbookUploadModal').modal('hide');
     $( "div.user-map" ).replaceWith( "<div class='row align-items-center' style='height: 100%;'>\
         <div class='col-12'>\
@@ -30,12 +30,12 @@ $(document).ready(function() {
   }
 
   $("#foreflight-lb").click(function(){
-    var form = "form#foreflight-form"
+    var form = "div#foreflight-form"
     fadeInOrOut(form)
   })
 
   $("#logtenpro-lb").click(function(){
-    var form = "form#logtenpro-form"
+    var form = "div#logtenpro-form"
     fadeInOrOut(form)
   })
 });

@@ -17,18 +17,33 @@
         </div>
         <div class="col-6 my-auto">
           <button class='btn btn-primary float-right' id="foreflight-lb">ForeFlight</button>
-          <%= render 'users/upload_forms/foreflight' %>
         </div>
       </div>
-      <div class="row m-2 h-100">
-        <div class="col-12 mt-2">
-          <button class='btn btn-primary' id="logtenpro-lb">LogTen Pro</button>
-          <%= render 'users/upload_forms/logtenpro' %>
+      <%= render 'users/upload_forms/foreflight' %>
+      <div class='row m-2 h-100'>
+        <div class="col-1">
+          <%= image_tag('logtenpro.png', height: '40', width: '40') %>
         </div>
-        <!-- <div class='col-12 mt-2'>
-          <button class='btn btn-primary' id="mccpilotlog-lb">mccPILOTLOG</button>
-        </div> -->
+        <div class="col-5 my-auto">
+          <div class="lb-provider-name pl-2">LogTen Pro</div>
+        </div>
+        <div class="col-6 my-auto">
+          <button class='btn btn-primary float-right' id="logtenpro-lb">LogTen Pro</button>
+        </div>
       </div>
+      <%= render 'users/upload_forms/logtenpro' %>
+      <!-- <div class='row m-2 h-100'>
+        <div class="col-1">
+          <%#= image_tag('mccPILOTLOG.png', height: '40', width: '40') %>
+        </div>
+        <div class="col-5 my-auto">
+          <div class="lb-provider-name pl-2">mccPILOTLOG</div>
+        </div>
+        <div class="col-6 my-auto">
+          <button class='btn btn-primary float-right' id="mccpilotlog-lb">mccPILOTLOG</button>
+        </div>
+      </div>
+      <%#= render 'users/upload_forms/mccpilotlog' %> -->
     </div>
   </div>
 </div>
