@@ -19,6 +19,9 @@
   </head>
 
   <body>
+    <% if current_user %>
+      <%= render 'layouts/navbar' %>
+    <% end %>
     <%= render 'layouts/fb_messenger_btn' %>
     <%= render 'layouts/flash_messages' %>
     <%= yield %>

@@ -27,8 +27,14 @@ class FlightsController < ApplicationController
   # POST /flights
   # POST /flights.json
   def create
-    if params["logbook"]
-      Flight.parse_logbook(params["logbook"].tempfile, current_user)
+    if params["foreflight"]
+      Flight.parse_foreflight(params["foreflight"].tempfile, current_user)
+      redirect_to user_path(current_user.id)
+    elsif params["logtenpro"]
+      Flight.parse_logtenpro(params["logtenpro"].tempfile, current_user)
+      redirect_to user_path(current_user.id)
+    elsif params["mccpilotlog"]
+      Flight.parse_mccpilotlog(params["mccpilotlog"].tempfile, current_user)
       redirect_to user_path(current_user.id)
     else
       # @flight = current_user.flights.new(flight_params)
