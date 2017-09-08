@@ -130,7 +130,7 @@ class Flight < ApplicationRecord
         to_id: Location.find_by(identifier: r["AF_ARR"]).try(:id),
         time_out: r["TIME_DEP"],
         time_in: r["TIME_ARR"],
-        total_time: r["TIME_TOTAL"],
+        total_time: r["TIME_TOTAL"].to_f/60,
         pic: r["TIME_TOTAL"]
         )
       if f.new_record?
