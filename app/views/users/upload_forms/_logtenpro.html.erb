@@ -1,7 +1,7 @@
-<div class="row m-2 h-100" id="logtenpro-form">
-  <div class="col-12 my-auto">
+<div class="row mt-4 ml-2 mr-2" id="logtenpro-form">
+  <div class="col-12">
     <%= form_with(url: :flights, local: true) do |form| %>
-      <%= form.file_field :logtenpro, class: 'btn btn-secondary form-group' %>
+      <%= form.file_field :logtenpro, class: 'btn form-background form-group' %>
       <%= form.submit 'Submit', class:'btn btn-primary float-right upload-logbook-btn', disabled: true %>
     <% end %>
   </div>

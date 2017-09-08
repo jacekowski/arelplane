@@ -21,26 +21,31 @@ $(document).ready(function() {
     $('input:submit').prop('disabled', !$(this).val());
   });
 
-  function fadeInOrOut(form){
+  function fadeInOrOut(form, button){
     if ($(form).is(":visible")) {
-      $(form).fadeOut();
+      $(form).hide();
+      $(button).text("Select");
     } else {
       $(form).fadeIn();
+      $(button).text("Deselect");
     }
   }
 
   $("#foreflight-lb").click(function(){
     var form = "div#foreflight-form"
-    fadeInOrOut(form)
+    var button = "#foreflight-lb"
+    fadeInOrOut(form, button)
   })
 
   $("#logtenpro-lb").click(function(){
     var form = "div#logtenpro-form"
-    fadeInOrOut(form)
+    var button = "#logtenpro-lb"
+    fadeInOrOut(form, button)
   })
 
   $("#mccpilotlog-lb").click(function(){
     var form = "div#mccpilotlog-form"
-    fadeInOrOut(form)
+    var button = "#mccpilotlog-lb"
+    fadeInOrOut(form, button)
   })
 });
