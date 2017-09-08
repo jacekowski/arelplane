@@ -33,6 +33,9 @@ class FlightsController < ApplicationController
     elsif params["logtenpro"]
       Flight.parse_logtenpro(params["logtenpro"].tempfile, current_user)
       redirect_to user_path(current_user.id)
+    elsif params["mccpilotlog"]
+      Flight.parse_mccpilotlog(params["mccpilotlog"].tempfile, current_user)
+      redirect_to user_path(current_user.id)
     else
       # @flight = current_user.flights.new(flight_params)
       # respond_to do |format|

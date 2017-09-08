@@ -38,4 +38,9 @@ $(document).ready(function() {
     var form = "div#logtenpro-form"
     fadeInOrOut(form)
   })
+
+  $("#mccpilotlog-lb").click(function(){
+    var form = "div#mccpilotlog-form"
+    fadeInOrOut(form)
+  })
 });

@@ -116,6 +116,29 @@ class Flight < ApplicationRecord
     end
   end
 
+  {"mcc_DATE"=>"28/09/2016", "Is_PREVEXP"=>nil, "AC_IsSIM"=>nil, "FlightNumber"=>nil, "AF_DEP"=>"RTD", "TIME_DEP"=>"09:45", "TIME_DEPSCH"=>"00:00", "AF_ARR"=>"RTD", "TIME_ARR"=>"10:45", "TIME_ARRSCH"=>"00:00", "AC_MODEL"=>"150-Aerobatic", "AC_REG"=>"G-BBTB", "PILOT1_ID"=>nil, "PILOT1_NAME"=>"Stephen Waddy", "PILOT1_PHONE"=>nil, "PILOT1_EMAIL"=>nil, "PILOT2_ID"=>nil, "PILOT2_NAME"=>"SELF", "PILOT2_PHONE"=>"+447572224769", "PILOT2_EMAIL"=>"AlfieAllen69@gmail.com", "PILOT3_ID"=>nil, "PILOT3_NAME"=>nil, "PILOT3_PHONE"=>nil, "PILOT3_EMAIL"=>nil, "PILOT4_ID"=>nil, "PILOT4_NAME"=>nil, "PILOT4_PHONE"=>nil, "PILOT4_EMAIL"=>nil, "TIME_TOTAL"=>"60", "TIME_PIC"=>"0", "TIME_PICUS"=>"0", "TIME_SIC"=>"0", "TIME_DUAL"=>"60", "TIME_INSTRUCTOR"=>"0", "TIME_EXAMINER"=>"0", "TIME_NIGHT"=>"0", "TIME_RELIEF"=>"0", "TIME_IFR"=>"0", "TIME_ACTUAL"=>"0", "TIME_HOOD"=>"0", "TIME_XC"=>"0", "PF"=>"True", "TO_DAY"=>"1", "TO_NIGHT"=>"0", "LDG_DAY"=>"1", "LDG_NIGHT"=>"0", "AUTOLAND"=>"0", "HOLDING"=>"0", "LIFT"=>"0", "INSTRUCTION"=>nil, "REMARKS"=>"P/ut", "APP_1"=>nil, "APP_2"=>nil, "APP_3"=>nil, "Pax"=>"0", "DEICE"=>"False", "FUEL"=>"0", "FUELUSED"=>"0", "DELAY"=>"0", "FLIGHTLOG"=>nil, "TIME_TO"=>"00:00", "TIME_LDG"=>"00:00", "TIME_AIR"=>"0"}
+
+  def self.parse_mccpilotlog(logbook_csv, user)
+    CSV.foreach(logbook_csv, { col_sep: ";", headers: true}) do |row|
+        r = row.to_hash
+        next unless date_format_two =~ r["mcc_DATE"]
+        f = Flight.find_or_initialize_by(
+        user_id: user.id,
+        flight_date: r["mcc_DATE"].to_date,
+        aircraft_id: r["AC_REG"],
+        from_id: Location.find_by(identifier: r["AF_DEP"]).try(:id),
+        to_id: Location.find_by(identifier: r["AF_ARR"]).try(:id),
+        time_out: r["TIME_DEP"],
+        time_in: r["TIME_ARR"],
+        total_time: r["TIME_TOTAL"],
+        pic: r["TIME_TOTAL"]
+        )
+      if f.new_record?
+        f.save
+      end
+    end
+  end
+
   def add_waypoints(logbook_row)
     if route = logbook_row[:route]
       route = route.split(" ")

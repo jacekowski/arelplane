@@ -1,0 +1,8 @@
+<div class="row m-2 h-100" id="mccpilotlog-form">
+  <div class="col-12 my-auto">
+    <%= form_with(url: :flights, local: true) do |form| %>
+      <%= form.file_field :mccpilotlog, class: 'btn btn-secondary form-group' %>
+      <%= form.submit 'Submit', class:'btn btn-primary float-right upload-logbook-btn', disabled: true %>
+    <% end %>
+  </div>
+</div>
