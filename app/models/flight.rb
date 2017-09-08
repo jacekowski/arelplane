@@ -5,6 +5,59 @@ class Flight < ApplicationRecord
 
   has_many :waypoints, foreign_key: "flight_id", class_name: "FlightWaypoint", dependent: :destroy
 
+  def self.map_data
+    map_data = {
+      type: :FeatureCollection,
+      features: []
+    }
+
+    all.each do |flight|
+      from = flight.from
+      to = flight.to
+
+      line_feature = {
+        type: :Feature,
+        properties: {},
+        geometry: {
+          type: :LineString,
+          coordinates: []
+        }
+      }
+      from_airport = {type: :Feature, properties: {}, geometry: {type: :Point}}
+      from_airport[:properties][:waypoint] = false
+      from_airport[:properties][:name] = from.name
+      from_airport[:properties][:popupContent] = from.identifier
+      from_airport[:geometry][:coordinates] = [from.longitude.to_f, from.latitude.to_f]
+      map_data[:features] << from_airport
+
+      to_airport = {type: :Feature, properties: {}, geometry: {type: :Point}}
+      to_airport[:properties][:waypoint] = false
+      to_airport[:properties][:name] = to.name
+      to_airport[:properties][:popupContent] = to.identifier
+      to_airport[:geometry][:coordinates] = [to.longitude.to_f, to.latitude.to_f]
+      map_data[:features] << to_airport
+
+      line_feature[:geometry][:coordinates] << from_airport[:geometry][:coordinates]
+
+      flight.waypoints.each do |waypoint|
+        location = waypoint.location
+
+        waypoint_data = {type: :Feature, properties: {}, geometry: {type: :Point}}
+        waypoint_data[:properties][:waypoint] = true
+        waypoint_data[:properties][:name] = location.name
+        waypoint_data[:properties][:popupContent] = location.identifier
+        waypoint_data[:geometry][:coordinates] = [location.longitude.to_f, location.latitude.to_f]
+
+        line_feature[:geometry][:coordinates] << waypoint_data[:geometry][:coordinates]
+
+        map_data[:features] << waypoint_data
+      end
+      line_feature[:geometry][:coordinates] << to_airport[:geometry][:coordinates]
+      map_data[:features] << line_feature
+    end
+    map_data
+  end
+
   # Homepage map
   def self.trips_lat_long
     flights = []
