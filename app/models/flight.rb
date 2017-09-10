@@ -17,21 +17,23 @@ class Flight < ApplicationRecord
 
       line_feature = {
         type: :Feature,
-        properties: {},
+        properties: {
+          feature_type: :line
+        },
         geometry: {
           type: :LineString,
           coordinates: []
         }
       }
       from_airport = {type: :Feature, properties: {}, geometry: {type: :Point}}
-      from_airport[:properties][:waypoint] = false
+      from_airport[:properties][:feature_type] = :airport
       from_airport[:properties][:name] = from.name
       from_airport[:properties][:popupContent] = from.identifier
       from_airport[:geometry][:coordinates] = [from.longitude.to_f, from.latitude.to_f]
       map_data[:features] << from_airport
 
       to_airport = {type: :Feature, properties: {}, geometry: {type: :Point}}
-      to_airport[:properties][:waypoint] = false
+      to_airport[:properties][:feature_type] = :airport
       to_airport[:properties][:name] = to.name
       to_airport[:properties][:popupContent] = to.identifier
       to_airport[:geometry][:coordinates] = [to.longitude.to_f, to.latitude.to_f]
@@ -43,7 +45,7 @@ class Flight < ApplicationRecord
         location = waypoint.location
 
         waypoint_data = {type: :Feature, properties: {}, geometry: {type: :Point}}
-        waypoint_data[:properties][:waypoint] = true
+        waypoint_data[:properties][:feature_type] = :waypoint
         waypoint_data[:properties][:name] = location.name
         waypoint_data[:properties][:popupContent] = location.identifier
         waypoint_data[:geometry][:coordinates] = [location.longitude.to_f, location.latitude.to_f]
