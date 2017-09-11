@@ -65,58 +65,6 @@ class Flight < ApplicationRecord
     end
   end
 
-  # Homepage map
-  def self.trips_lat_long
-    flights = []
-    all.each do |flight|
-      from_lat = flight.from.latitude
-      from_long = flight.from.longitude
-      to_lat = flight.to.latitude
-      to_long = flight.to.longitude
-
-      trip_cords = []
-      trip_cords << [from_lat, from_long]
-      flight.waypoints.each do |wp|
-        trip_cords << [wp.location.latitude, wp.location.longitude]
-      end
-      trip_cords << [to_lat, to_long]
-      flights << trip_cords
-    end
-    flights
-  end
-
-  def self.visited_airports
-    locations = {}
-    all.each do |flight|
-      from_lat = flight.from.latitude
-      from_long = flight.from.longitude
-      to_lat = flight.to.latitude
-      to_long = flight.to.longitude
-
-      if data = locations[flight.from.identifier]
-        data[1] += 1
-      else
-        locations[flight.from.identifier] = [[from_lat, from_long], 0]
-      end
-      if data = locations[flight.to.identifier]
-        data[1] += 1
-      else
-        locations[flight.to.identifier] = [[to_lat, to_long], 0]
-      end
-    end
-    locations
-  end
-
-  def self.visited_waypoints
-    waypoints = {}
-    all.each do |flight|
-      flight.waypoints.each do |wp|
-        waypoints[wp.location.identifier] = [wp.location.latitude, wp.location.longitude]
-      end
-    end
-    waypoints
-  end
-
   def self.parse_foreflight(logbook_csv, user)
     CSV.foreach(logbook_csv, headers: [
       :flight_date,
@@ -157,6 +105,18 @@ class Flight < ApplicationRecord
     end
   end
 
+  def add_waypoints(logbook_row)
+    if route = logbook_row[:route]
+      route = route.split(" ")
+      # save route, but check if first and last values are same as start and end.
+      if route.first == logbook_row['From'] then route.shift end
+      if route.last == logbook_row['To'] then route.pop end
+      route.each do |waypoint|
+        waypoints.create(location_id: Location.find_by(identifier: waypoint).try(:id))
+      end
+    end
+  end
+
   def self.parse_logtenpro(logbook_csv, user)
     CSV.foreach(logbook_csv, { col_sep: "\t", headers: true}) do |row|
         r = row.to_hash
@@ -175,8 +135,6 @@ class Flight < ApplicationRecord
       end
     end
   end
-
-  {"mcc_DATE"=>"28/09/2016", "Is_PREVEXP"=>nil, "AC_IsSIM"=>nil, "FlightNumber"=>nil, "AF_DEP"=>"RTD", "TIME_DEP"=>"09:45", "TIME_DEPSCH"=>"00:00", "AF_ARR"=>"RTD", "TIME_ARR"=>"10:45", "TIME_ARRSCH"=>"00:00", "AC_MODEL"=>"150-Aerobatic", "AC_REG"=>"G-BBTB", "PILOT1_ID"=>nil, "PILOT1_NAME"=>"Stephen Waddy", "PILOT1_PHONE"=>nil, "PILOT1_EMAIL"=>nil, "PILOT2_ID"=>nil, "PILOT2_NAME"=>"SELF", "PILOT2_PHONE"=>"+447572224769", "PILOT2_EMAIL"=>"AlfieAllen69@gmail.com", "PILOT3_ID"=>nil, "PILOT3_NAME"=>nil, "PILOT3_PHONE"=>nil, "PILOT3_EMAIL"=>nil, "PILOT4_ID"=>nil, "PILOT4_NAME"=>nil, "PILOT4_PHONE"=>nil, "PILOT4_EMAIL"=>nil, "TIME_TOTAL"=>"60", "TIME_PIC"=>"0", "TIME_PICUS"=>"0", "TIME_SIC"=>"0", "TIME_DUAL"=>"60", "TIME_INSTRUCTOR"=>"0", "TIME_EXAMINER"=>"0", "TIME_NIGHT"=>"0", "TIME_RELIEF"=>"0", "TIME_IFR"=>"0", "TIME_ACTUAL"=>"0", "TIME_HOOD"=>"0", "TIME_XC"=>"0", "PF"=>"True", "TO_DAY"=>"1", "TO_NIGHT"=>"0", "LDG_DAY"=>"1", "LDG_NIGHT"=>"0", "AUTOLAND"=>"0", "HOLDING"=>"0", "LIFT"=>"0", "INSTRUCTION"=>nil, "REMARKS"=>"P/ut", "APP_1"=>nil, "APP_2"=>nil, "APP_3"=>nil, "Pax"=>"0", "DEICE"=>"False", "FUEL"=>"0", "FUELUSED"=>"0", "DELAY"=>"0", "FLIGHTLOG"=>nil, "TIME_TO"=>"00:00", "TIME_LDG"=>"00:00", "TIME_AIR"=>"0"}
 
   def self.parse_mccpilotlog(logbook_csv, user)
     CSV.foreach(logbook_csv, { col_sep: ";", headers: true}) do |row|
@@ -199,18 +157,6 @@ class Flight < ApplicationRecord
     end
   end
 
-  def add_waypoints(logbook_row)
-    if route = logbook_row[:route]
-      route = route.split(" ")
-      # save route, but check if first and last values are same as start and end.
-      if route.first == logbook_row['From'] then route.shift end
-      if route.last == logbook_row['To'] then route.pop end
-      route.each do |waypoint|
-        waypoints.create(location_id: Location.find_by(identifier: waypoint).try(:id))
-      end
-    end
-  end
-
 private
   def self.date_format_one
     /^\d{4}-{1}\d{2}-{1}\d{2}$/
@@ -218,20 +164,6 @@ private
 
   def self.date_format_two
     /^\d{2}\/{1}\d{2}\/{1}\d{4}$/
-  end
-
-  def self.line_feature_structure
-    {
-      type: :Feature,
-      properties: {
-        count: 0,
-        feature_type: :line
-      },
-      geometry: {
-        type: :LineString,
-        coordinates: []
-      }
-    }
   end
 
   def self.feature_collection
@@ -250,6 +182,20 @@ private
       },
       geometry: {
         type: :Point
+      }
+    }
+  end
+
+  def self.line_feature_structure
+    {
+      type: :Feature,
+      properties: {
+        count: 0,
+        feature_type: :line
+      },
+      geometry: {
+        type: :LineString,
+        coordinates: []
       }
     }
   end
