@@ -8,16 +8,21 @@ class Flight < ApplicationRecord
   def self.map_data
     map_data = {
       type: :FeatureCollection,
+      max_count: 0,
       features: []
     }
 
     all.each do |flight|
       from = flight.from
+      from_cords = [from.longitude.to_f, from.latitude.to_f]
+
       to = flight.to
+      to_cords = [to.longitude.to_f, to.latitude.to_f]
 
       line_feature = {
         type: :Feature,
         properties: {
+          count: 0,
           feature_type: :line
         },
         geometry: {
@@ -25,38 +30,54 @@ class Flight < ApplicationRecord
           coordinates: []
         }
       }
-      from_airport = {type: :Feature, properties: {}, geometry: {type: :Point}}
-      from_airport[:properties][:feature_type] = :airport
-      from_airport[:properties][:name] = from.name
-      from_airport[:properties][:popupContent] = from.identifier
-      from_airport[:geometry][:coordinates] = [from.longitude.to_f, from.latitude.to_f]
-      map_data[:features] << from_airport
 
-      to_airport = {type: :Feature, properties: {}, geometry: {type: :Point}}
-      to_airport[:properties][:feature_type] = :airport
-      to_airport[:properties][:name] = to.name
-      to_airport[:properties][:popupContent] = to.identifier
-      to_airport[:geometry][:coordinates] = [to.longitude.to_f, to.latitude.to_f]
-      map_data[:features] << to_airport
+      from_airport = {type: :Feature, properties: {count: 1}, geometry: {type: :Point}}
+      to_airport = {type: :Feature, properties: {count: 1}, geometry: {type: :Point}}
+      f = map_data[:features].find {|feature| feature[:properties][:popupContent] == from.identifier }
+      if f
+        f[:properties][:count] += 1
+      else
+        from_airport[:properties][:feature_type] = :airport
+        from_airport[:properties][:name] = from.name
+        from_airport[:properties][:popupContent] = from.identifier
+        from_airport[:geometry][:coordinates] = from_cords
+        map_data[:features] << from_airport
+      end
+      f = map_data[:features].find {|feature| feature[:properties][:popupContent] == to.identifier }
+      if f
+        f[:properties][:count] += 1
+      else
+        to_airport[:properties][:feature_type] = :airport
+        to_airport[:properties][:name] = to.name
+        to_airport[:properties][:popupContent] = to.identifier
+        to_airport[:geometry][:coordinates] = to_cords
+        map_data[:features] << to_airport
+      end
 
-      line_feature[:geometry][:coordinates] << from_airport[:geometry][:coordinates]
+      line_feature[:geometry][:coordinates] << from_cords
 
       flight.waypoints.each do |waypoint|
         location = waypoint.location
+        waypoint_cords = [location.longitude.to_f, location.latitude.to_f]
 
-        waypoint_data = {type: :Feature, properties: {}, geometry: {type: :Point}}
-        waypoint_data[:properties][:feature_type] = :waypoint
-        waypoint_data[:properties][:name] = location.name
-        waypoint_data[:properties][:popupContent] = location.identifier
-        waypoint_data[:geometry][:coordinates] = [location.longitude.to_f, location.latitude.to_f]
+        waypoint_data = {type: :Feature, properties: {count: 1}, geometry: {type: :Point}}
+        f = map_data[:features].find {|feature| feature[:properties][:popupContent] == location.identifier}
+        if f
+          f[:properties][:count] += 1
+        else
+          waypoint_data[:properties][:feature_type] = :waypoint
+          waypoint_data[:properties][:name] = location.name
+          waypoint_data[:properties][:popupContent] = location.identifier
+          waypoint_data[:geometry][:coordinates] = waypoint_cords
+          map_data[:features] << waypoint_data
+        end
 
-        line_feature[:geometry][:coordinates] << waypoint_data[:geometry][:coordinates]
-
-        map_data[:features] << waypoint_data
+        line_feature[:geometry][:coordinates] << waypoint_cords
       end
-      line_feature[:geometry][:coordinates] << to_airport[:geometry][:coordinates]
+      line_feature[:geometry][:coordinates] << to_cords
       map_data[:features] << line_feature
     end
+    map_data[:max_count] = map_data[:features].max_by {|f| f[:properties][:count]}[:properties][:count]
     map_data
   end
 
