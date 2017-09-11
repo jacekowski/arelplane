@@ -33,23 +33,23 @@ class Flight < ApplicationRecord
 
       from_airport = {type: :Feature, properties: {count: 1}, geometry: {type: :Point}}
       to_airport = {type: :Feature, properties: {count: 1}, geometry: {type: :Point}}
-      f = map_data[:features].find {|feature| feature[:properties][:popupContent] == from.identifier }
+      f = map_data[:features].find {|feature| feature[:properties][:identifier] == from.identifier }
       if f
         f[:properties][:count] += 1
       else
         from_airport[:properties][:feature_type] = :airport
         from_airport[:properties][:name] = from.name
-        from_airport[:properties][:popupContent] = from.identifier
+        from_airport[:properties][:identifier] = from.identifier
         from_airport[:geometry][:coordinates] = from_cords
         map_data[:features] << from_airport
       end
-      f = map_data[:features].find {|feature| feature[:properties][:popupContent] == to.identifier }
+      f = map_data[:features].find {|feature| feature[:properties][:identifier] == to.identifier }
       if f
         f[:properties][:count] += 1
       else
         to_airport[:properties][:feature_type] = :airport
         to_airport[:properties][:name] = to.name
-        to_airport[:properties][:popupContent] = to.identifier
+        to_airport[:properties][:identifier] = to.identifier
         to_airport[:geometry][:coordinates] = to_cords
         map_data[:features] << to_airport
       end
@@ -61,13 +61,13 @@ class Flight < ApplicationRecord
         waypoint_cords = [location.longitude.to_f, location.latitude.to_f]
 
         waypoint_data = {type: :Feature, properties: {count: 1}, geometry: {type: :Point}}
-        f = map_data[:features].find {|feature| feature[:properties][:popupContent] == location.identifier}
+        f = map_data[:features].find {|feature| feature[:properties][:identifier] == location.identifier}
         if f
           f[:properties][:count] += 1
         else
           waypoint_data[:properties][:feature_type] = :waypoint
           waypoint_data[:properties][:name] = location.name
-          waypoint_data[:properties][:popupContent] = location.identifier
+          waypoint_data[:properties][:identifier] = location.identifier
           waypoint_data[:geometry][:coordinates] = waypoint_cords
           map_data[:features] << waypoint_data
         end

@@ -27,13 +27,13 @@ $(document).ready(function(){
     pointToLayer: function (feature, latlng) {
       if (feature.properties.feature_type === "airport") {
         return L.marker(latlng, {
-          title: feature.properties.popupContent,
+          title: feature.properties.identifier,
           opacity: Math.max((feature.properties.count/max_count) * 12, 0.3),
           icon: airportIcon
         });
       } else if (feature.properties.feature_type === "waypoint") {
         return L.marker(latlng, {
-          title: feature.properties.popupContent,
+          title: feature.properties.identifier,
           opacity: Math.max((feature.properties.count/max_count) * 12, 0.3),
           icon: waypointIcon});
       }
