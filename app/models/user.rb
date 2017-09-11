@@ -9,11 +9,21 @@ class User < ApplicationRecord
   has_many :flights
 
   def top_location
-    Location.find(flights.pluck(:from_id, :to_id).flatten.group_by{|i| i}.max{|x,y| x[1].length <=> y[1].length}[0]).identifier
+    locations = flights.pluck(:from_id, :to_id).flatten
+    unless locations.empty?
+      Location.find(locations.group_by{|i| i}.max{|x,y| x[1].length <=> y[1].length}[0]).identifier
+    else
+      nil
+    end
   end
 
   def top_region
-    Location.find(flights.pluck(:from_id, :to_id).flatten.group_by{|i| i}.max{|x,y| x[1].length <=> y[1].length}[0]).iso_region
+    locations = flights.pluck(:from_id, :to_id).flatten
+    unless locations.empty?
+      Location.find(locations.group_by{|i| i}.max{|x,y| x[1].length <=> y[1].length}[0]).iso_region
+    else
+      nil
+    end
   end
 
   def top_aircraft
