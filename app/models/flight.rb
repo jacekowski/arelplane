@@ -31,10 +31,11 @@ class Flight < ApplicationRecord
         }
       }
 
-      from_airport = {type: :Feature, properties: {count: 1}, geometry: {type: :Point}}
-      to_airport = {type: :Feature, properties: {count: 1}, geometry: {type: :Point}}
+      from_airport = {type: :Feature, properties: {count: 0}, geometry: {type: :Point}}
+      to_airport = {type: :Feature, properties: {count: 0}, geometry: {type: :Point}}
       f = map_data[:features].find {|feature| feature[:properties][:identifier] == from.identifier }
       if f
+        f[:properties][:feature_type] = :airport
         f[:properties][:count] += 1
       else
         from_airport[:properties][:feature_type] = :airport
@@ -45,6 +46,7 @@ class Flight < ApplicationRecord
       end
       f = map_data[:features].find {|feature| feature[:properties][:identifier] == to.identifier }
       if f
+        f[:properties][:feature_type] = :airport
         f[:properties][:count] += 1
       else
         to_airport[:properties][:feature_type] = :airport
@@ -60,7 +62,7 @@ class Flight < ApplicationRecord
         location = waypoint.location
         waypoint_cords = [location.longitude.to_f, location.latitude.to_f]
 
-        waypoint_data = {type: :Feature, properties: {count: 1}, geometry: {type: :Point}}
+        waypoint_data = {type: :Feature, properties: {count: 0}, geometry: {type: :Point}}
         f = map_data[:features].find {|feature| feature[:properties][:identifier] == location.identifier}
         if f
           f[:properties][:count] += 1
