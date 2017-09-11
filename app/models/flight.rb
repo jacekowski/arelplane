@@ -54,7 +54,11 @@ class Flight < ApplicationRecord
   end
 
   def self.set_top_visited_airport_count(map_data)
-    map_data[:max_count] = map_data[:features].max_by {|f| f[:properties][:count]}[:properties][:count]
+    if map_data[:features].count > 0
+      map_data[:max_count] = map_data[:features].max_by {|f| f[:properties][:count]}[:properties][:count]
+    else
+      map_data[:max_count]
+    end
   end
 
   def self.add_or_increment_waypoint_data(flight, feature_collection, line_feature)

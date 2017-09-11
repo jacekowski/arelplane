@@ -10,10 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170824212340) do
+ActiveRecord::Schema.define(version: 20170911191929) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "cache_data", force: :cascade do |t|
+    t.json "map_data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "flight_waypoints", force: :cascade do |t|
     t.integer "location_id"

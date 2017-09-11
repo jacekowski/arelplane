@@ -48,6 +48,8 @@ class FlightsController < ApplicationController
       #   end
       # end
     end
+    cache = CacheDatum.create(map_data: Flight.map_data(Flight))
+    CacheDatum.where.not(cache.id).destroy_all
   end
 
   # PATCH/PUT /flights/1

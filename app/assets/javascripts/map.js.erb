@@ -54,7 +54,11 @@ $(document).ready(function(){
         }
       }
     }).addTo(mymap);
-    mymap.fitBounds(flightsLayer.getBounds());
+    if (Object.keys(flightsLayer.getBounds()).length === 0) {
+      mymap.setView([40.714216, -73.998817], 13);
+    } else {
+      mymap.fitBounds(flightsLayer.getBounds());
+    }
 
     // MapBox Dark Map (Costs money after 50,000 impressions)
     L.tileLayer('https://api.mapbox.com/styles/v1/ericavirtue/cj68pt4dw1lhh2rl564465xca/tiles/256/{z}/{x}/{y}?access_token={accessToken}', {
