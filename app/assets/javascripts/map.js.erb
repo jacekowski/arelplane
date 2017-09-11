@@ -1,4 +1,6 @@
 $(document).ready(function(){
+  var whichPage = $('#current_page').data('page');
+
   var waypointIcon = L.icon({
     iconUrl: "<%= asset_path('waypoint.png') %>",
     iconSize:     [50, 50], // size of the icon
@@ -19,7 +21,12 @@ $(document).ready(function(){
   }
 
   var mymap = L.map('mapid', {renderer: L.canvas()});
-  var geoJsonLayer = <%= Flight.map_data.to_json %>
+  if (whichPage === "homepage") {
+    var geoJsonLayer = <%= Flight.map_data(Flight).to_json %>
+  } else {
+    console.log(whichPage);
+    var geoJsonLayer = <%= Flight.map_data(User.find(1).flights).to_json || nil %>
+  }
   var max_count = geoJsonLayer["max_count"];
 
   var flightsLayer = L.geoJSON(geoJsonLayer, {

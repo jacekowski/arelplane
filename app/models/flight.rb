@@ -5,9 +5,9 @@ class Flight < ApplicationRecord
 
   has_many :waypoints, foreign_key: "flight_id", class_name: "FlightWaypoint", dependent: :destroy
 
-  def self.map_data
+  def self.map_data(flights)
     map_data = feature_collection
-    all.each do |flight|
+    flights.all.each do |flight|
       departure_location = flight.from
       arrival_location = flight.to
       line_feature = line_feature_structure
