@@ -4,7 +4,7 @@ class Api::V1::FlightsController < ApiController
     if user_id = params[:user_id]
       @flights = Flight.map_data(User.find(user_id).flights)
     else
-      @flights = CacheDatum.last
+      @flights = CacheDatum.last.map_data
     end
   end
 

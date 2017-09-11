@@ -23,10 +23,7 @@ $(document).ready(function(){
 
   var mymap = L.map('mapid', {renderer: L.canvas()});
   if (whichPage === "homepage") {
-    // $.getJSON( basePath + "/api/v1/flights", function( data ) {
-    //   renderMap(data);
-    // });
-    $.getJSON( basePath + "/api/v1/users/64/flights", function( data ) {
+    $.getJSON( basePath + "/api/v1/flights", function( data ) {
       renderMap(data);
     });
   } else {

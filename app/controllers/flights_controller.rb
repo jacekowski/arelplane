@@ -48,8 +48,7 @@ class FlightsController < ApplicationController
       #   end
       # end
     end
-    cache = CacheDatum.create(map_data: Flight.map_data(Flight))
-    CacheDatum.where.not(cache.id).destroy_all
+    GenerateHomepageMapJob.perform_later
   end
 
   # PATCH/PUT /flights/1
