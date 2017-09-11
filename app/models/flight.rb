@@ -6,81 +6,63 @@ class Flight < ApplicationRecord
   has_many :waypoints, foreign_key: "flight_id", class_name: "FlightWaypoint", dependent: :destroy
 
   def self.map_data
-    map_data = {
-      type: :FeatureCollection,
-      max_count: 0,
-      features: []
-    }
-
+    map_data = feature_collection
     all.each do |flight|
-      from = flight.from
-      from_cords = [from.longitude.to_f, from.latitude.to_f]
+      departure_location = flight.from
+      arrival_location = flight.to
+      line_feature = line_feature_structure
 
-      to = flight.to
-      to_cords = [to.longitude.to_f, to.latitude.to_f]
+      add_or_increment_location(map_data, departure_location, :airport)
+      add_or_increment_location(map_data, arrival_location, :airport)
 
-      line_feature = {
-        type: :Feature,
-        properties: {
-          count: 0,
-          feature_type: :line
-        },
-        geometry: {
-          type: :LineString,
-          coordinates: []
-        }
-      }
-
-      from_airport = {type: :Feature, properties: {count: 0}, geometry: {type: :Point}}
-      to_airport = {type: :Feature, properties: {count: 0}, geometry: {type: :Point}}
-      f = map_data[:features].find {|feature| feature[:properties][:identifier] == from.identifier }
-      if f
-        f[:properties][:feature_type] = :airport
-        f[:properties][:count] += 1
-      else
-        from_airport[:properties][:feature_type] = :airport
-        from_airport[:properties][:name] = from.name
-        from_airport[:properties][:identifier] = from.identifier
-        from_airport[:geometry][:coordinates] = from_cords
-        map_data[:features] << from_airport
-      end
-      f = map_data[:features].find {|feature| feature[:properties][:identifier] == to.identifier }
-      if f
-        f[:properties][:feature_type] = :airport
-        f[:properties][:count] += 1
-      else
-        to_airport[:properties][:feature_type] = :airport
-        to_airport[:properties][:name] = to.name
-        to_airport[:properties][:identifier] = to.identifier
-        to_airport[:geometry][:coordinates] = to_cords
-        map_data[:features] << to_airport
-      end
-
-      line_feature[:geometry][:coordinates] << from_cords
-
-      flight.waypoints.each do |waypoint|
-        location = waypoint.location
-        waypoint_cords = [location.longitude.to_f, location.latitude.to_f]
-
-        waypoint_data = {type: :Feature, properties: {count: 0}, geometry: {type: :Point}}
-        f = map_data[:features].find {|feature| feature[:properties][:identifier] == location.identifier}
-        if f
-          f[:properties][:count] += 1
-        else
-          waypoint_data[:properties][:feature_type] = :waypoint
-          waypoint_data[:properties][:name] = location.name
-          waypoint_data[:properties][:identifier] = location.identifier
-          waypoint_data[:geometry][:coordinates] = waypoint_cords
-          map_data[:features] << waypoint_data
-        end
-
-        line_feature[:geometry][:coordinates] << waypoint_cords
-      end
-      line_feature[:geometry][:coordinates] << to_cords
+      line_feature[:geometry][:coordinates] << get_coordinates(departure_location)
+      add_or_increment_waypoint_data(flight, map_data, line_feature)
+      line_feature[:geometry][:coordinates] << get_coordinates(arrival_location)
       map_data[:features] << line_feature
     end
-    map_data[:max_count] = map_data[:features].max_by {|f| f[:properties][:count]}[:properties][:count]
+    set_top_visited_airport_count(map_data)
     map_data
+  end
+
+  def self.add_feature_to_map(feature_collection, feature, location, feature_type)
+    feature[:properties][:feature_type] = feature_type
+    feature[:properties][:name] = location.name
+    feature[:properties][:identifier] = location.identifier
+    feature[:geometry][:coordinates] = [location.longitude.to_f, location.latitude.to_f]
+    feature_collection[:features] << feature
+  end
+
+  def self.increment_feature_count(feature, feature_type)
+    feature[:properties][:feature_type] = feature_type unless feature_type == :waypoint
+    feature[:properties][:count] += 1
+  end
+
+  def self.find_feature_if_exists(feature_collection, location)
+    feature_collection[:features].find {|feature| feature[:properties][:identifier] == location.identifier }
+  end
+
+  def self.get_coordinates(location)
+    [location.longitude.to_f, location.latitude.to_f]
+  end
+
+  def self.add_or_increment_location(feature_collection, location, feature_type)
+    if feature = find_feature_if_exists(feature_collection, location)
+      increment_feature_count(feature, feature_type)
+    else
+      add_feature_to_map(feature_collection, point_feature_structure, location, feature_type)
+    end
+  end
+
+  def self.set_top_visited_airport_count(map_data)
+    map_data[:max_count] = map_data[:features].max_by {|f| f[:properties][:count]}[:properties][:count]
+  end
+
+  def self.add_or_increment_waypoint_data(flight, feature_collection, line_feature)
+    flight.waypoints.each do |waypoint|
+      location = waypoint.location
+      add_or_increment_location(feature_collection, location, :waypoint)
+      line_feature[:geometry][:coordinates] << get_coordinates(location)
+    end
   end
 
   # Homepage map
@@ -236,6 +218,40 @@ private
 
   def self.date_format_two
     /^\d{2}\/{1}\d{2}\/{1}\d{4}$/
+  end
+
+  def self.line_feature_structure
+    {
+      type: :Feature,
+      properties: {
+        count: 0,
+        feature_type: :line
+      },
+      geometry: {
+        type: :LineString,
+        coordinates: []
+      }
+    }
+  end
+
+  def self.feature_collection
+    {
+      type: :FeatureCollection,
+      max_count: 0,
+      features: []
+    }
+  end
+
+  def self.point_feature_structure
+    {
+      type: :Feature,
+      properties: {
+        count: 0
+      },
+      geometry: {
+        type: :Point
+      }
+    }
   end
 
 end
