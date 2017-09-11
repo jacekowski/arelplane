@@ -12,7 +12,7 @@
   <div class='col-12'>
     <div class='float-right mr-3'>
       <div class='light-header align-right'>
-        <%= @user.flight_metrics[:top_location].try(:iso_region) || 'No Flights' %>
+        <%= @user.top_region || 'No Flights' %>
       </div>
       <div class='light-sub-text align-right'>
         Top State/Region
@@ -24,7 +24,7 @@
   <div class='col-12'>
     <div class='float-right mr-3'>
       <div class='light-header align-right'>
-        <%= @user.flight_metrics[:top_location].try(:identifier) || 'No Flights' %>
+        <%= @user.top_location || 'No Flights' %>
       </div>
       <div class='light-sub-text align-right'>
         Top Airport
@@ -36,7 +36,7 @@
   <div class='col-12'>
     <div class='float-right mr-3'>
       <div class='light-header align-right'>
-        <%= @user.flight_metrics[:top_aircraft] || 'No Flights' %>
+        <%= @user.top_aircraft || 'No Flights' %>
       </div>
       <div class='light-sub-text align-right'>
         Top Aircraft
@@ -60,7 +60,7 @@
           </div>
           <div class='col-6'>
             <div class='header-text'>
-              <%= @user.flight_metrics[:num_locations] %>
+              <%= @user.num_airports %>
             </div>
             <div class='sub-text'>
               Airports
@@ -78,7 +78,7 @@
           </div>
           <div class='col-6'>
             <div class='header-text'>
-              <%= @user.flight_metrics[:num_regions] %>
+              <%= @user.num_regions %>
             </div>
             <div class='sub-text'>
               Regions
