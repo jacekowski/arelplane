@@ -2,6 +2,7 @@ require 'csv'
 
 class FlightsController < ApplicationController
   before_action :set_flight, only: [:show, :edit, :update, :destroy]
+  after_action :update_cache, only: [:create, :update, :destroy]
   before_action :authenticate_user!
 
   # GET /flights
@@ -48,7 +49,6 @@ class FlightsController < ApplicationController
       #   end
       # end
     end
-    GenerateHomepageMapJob.perform_later
   end
 
   # PATCH/PUT /flights/1
@@ -79,6 +79,11 @@ class FlightsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_flight
       @flight = Flight.find(params[:id])
+    end
+
+    def update_cache
+      CacheUserMapJob.perform_later(current_user)
+      GenerateHomepageMapJob.perform_later
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
