@@ -12,6 +12,7 @@ Rails.application.routes.draw do
 
   resources :users, only: [:show]
   resources :flights, only: [:index, :create, :destroy]
+  resources :waypoints, only: :destroy
   resources :locations
 
   devise_for :users,

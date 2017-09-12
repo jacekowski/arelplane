@@ -14,7 +14,7 @@
       <th>Total time</th>
       <th>Pic</th>
       <th>Distance</th>
-      <th colspan="3"></th>
+      <th colspan="1"></th>
     </tr>
   </thead>
 
@@ -32,6 +32,22 @@
         <td><%= flight.distance %></td>
         <td><%= link_to 'Destroy', flight, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
+      <% if !flight.waypoints.empty? %>
+        <thead>
+          <tr>
+            <th colspan="1"></th>
+            <th>Waypoints</th>
+            <th colspan="1"></th>
+          </tr>
+        </thead>
+      <% end %>
+      <% flight.waypoints.each do |waypoint| %>
+        <tr>
+          <td></td>
+          <td><%= Location.find(waypoint.location_id).identifier %></td>
+          <td><%= link_to 'Destroy', waypoint_path(waypoint), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>
