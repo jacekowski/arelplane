@@ -7,9 +7,17 @@ class User < ApplicationRecord
   validates :name, presence: true, on: :create
 
   has_many :flights
+  has_many :waypoints, through: :flights
+
+  def locations
+    (waypoints.pluck(:location_id) + airports).flatten
+  end
+
+  def airports
+    flights.pluck(:from_id, :to_id).flatten
+  end
 
   def top_location
-    locations = flights.pluck(:from_id, :to_id).flatten
     unless locations.empty?
       Location.find(locations.group_by{|i| i}.max{|x,y| x[1].length <=> y[1].length}[0]).identifier
     else
@@ -18,7 +26,6 @@ class User < ApplicationRecord
   end
 
   def top_region
-    locations = flights.pluck(:from_id, :to_id).flatten
     unless locations.empty?
       Location.find(locations.group_by{|i| i}.max{|x,y| x[1].length <=> y[1].length}[0]).iso_region
     else
@@ -35,11 +42,11 @@ class User < ApplicationRecord
   end
 
   def num_airports
-    flights.pluck(:from_id, :to_id).flatten.uniq.count
+    airports.uniq.count
   end
 
   def num_regions
-    Location.find(flights.pluck(:from_id, :to_id).flatten.uniq).pluck(:iso_region).uniq.count
+    Location.find(airports.flatten.uniq).pluck(:iso_region).uniq.count
   end
 
 end
