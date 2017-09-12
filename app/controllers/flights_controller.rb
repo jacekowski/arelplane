@@ -28,26 +28,31 @@ class FlightsController < ApplicationController
   # POST /flights
   # POST /flights.json
   def create
-    if params["foreflight"]
-      Flight.parse_foreflight(params["foreflight"].tempfile, current_user)
-      redirect_to user_path(current_user.id)
-    elsif params["logtenpro"]
-      Flight.parse_logtenpro(params["logtenpro"].tempfile, current_user)
-      redirect_to user_path(current_user.id)
-    elsif params["mccpilotlog"]
-      Flight.parse_mccpilotlog(params["mccpilotlog"].tempfile, current_user)
-      redirect_to user_path(current_user.id)
-    else
-      # @flight = current_user.flights.new(flight_params)
-      # respond_to do |format|
-      #   if @flight.save
-      #     format.html { redirect_to @flight, notice: 'Flight was successfully created.' }
-      #     format.json { render :show, status: :created, location: @flight }
-      #   else
-      #     format.html { render :new }
-      #     format.json { render json: @flight.errors, status: :unprocessable_entity }
-      #   end
-      # end
+    begin
+      if file = params["foreflight"]
+        Flight.parse_foreflight(file.tempfile, current_user)
+        redirect_to user_path(current_user.id)
+      elsif file = params["logtenpro"]
+        Flight.parse_logtenpro(file.tempfile, current_user)
+        redirect_to user_path(current_user.id)
+      elsif file = params["mccpilotlog"]
+        Flight.parse_mccpilotlog(file.tempfile, current_user)
+        redirect_to user_path(current_user.id)
+      else
+        # @flight = current_user.flights.new(flight_params)
+        # respond_to do |format|
+        #   if @flight.save
+        #     format.html { redirect_to @flight, notice: 'Flight was successfully created.' }
+        #     format.json { render :show, status: :created, location: @flight }
+        #   else
+        #     format.html { render :new }
+        #     format.json { render json: @flight.errors, status: :unprocessable_entity }
+        #   end
+        # end
+      end
+    rescue
+      UploadErrorMailer.error(current_user, file).deliver
+      raise
     end
   end
 
