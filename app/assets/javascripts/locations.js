@@ -1,4 +1,5 @@
 $(document).ready(function() {
+  
   $(".airport_lookup").select2({
     theme: "bootstrap",
     ajax: {
