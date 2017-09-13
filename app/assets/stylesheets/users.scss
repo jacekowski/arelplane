@@ -13,7 +13,7 @@
 #top-background-flag {
   border-top: 2px solid #C2C2C2; /* top border on the parent */
   position: relative;
-  height: 10rem;
+  height: auto;
   overflow: hidden;
 }
 
@@ -85,6 +85,10 @@
   width: 6.1rem;
   background-color: #7F7F7F;
   letter-spacing: 0.1rem;
+}
+
+.provider-btn:hover {
+  color: white;
 }
 
 .form-background {

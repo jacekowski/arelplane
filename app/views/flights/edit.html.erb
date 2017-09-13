@@ -1,6 +1,17 @@
-<h1>Editing Flight</h1>
+<%= title "Arelplane | Edit Flight" %>
 
-<%= render 'form', flight: @flight %>
+<div class='container-fluid'>
+  <div class='row'>
+    <div class='col-4'></div>
+    <div class='col-4'>
+      <p class='light-header'>Edit Flight</p>
 
-<%= link_to 'Show', @flight %> |
-<%= link_to 'Back', flights_path %>
+      <%= render 'form', flight: @flight %>
+
+      <div class="actions">
+        <%= link_to "Back", flights_path %>
+      </div>
+    </div>
+    <div class='col-4'></div>
+  </div>
+</div>
