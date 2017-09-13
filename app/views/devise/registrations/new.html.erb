@@ -1,8 +1,9 @@
+<%= title "Arelplane | Register" %>
 <div class='container-fluid'>
   <div class='row'>
     <div class='col-4'></div>
     <div class='col-4'>
-      <p class='light-header'>Sign up</p>
+      <p class='light-header'>Register</p>
 
       <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
         <%= devise_error_messages! %>
@@ -20,10 +21,12 @@
         </div>
 
         <div class="actions">
-          <%= f.submit "Sign up", class: 'btn btn-primary mt-2' %>
+          <%= f.submit "Sign Up", class: 'btn btn-primary mt-2', id: 'registerButton' %>
         </div>
       <% end %>
     </div>
     <div class='col-4'></div>
   </div>
 </div>
+
+<%= render 'vendors/fb_pixel_register' %>

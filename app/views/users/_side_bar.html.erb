@@ -2,6 +2,7 @@
   <div id='top-background-flag'>
     <div class='header-text pl-3 pt-4'>
       <%= @user.name %>
+      <%= link_to image_tag('settings.png', height: '23', width: '23'), edit_user_registration_path, class: 'ml-2' %>
     </div>
     <div class='sub-text pl-3'>
       Joined <%= @user.created_at.strftime('%B %e, %Y') %>

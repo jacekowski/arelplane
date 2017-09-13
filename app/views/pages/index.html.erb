@@ -17,10 +17,10 @@
               <%= form.email_field :email, placeholder: 'email', class: 'form-control' %>
               <%= form.text_field :name, placeholder: 'name', class: 'form-control' %>
               <%= form.password_field :password, placeholder: 'password', class: 'form-control' %>
-              <%= form.submit 'Register', class: 'btn btn-primary' %>
+              <%= form.submit 'Register', class: 'btn btn-primary', id: 'registerButton' %>
             </div>
             <p class='light-sub-text'> Already have an account?
-              <a href="#" data-toggle='modal' data-target='#loginModal'>login</a></p>
+            <a href="#" data-toggle='modal' data-target='#loginModal'>login</a></p>
         <% end %>
       </div>
     </div>
@@ -28,3 +28,4 @@
 </div>
 
 <div class='homepage-map' id='mapid'></div>
+<%= render 'vendors/fb_pixel_register' %>

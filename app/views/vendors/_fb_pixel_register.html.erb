@@ -1,0 +1,11 @@
+<!-- Add Pixel Events to the button's click handler -->
+<script type="text/javascript">
+  var button = document.getElementById('registerButton');
+  button.addEventListener(
+    'click',
+    function() {
+      fbq('track', 'CompleteRegistration');
+    },
+    false
+  );
+</script>
