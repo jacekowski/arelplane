@@ -106,19 +106,7 @@ class Flight < ApplicationRecord
         )
       if f.new_record?
         f.save
-        f.add_waypoints(r)
-      end
-    end
-  end
-
-  def add_waypoints(logbook_row)
-    if route = logbook_row[:route]
-      route = route.split(" ")
-      # save route, but check if first and last values are same as start and end.
-      if route.first == logbook_row['From'] then route.shift end
-      if route.last == logbook_row['To'] then route.pop end
-      route.each do |waypoint|
-        waypoints.create(location_id: Location.find_by(identifier: waypoint).try(:id))
+        f.add_waypoints(r, " ", :route, :from_id, :to_id)
       end
     end
   end
@@ -159,6 +147,38 @@ class Flight < ApplicationRecord
         )
       if f.new_record?
         f.save
+      end
+    end
+  end
+
+  def self.parse_safelog(logbook_csv, user)
+    CSV.foreach(logbook_csv, {headers: true}) do |row|
+        r = row.to_hash
+        next unless date_format_one =~ r["Date"]
+        f = Flight.find_or_initialize_by(
+        user_id: user.id,
+        flight_date: r["Date"].to_date,
+        aircraft_id: r["Aircraft Registration"],
+        from_id: Location.find_by(identifier: r["Mission Departure"]).try(:id),
+        to_id: Location.find_by(identifier: r["Mission Arrival"]).try(:id),
+        pic: r["Day Single-Engine (SE) Pilot"],
+        total_time: r["Mission Duration"]
+        )
+      if f.new_record?
+        f.save
+        f.add_waypoints(r, ":", "Mission Via", "Mission Departure", "Mission Arrival")
+      end
+    end
+  end
+
+  def add_waypoints(logbook_row, delimiter, waypoint_column, from_column, to_column)
+    if route = logbook_row[waypoint_column]
+      route = route.split(delimiter)
+      # save route, but check if first and last values are same as start and end.
+      if route.first == logbook_row[from_column] then route.shift end
+      if route.last == logbook_row[to_column] then route.pop end
+      route.each do |waypoint|
+        waypoints.create(location_id: Location.find_by(identifier: waypoint).try(:id))
       end
     end
   end

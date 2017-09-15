@@ -48,4 +48,10 @@ $(document).ready(function() {
     var button = "#mccpilotlog-lb"
     fadeInOrOut(form, button)
   })
+
+  $("#safelog-lb").click(function(){
+    var form = "div#safelog-form"
+    var button = "#safelog-lb"
+    fadeInOrOut(form, button)
+  })
 });

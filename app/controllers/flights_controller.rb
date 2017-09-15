@@ -31,13 +31,16 @@ class FlightsController < ApplicationController
     begin
       if file = params["foreflight"]
         Flight.parse_foreflight(file.tempfile, current_user)
-        redirect_to user_path(current_user.id)
+        redirect_back
       elsif file = params["logtenpro"]
         Flight.parse_logtenpro(file.tempfile, current_user)
-        redirect_to user_path(current_user.id)
+        redirect_back
       elsif file = params["mccpilotlog"]
         Flight.parse_mccpilotlog(file.tempfile, current_user)
-        redirect_to user_path(current_user.id)
+        redirect_back
+      elsif file = params["safelog"]
+        Flight.parse_safelog(file.tempfile, current_user)
+        redirect_back
       else
         @flight = current_user.flights.new(flight_params)
         respond_to do |format|
@@ -91,6 +94,10 @@ class FlightsController < ApplicationController
     def update_cache
       CacheUserMapJob.perform_later(current_user)
       # GenerateHomepageMapJob.perform_later
+    end
+
+    def redirect_back
+      redirect_to user_path(current_user.id)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
