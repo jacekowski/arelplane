@@ -6,7 +6,7 @@ class User < ApplicationRecord
 
   validates :name, presence: true, on: :create
 
-  has_many :flights
+  has_many :flights, dependent: :destroy
   has_many :waypoints, through: :flights
 
   def locations
