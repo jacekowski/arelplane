@@ -27,6 +27,16 @@
     </div>
 
     <div class="mb-3">
+      <%= form.fields_for :waypoints do |waypoint_fields| %>
+        <%= waypoint_fields.label :waypoint, "Add Waypoints", class: 'light-sub-text' %><br />
+        <div class="waypoint_fields">
+          <%= render 'flights/waypoint_fields', f: waypoint_fields %>
+        </div>
+        <a href="#" id="add_waypoint_select">Add another waypoint</a>
+      <% end %>
+    </div>
+
+    <div class="mb-3">
       <%= form.label :to_airport, 'Arrival Airport (ICAO Code)', class: 'light-sub-text' %><br />
       <%= form.collection_select :to_id, Location.order(:identifier).page, :id, :identifier, { include_blank: true}, class: 'airport_lookup', style: 'width: 100%;' %>
     </div>

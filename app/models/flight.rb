@@ -3,7 +3,8 @@ class Flight < ApplicationRecord
   belongs_to :to, class_name: 'Location', foreign_key: 'to_id'
   belongs_to :user
 
-  has_many :waypoints, foreign_key: "flight_id", class_name: "FlightWaypoint", dependent: :destroy
+  has_many :waypoints, foreign_key: "flight_id", class_name: FlightWaypoint, dependent: :destroy, inverse_of: :flight
+  accepts_nested_attributes_for :waypoints, :reject_if => lambda { |a| a[:location_id].blank? }
 
   def self.map_data(flights)
     map_data = feature_collection
