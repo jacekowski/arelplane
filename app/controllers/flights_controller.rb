@@ -8,7 +8,7 @@ class FlightsController < ApplicationController
   # GET /flights
   # GET /flights.json
   def index
-    @flights = current_user.flights.all
+    @flights = current_user.flights.order(:created_at).page params[:page]
   end
 
   # GET /flights/1
@@ -91,7 +91,7 @@ class FlightsController < ApplicationController
 
     def update_cache
       CacheUserMapJob.perform_later(current_user)
-      GenerateHomepageMapJob.perform_later
+      # GenerateHomepageMapJob.perform_later
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

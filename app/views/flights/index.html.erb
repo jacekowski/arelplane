@@ -1,6 +1,10 @@
 <%= title "Arelplane | flights" %>
 <h1 class='light-header'>Flights</h1>
 
+<div class="ml-5">
+  <%= paginate @flights, theme: 'bootstrap4' %>
+</div>
+
 <table class='table table-inverse'>
   <thead>
     <tr>
@@ -51,5 +55,9 @@
     <% end %>
   </tbody>
 </table>
+
+<div class="ml-5">
+  <%= paginate @flights, theme: 'bootstrap4' %>
+</div>
 
 <br>
