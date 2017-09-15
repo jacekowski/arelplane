@@ -90,7 +90,7 @@ class FlightsController < ApplicationController
 
     def update_cache
       CacheUserMapJob.perform_later(current_user)
-      GenerateHomepageMapJob.perform_later
+      # GenerateHomepageMapJob.perform_later
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
