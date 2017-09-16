@@ -155,12 +155,12 @@ class Flight < ApplicationRecord
     CSV.foreach(logbook_csv, {headers: true}) do |row|
         r = row.to_hash
         next unless date_format_one =~ r["Date"]
-        f = Flight.find_or_initialize_by(
+        f = Flight.new(
         user_id: user.id,
         flight_date: r["Date"].to_date,
         aircraft_id: r["Aircraft Registration"],
-        from_id: Location.find_by(identifier: r["Mission Departure"]).try(:id),
-        to_id: Location.find_by(identifier: r["Mission Arrival"]).try(:id),
+        from_id: Location.find_by(identifier: r["Mission Departure"]).try(:id) || 0,
+        to_id: Location.find_by(identifier: r["Mission Arrival"]).try(:id) || 0,
         pic: r["Day Single-Engine (SE) Pilot"],
         total_time: r["Mission Duration"]
         )
