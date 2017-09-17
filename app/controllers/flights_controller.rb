@@ -8,7 +8,7 @@ class FlightsController < ApplicationController
   # GET /flights
   # GET /flights.json
   def index
-    @flights = current_user.flights.order(:created_at).page params[:page]
+    @flights = current_user.flights.order('flight_date DESC').page params[:page]
   end
 
   # GET /flights/1

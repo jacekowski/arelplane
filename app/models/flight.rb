@@ -5,6 +5,8 @@ class Flight < ApplicationRecord
   belongs_to :to, class_name: 'Location', foreign_key: 'to_id'
   belongs_to :user
 
+  validates :flight_date, presence: true
+
   has_many :waypoints, foreign_key: "flight_id", class_name: "FlightWaypoint", dependent: :destroy
 
   def self.map_data(flights)
