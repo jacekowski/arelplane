@@ -61,4 +61,10 @@ $(document).ready(function() {
     fadeInOrOut(form, button)
   })
 
+  $("#myflightbook-lb").click(function(){
+    var form = "div#myflightbook-form"
+    var button = "#myflightbook-lb"
+    fadeInOrOut(form, button)
+  })
+
 });

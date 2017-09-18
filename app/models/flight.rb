@@ -107,8 +107,9 @@ class Flight < ApplicationRecord
           distance: r[:distance]
         )
       if f.new_record?
-        f.save
-        f.add_waypoints(r, " ", :route, :from_id, :to_id)
+        if f.save
+          f.add_waypoints(r, " ", :route, :from_id, :to_id)
+        end
       end
     end
   end
@@ -167,8 +168,9 @@ class Flight < ApplicationRecord
         total_time: r["Mission Duration"]
         )
       if f.new_record?
-        f.save
-        f.add_waypoints(r, ":", "Mission Via", "Mission Departure", "Mission Arrival")
+        if f.save
+          f.add_waypoints(r, ":", "Mission Via", "Mission Departure", "Mission Arrival")
+        end
       end
     end
   end
@@ -188,11 +190,41 @@ class Flight < ApplicationRecord
         total_time: r["Total Time"]
         )
       if f.new_record?
-        f.save
-        route.shift
-        route.pop
-        route.each do |waypoint|
-          f.waypoints.create(location_id: Location.find_by(identifier: waypoint).try(:id))
+        if f.save
+          route.shift
+          route.pop
+          route.each do |waypoint|
+            f.waypoints.create(location_id: Location.find_by(identifier: waypoint).try(:id))
+          end
+        end
+      end
+    end
+  end
+
+  def self.parse_myflightbook(logbook_csv, user)
+    file = File.read(logbook_csv).gsub!(/[^0-9A-Za-z\s,"\/\\-]/, '')
+    CSV.parse(file, headers: true) do |row|
+        r = row.to_hash
+        next unless date_format_one =~ r["Date"]
+        route = r["Route"].split(" ")
+        f = Flight.find_or_initialize_by(
+        user_id: user.id,
+        flight_date: r["Date"].to_date,
+        aircraft_id: r["Tail Number"],
+        from_id: Location.find_by(identifier: route.first.upcase).try(:id),
+        to_id: Location.find_by(identifier: route.last.upcase).try(:id),
+        time_out: r["Engine Start"],
+        time_in: r["Engine End"],
+        pic: r["PIC"],
+        total_time: r["Total Flight Time"]
+        )
+      if f.new_record?
+        if f.save
+          route.shift
+          route.pop
+          route.each do |waypoint|
+            f.waypoints.create(location_id: Location.find_by(identifier: waypoint.upcase).try(:id))
+          end
         end
       end
     end

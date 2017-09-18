@@ -1,0 +1,42 @@
+<!-- Modal -->
+<div class="modal fade" id="logbookUploadModal" tabindex="-1" role="dialog" aria-labelledby="logbookUpload" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content pb-2">
+      <div class="modal-header">
+        <h5 class="modal-title" id="logbookUpload">Upload a logbook file, or add flights manually</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="container-fluid">
+        <div class="mt-4"></div>
+        <!-- ForeFlight -->
+        <%= render 'flights/select_lb_provider', name: 'ForeFlight' %>
+        <!-- LogTen Pro -->
+        <%= render 'flights/select_lb_provider', name: 'LogTen Pro' %>
+        <!-- mccPILOTLOG -->
+        <%= render 'flights/select_lb_provider', name: 'mccPILOTLOG' %>
+        <!-- safeLog -->
+        <%= render 'flights/select_lb_provider', name: 'Safelog' %>
+        <!-- ZuluLog -->
+        <%= render 'flights/select_lb_provider', name: 'ZuluLog' %>
+        <!-- MyFlightbook -->
+        <%= render 'flights/select_lb_provider', name: 'MyFlightbook' %>
+        <!-- Manual -->
+        <div class='row mb-2 ml-2 mr-md-2 h-100'>
+          <div class="col-1">
+            <%= image_tag('arelplane.png', height: '40', width: '40') %>
+          </div>
+          <div class="col-5 my-auto">
+            <div class="lb-provider-name pl-3 pl-md-2">
+              Add Flights Manually
+            </div>
+          </div>
+          <div class="col-5 col-md-6 my-auto">
+            <%= link_to 'Select', new_flight_path, class: 'btn float-right provider-btn' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

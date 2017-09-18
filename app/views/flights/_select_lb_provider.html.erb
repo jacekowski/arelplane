@@ -1,0 +1,18 @@
+<% clean_name = name.downcase.delete(' ') %>
+<div class='row ml-2 mr-md-2 h-100'>
+  <div class="col-1">
+    <%= image_tag("#{clean_name}.png", height: '40', width: '40') %>
+  </div>
+  <div class="col-5 my-auto">
+    <div class="lb-provider-name pl-3 pl-md-2"><%= name %></div>
+  </div>
+  <div class="col-5 col-md-6 my-auto">
+    <button type="button" class='btn float-right provider-btn' id=<%= clean_name%>-lb>Select</button>
+  </div>
+</div>
+<%= render "flights/upload_form", name: clean_name %>
+<div class="row ml-2 mr-2">
+  <div class="col-12">
+    <hr>
+  </div>
+</div>
