@@ -54,7 +54,7 @@ $(document).ready(function(){
     if (Object.keys(flightsLayer.getBounds()).length === 0) {
       mymap.setView([40.714216, -73.998817], 13);
     } else {
-      mymap.fitBounds(flightsLayer.getBounds());
+      mymap.fitBounds(flightsLayer.getBounds(), {padding: [30, 30]});
     }
 
     // MapBox Dark Map (Costs money after 50,000 impressions)
