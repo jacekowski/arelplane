@@ -173,6 +173,31 @@ class Flight < ApplicationRecord
     end
   end
 
+  def self.parse_zululog(logbook_csv, user)
+    CSV.foreach(logbook_csv, {headers: true}) do |row|
+        r = row.to_hash
+        next unless date_format_three =~ r["Date"]
+        route = r["Route"].split(" ")
+        f = Flight.find_or_initialize_by(
+        user_id: user.id,
+        flight_date: r["Date"].to_date,
+        aircraft_id: r["Aircraft ID"],
+        from_id: Location.find_by(identifier: route.first).try(:id),
+        to_id: Location.find_by(identifier: route.last).try(:id),
+        pic: r["PIC"],
+        total_time: r["Total Time"]
+        )
+      if f.new_record?
+        f.save
+        route.shift
+        route.pop
+        route.each do |waypoint|
+          f.waypoints.create(location_id: Location.find_by(identifier: waypoint).try(:id))
+        end
+      end
+    end
+  end
+
   def add_waypoints(logbook_row, delimiter, waypoint_column, from_column, to_column)
     if route = logbook_row[waypoint_column]
       route = route.split(delimiter)
@@ -187,11 +212,19 @@ class Flight < ApplicationRecord
 
 private
   def self.date_format_one
+    # 2017-09-09
     /^\d{4}-{1}\d{2}-{1}\d{2}$/
   end
 
   def self.date_format_two
+    # 09/09/2017
     /^\d{2}\/{1}\d{2}\/{1}\d{4}$/
+  end
+
+  def self.date_format_three
+    # Sep 10, 2017
+    # Sep 9, 2017
+    /^[a-zA-Z]{3}\s{1}\d{1,2}[,]{1}\s{1}\d{4}$/
   end
 
   def self.feature_collection

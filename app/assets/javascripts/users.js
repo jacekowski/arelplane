@@ -54,4 +54,11 @@ $(document).ready(function() {
     var button = "#safelog-lb"
     fadeInOrOut(form, button)
   })
+
+  $("#zululog-lb").click(function(){
+    var form = "div#zululog-form"
+    var button = "#zululog-lb"
+    fadeInOrOut(form, button)
+  })
+
 });

@@ -41,6 +41,9 @@ class FlightsController < ApplicationController
       elsif file = params["safelog"]
         Flight.parse_safelog(file.tempfile, current_user)
         redirect_back
+      elsif file = params["zululog"]
+        Flight.parse_zululog(file.tempfile, current_user)
+        redirect_back
       else
         @flight = current_user.flights.new(flight_params)
         respond_to do |format|
