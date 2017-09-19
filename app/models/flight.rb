@@ -116,17 +116,17 @@ class Flight < ApplicationRecord
 
   def self.parse_logtenpro(logbook_csv, user)
     CSV.foreach(logbook_csv, { col_sep: "\t", headers: true}) do |row|
-        r = row.to_hash
-        next unless date_format_one =~ r["Date"]
-        f = Flight.find_or_initialize_by(
-          user_id: user.id,
-          flight_date: r["Date"].to_date,
-          aircraft_id: r["Aircraft ID"],
-          from_id: Location.find_by(identifier: r["From"].try(:upcase)).try(:id),
-          to_id: Location.find_by(identifier: r["To"].try(:upcase)).try(:id),
-          total_time: r["Total Time"],
-          pic: r["PIC"],
-        )
+      r = row.to_hash
+      next unless date_format_one =~ r["Date"]
+      f = Flight.find_or_initialize_by(
+        user_id: user.id,
+        flight_date: r["Date"].to_date,
+        aircraft_id: r["Aircraft ID"],
+        from_id: Location.find_by(identifier: r["From"].try(:upcase)).try(:id),
+        to_id: Location.find_by(identifier: r["To"].try(:upcase)).try(:id),
+        total_time: r["Total Time"],
+        pic: r["PIC"],
+      )
       if f.new_record?
         f.save
       end
@@ -135,9 +135,9 @@ class Flight < ApplicationRecord
 
   def self.parse_mccpilotlog(logbook_csv, user)
     CSV.foreach(logbook_csv, { col_sep: ";", headers: true}) do |row|
-        r = row.to_hash
-        next unless date_format_two =~ r["mcc_DATE"]
-        f = Flight.find_or_initialize_by(
+      r = row.to_hash
+      next unless date_format_two =~ r["mcc_DATE"]
+      f = Flight.find_or_initialize_by(
         user_id: user.id,
         flight_date: r["mcc_DATE"].to_date,
         aircraft_id: r["AC_REG"],
@@ -147,7 +147,7 @@ class Flight < ApplicationRecord
         time_in: r["TIME_ARR"],
         total_time: r["TIME_TOTAL"].to_f/60,
         pic: r["TIME_TOTAL"]
-        )
+      )
       if f.new_record?
         f.save
       end
@@ -156,9 +156,9 @@ class Flight < ApplicationRecord
 
   def self.parse_safelog(logbook_csv, user)
     CSV.foreach(logbook_csv, {headers: true}) do |row|
-        r = row.to_hash
-        next unless date_format_one =~ r["Date"]
-        f = Flight.find_or_initialize_by(
+      r = row.to_hash
+      next unless date_format_one =~ r["Date"]
+      f = Flight.find_or_initialize_by(
         user_id: user.id,
         flight_date: r["Date"].to_date,
         aircraft_id: r["Aircraft Registration"],
@@ -166,7 +166,7 @@ class Flight < ApplicationRecord
         to_id: Location.find_by(identifier: r["Mission Arrival"].try(:upcase)).try(:id) || 0,
         pic: r["Day Single-Engine (SE) Pilot"],
         total_time: r["Mission Duration"]
-        )
+      )
       if f.new_record?
         if f.save
           f.add_waypoints(r, ":", "Mission Via", "Mission Departure", "Mission Arrival")
@@ -177,10 +177,10 @@ class Flight < ApplicationRecord
 
   def self.parse_zululog(logbook_csv, user)
     CSV.foreach(logbook_csv, {headers: true}) do |row|
-        r = row.to_hash
-        next unless date_format_three =~ r["Date"]
-        route = r["Route"].split(" ")
-        f = Flight.find_or_initialize_by(
+      r = row.to_hash
+      next unless date_format_three =~ r["Date"]
+      route = r["Route"].split(" ")
+      f = Flight.find_or_initialize_by(
         user_id: user.id,
         flight_date: r["Date"].to_date,
         aircraft_id: r["Aircraft ID"],
@@ -188,7 +188,7 @@ class Flight < ApplicationRecord
         to_id: Location.find_by(identifier: route.last.try(:upcase)).try(:id),
         pic: r["PIC"],
         total_time: r["Total Time"]
-        )
+      )
       if f.new_record?
         if f.save
           route.shift
@@ -204,10 +204,10 @@ class Flight < ApplicationRecord
   def self.parse_myflightbook(logbook_csv, user)
     file = File.read(logbook_csv).gsub!(/[^0-9A-Za-z\s,"\/\\-]/, '')
     CSV.parse(file, headers: true) do |row|
-        r = row.to_hash
-        next unless date_format_one =~ r["Date"]
-        route = r["Route"].split(" ")
-        f = Flight.find_or_initialize_by(
+      r = row.to_hash
+      next unless date_format_one =~ r["Date"]
+      route = r["Route"].split(" ")
+      f = Flight.find_or_initialize_by(
         user_id: user.id,
         flight_date: r["Date"].to_date,
         aircraft_id: r["Tail Number"],
@@ -217,7 +217,33 @@ class Flight < ApplicationRecord
         time_in: r["Engine End"],
         pic: r["PIC"],
         total_time: r["Total Flight Time"]
-        )
+      )
+      if f.new_record?
+        if f.save
+          route.shift
+          route.pop
+          route.each do |waypoint|
+            f.waypoints.create(location_id: Location.find_by(identifier: waypoint.try(:upcase)).try(:id))
+          end
+        end
+      end
+    end
+  end
+
+  def self.parse_logbookpro(logbook_csv, user)
+    CSV.foreach(logbook_csv, {headers: true}) do |row|
+      r = row.to_hash
+      next unless date_format_two =~ r["DATE"]
+      route = r["ROUTE OF FLIGHT"].split("-")
+      f = Flight.find_or_initialize_by(
+        user_id: user.id,
+        flight_date: Date.strptime(r["DATE"], "%m/%d/%Y"),
+        aircraft_id: r["AIRCRAFT IDENT"],
+        from_id: Location.find_by(identifier: route.first.try(:upcase)).try(:id),
+        to_id: Location.find_by(identifier: route.last.try(:upcase)).try(:id),
+        pic: r["PILOT IN COMMAND"],
+        total_time: r["DURATION"]
+      )
       if f.new_record?
         if f.save
           route.shift

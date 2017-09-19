@@ -67,4 +67,10 @@ $(document).ready(function() {
     fadeInOrOut(form, button)
   })
 
+  $("#logbookpro-lb").click(function(){
+    var form = "div#logbookpro-form"
+    var button = "#logbookpro-lb"
+    fadeInOrOut(form, button)
+  })
+
 });

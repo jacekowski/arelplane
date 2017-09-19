@@ -47,6 +47,9 @@ class FlightsController < ApplicationController
       elsif file = params["myflightbook"]
         Flight.parse_myflightbook(file.tempfile, current_user)
         redirect_back
+      elsif file = params["logbookpro"]
+        Flight.parse_logbookpro(file.tempfile, current_user)
+        redirect_back
       else
         @flight = current_user.flights.new(flight_params)
         respond_to do |format|
