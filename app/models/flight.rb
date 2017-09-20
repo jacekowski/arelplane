@@ -202,8 +202,7 @@ class Flight < ApplicationRecord
   end
 
   def self.parse_myflightbook(logbook_csv, user)
-    # file = File.read(logbook_csv).gsub!(/[^a-zA-Z\t\/:()0-9-", .']/, '')
-    file = File.read(logbook_csv).gsub!(/[^0-9A-Za-z\s,"\/\\-]/, '')
+    file = File.read(logbook_csv).gsub!(/[^\.0-9A-Za-z\s,"\/\\-]/, '')
     delimiter = sniff(logbook_csv)
     CSV.parse(file, {col_sep: delimiter, headers: true} ) do |row|
       r = row.to_hash
