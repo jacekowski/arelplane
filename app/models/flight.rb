@@ -146,7 +146,7 @@ class Flight < ApplicationRecord
         time_out: r["TIME_DEP"],
         time_in: r["TIME_ARR"],
         total_time: r["TIME_TOTAL"].to_f/60,
-        pic: r["TIME_TOTAL"]
+        pic: r["TIME_TOTAL"].to_f/60
       )
       if f.new_record?
         f.save

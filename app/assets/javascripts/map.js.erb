@@ -52,7 +52,37 @@ $(document).ready(function(){
       }
     }).addTo(mymap);
     if (Object.keys(flightsLayer.getBounds()).length === 0) {
-      mymap.setView([40.714216, -73.998817], 13);
+      var airportCords = [0,0];
+      switch (new Date().getDay()) {
+        case 0:
+          // Atlanta - NA
+          airportCords = [33.63669967651367, -84.4281005859375];
+          break;
+        case 1:
+          // London - Europe
+          airportCords = [51.4706, -0.461941];
+          break;
+        case 2:
+          // Beijing - Asia
+          airportCords = [40.080101013183594, 116.58499908447266];
+          break;
+        case 3:
+          // Rio - SA
+          airportCords = [-22.8099994659, -43.2505569458];
+          break;
+        case 4:
+          // Johannesburg - Africa
+          airportCords = [-26.1392, 28.246];
+          break;
+        case 5:
+          // Sydney - Oceania
+          airportCords = [-33.94609832763672, 151.177001953125];
+          break;
+        case 6:
+          // Ross Island - Antarctica
+          airportCords = [-77.86740112304688, 167.0570068359375];
+      }
+      mymap.setView(airportCords, 13);
     } else {
       mymap.fitBounds(flightsLayer.getBounds(), {padding: [30, 30]});
     }
