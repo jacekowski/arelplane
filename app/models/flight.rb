@@ -202,28 +202,31 @@ class Flight < ApplicationRecord
   end
 
   def self.parse_myflightbook(logbook_csv, user)
+    # file = File.read(logbook_csv).gsub!(/[^a-zA-Z\t\/:()0-9-", .']/, '')
     file = File.read(logbook_csv).gsub!(/[^0-9A-Za-z\s,"\/\\-]/, '')
-    CSV.parse(file, headers: true) do |row|
+    delimiter = sniff(logbook_csv)
+    CSV.parse(file, {col_sep: delimiter, headers: true} ) do |row|
       r = row.to_hash
-      next unless date_format_one =~ r["Date"]
-      route = r["Route"].split(" ")
-      f = Flight.find_or_initialize_by(
-        user_id: user.id,
-        flight_date: r["Date"].to_date,
-        aircraft_id: r["Tail Number"],
-        from_id: Location.find_by(identifier: route.first.try(:upcase)).try(:id),
-        to_id: Location.find_by(identifier: route.last.try(:upcase)).try(:id),
-        time_out: r["Engine Start"],
-        time_in: r["Engine End"],
-        pic: r["PIC"],
-        total_time: r["Total Flight Time"]
-      )
-      if f.new_record?
-        if f.save
-          route.shift
-          route.pop
-          route.each do |waypoint|
-            f.waypoints.create(location_id: Location.find_by(identifier: waypoint.try(:upcase)).try(:id))
+      if raw_route = r["Route"]
+        route = raw_route.scan(/[\w']+/)
+        f = Flight.find_or_initialize_by(
+          user_id: user.id,
+          flight_date: string_to_date(r["Date"]),
+          aircraft_id: r["Tail Number"],
+          from_id: Location.find_by(identifier: route.first.try(:upcase)).try(:id),
+          to_id: Location.find_by(identifier: route.last.try(:upcase)).try(:id),
+          time_out: r["Engine Start"],
+          time_in: r["Engine End"],
+          pic: r["PIC"],
+          total_time: r["Total Flight Time"]
+        )
+        if f.new_record?
+          if f.save
+            route.shift
+            route.pop
+            route.each do |waypoint|
+              f.waypoints.create(location_id: Location.find_by(identifier: waypoint.try(:upcase)).try(:id))
+            end
           end
         end
       end
@@ -283,6 +286,32 @@ private
     # Sep 10, 2017
     # Sep 9, 2017
     /^[a-zA-Z]{3}\s{1}\d{1,2}[,]{1}\s{1}\d{4}$/
+  end
+
+  def self.date_format_four
+    # 9/7/17
+    /^\d{1,2}\/{1}\d{1,2}\/{1}\d{2}$/
+  end
+
+
+  def self.sniff(path)
+    delimiters = ['","',"\"\t\""]
+    first_line = File.open(path).first
+    return nil unless first_line
+    snif = {}
+    delimiters.each {|delim|snif[delim]=first_line.count(delim)}
+    snif = snif.sort {|a,b| b[1]<=>a[1]}
+    snif.size > 0 ? snif[0][0][1] : nil
+  end
+
+  def self.string_to_date(date_string)
+    if date_format_one =~ date_string
+      date_string.to_date
+    elsif date_format_four =~ date_string
+      Date.strptime(date_string, "%m/%d/%y")
+    else
+      date_string.to_date
+    end
   end
 
   def self.feature_collection
