@@ -1,14 +1,66 @@
 <div class="card">
-  <div class="card-header">
-    Instructions
-  </div>
   <div class="card-body">
-    <h3>General Requirements</h3>
-    <h4>Spreadsheet</h4>
-    <p>
-      If you keep your logbook as a spreadsheet in excell or a similar program, you can upload using the foreflight option as long as your spreadsheet conforms to the following example:
+    <ul class="nav nav-tabs mb-4">
+      <li class="nav-item">
+        <a class="nav-link active dark-link" href="#basics">Basics</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link dark-link" href="#spreadsheet">Spreadsheet</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link dark-link" href="#foreflight">ForeFlight</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link dark-link" href="#logtenpro">LogTen Pro</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link dark-link" href="#mccpilotlog">mccPILOTLOG</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link dark-link" href="#safelog">Safelog</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link dark-link" href="#zululog">ZuluLog</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link dark-link" href="#myflightbook">MyFlightbook</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link dark-link" href="#logbookpro">Logbook Pro</a>
+      </li>
+    </ul>
 
-      <%= image_tag 'foreflight_example.png' %>
+    <a name="basics"></a>
+    <h3>Basics</h3>
+    <p>
+      <ul>
+        <li>Make sure all airports and waypoints are in ICAO format</li>
+        <li>Upload a .CSV file</li>
+      </ul>
+    </p>
+    <p>
+      Because we support the entire world, you'll need to use ICAO identifiers. A lot of IATA identifiers have the same name as navagation aids, like VORs or NDBs, so your map will look strange if you try to use IATA codes or shorthand codes.
+    </p>
+    <p>
+      If you fly from a strip that isn't on the site, send us a message from your profile page with the info on the strip and we'll add it. Even if it's a private farm or back country strip.
+    </p>
+    <p>
+      If you use a logbook that isn't supported yet, go to your profile page and click the "Message Us" button and request it. New logbooks are added within a day usually.
+    </p>
+    <p>
+      Questions? Comments? Ideas? Send a message by clicking the "Message Us" button on your profile page.
+    </p>
+
+    <hr>
+    <a name="spreadsheet"></a>
+    <h4>Uploading from a Spreadsheet</h4>
+    <p>
+      If you keep your logbook as a spreadsheet in excell or a similar program, you can save or export it as a CSV file and upload it using the foreflight option as long as your spreadsheet conforms to the following example:
+
+      <br>
+        <%= image_tag 'foreflight_example.png' %>
+      <br>
+      Here is a <%= link_to 'template file', 'foreflight_template.csv', download: '', class: 'dark-link' %> to use.
 
       <p>
         The headers are optional, but the order and spacing is important. So, for example, if you don't include AircraftID, leave that column blank, don't remove it.
@@ -27,11 +79,119 @@
           </li>
         </ul>
       </p>
-
     </p>
-    <h4>ForeFlight</h4>
     <p>
-      To download your ForeFlight logbook, go to
+      REMEMBER. You have to save or export the file as a CSV file. You can't import an .xls, .xlsx, or .numbers file.
     </p>
+
+    <hr>
+    <a name="foreflight"></a>
+    <h4><%= image_tag 'foreflight.png'%> ForeFlight</h4>
+    <div class="ml-5">
+      <p>
+        To download your ForeFlight logbook, go to <a href="https://plan.foreflight.com" class="dark-link">plan.foreflight.com</a> and click on "Logbook" on the left, then click "Export" at the top of the page. Follow the instructions. The page will look like this:
+
+        <br>
+          <%= image_tag 'foreflight_download.png' %>
+        <br>
+
+        Once you have that file, click "Add Flights" on this website and select ForeFlight.
+      </p>
+    </div>
+
+    <hr>
+    <a name="logtenpro"></a>
+    <h4><%= image_tag 'logtenpro.png'%> LogTen Pro</h4>
+    <div class="ml-5">
+      <p>
+        To download your LogTen Pro logbook, click on the "Reports" option in the LogTen Pro app and then select "Exporters". Finally, select "Dynamic Export Flights (Tab)". It'll look like this:
+        <br>
+          <%= image_tag 'logtenpro_download.png' %>
+        <br>
+        Once you have that file, just click "Add Flights" on this website and select LogTen Pro.
+      </p>
+    </div>
+
+    <hr>
+    <a name="mccpilotlog"></a>
+    <h4><%= image_tag 'mccpilotlog.png'%> mccPILOTLOG</h4>
+    <div class="ml-5">
+      <p>
+        Download a <b>.csv</b> file from mccPILOTLOG.
+      </p>
+      <p>
+        Once you have that file, just click "Add Flights" on this website and select mccPILOTLOG.
+      </p>
+      <p>
+        Send me a message if you know how to export mccPILOTLOG logbooks so I can update this section.
+      </p>
+    </div>
+
+    <hr>
+    <a name="safelog"></a>
+    <h4><%= image_tag 'safelog.png'%> Safelog</h4>
+    <div class="ml-5">
+      <p>
+        Download a <b>.csv</b> file from Safelog. The filename will look like this:
+      </p>
+      <p>
+        "<b>244163.csv</b>"
+      </p>
+      <p>
+        Once you have that file, just click "Add Flights" on this website and select Safelog.
+      </p>
+      <p>
+        Send me a message if you know how to export Safelog logbooks so I can update this section.
+      </p>
+    </div>
+
+    <hr>
+    <a name="zululog"></a>
+    <h4><%= image_tag 'zululog.png'%> ZuluLog</h4>
+    <div class="ml-5">
+      <p>
+        Download a <b>.csv</b> file from ZuluLog. The filename will look like this:
+      </p>
+      <p>
+        "<b>zululog_export.csv</b>"
+      </p>
+      <p>
+        Once you have that file, just click "Add Flights" on this website and select ZuluLog.
+      </p>
+      <p>
+        Send me a message if you know how to export ZuluLog logbooks so I can update this section.
+      </p>
+    </div>
+
+    <hr>
+    <a name="myflightbook"></a>
+    <h4><%= image_tag 'myflightbook.png'%> MyFlightbook</h4>
+    <div class="ml-5">
+      <p>
+        To download your MyFlightbook logbook, go to <a href="https://myflightbook.com" class="dark-link">myflightbook.com</a> and hover over the "Logbook" tab at the top of the page. Click on the "Download" option, then select the "CSV File" option. It'll look like this:
+        <br>
+          <%= image_tag 'myflightbook_download.png' %>
+        <br>
+        Once you have that file, just click "Add Flights" on this website and select MyFlightbook.
+      </p>
+    </div>
+
+    <hr>
+    <a name="logbookpro"></a>
+    <h4><%= image_tag 'logbookpro.png'%> Logbook Pro</h4>
+    <div class="ml-5">
+      <p>
+        Download a <b>.csv</b> file from Logbook Pro. The filename will look like this:
+      </p>
+      <p>
+        "<b>Bob Bobson Logbook Flight Log _2017_09_18.csv</b>"
+      </p>
+      <p>
+        Once you have that file, just click "Add Flights" on this website and select Logbook Pro.
+      </p>
+      <p>
+        Send me a message if you know how to export Logbook Pro logbooks so I can update this section.
+      </p>
+    </div>
   </div>
 </div>
