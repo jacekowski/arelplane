@@ -155,17 +155,20 @@ class Flight < ApplicationRecord
   end
 
   def self.parse_safelog(logbook_csv, user)
-    CSV.foreach(logbook_csv, {headers: true}) do |row|
+    file = File.read(logbook_csv).gsub!(/\r/," ")
+    CSV.parse(file, headers: true, skip_blanks: true) do |row|
       r = row.to_hash
       next unless date_format_one =~ r["Date"]
       f = Flight.find_or_initialize_by(
         user_id: user.id,
         flight_date: r["Date"].to_date,
         aircraft_id: r["Aircraft Registration"],
-        from_id: Location.find_by(identifier: r["Mission Departure"].try(:upcase)).try(:id) || 0,
-        to_id: Location.find_by(identifier: r["Mission Arrival"].try(:upcase)).try(:id) || 0,
-        pic: r["Day Single-Engine (SE) Pilot"],
-        total_time: r["Mission Duration"]
+        from_id: get_safelog_departure(row),
+        to_id: get_safelog_arrival(row),
+        time_out: r["Depart Time"],
+        time_in: r["Arrival Time"],
+        pic: r["Day Single-Engine (SE) Pilot"] || r["Day Single-Engine (SE) in Command"],
+        total_time: r["Mission Duration"] || r["Total Flight Time"]
       )
       if f.new_record?
         if f.save
@@ -310,6 +313,22 @@ private
       Date.strptime(date_string, "%m/%d/%y")
     else
       date_string.to_date
+    end
+  end
+
+  def self.get_safelog_departure(row)
+    if identifier = row["Mission Departure"]
+      Location.find_by(identifier: identifier).id
+    else
+      Location.find_by(identifier: row["Flight Details From"]).try(:id)
+    end
+  end
+
+  def self.get_safelog_arrival(row)
+    if identifier = row["Mission Arrival"]
+      Location.find_by(identifier: identifier).id
+    else
+      Location.find_by(identifier: row["Flight Details To"]).try(:id)
     end
   end
 
