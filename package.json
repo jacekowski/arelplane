@@ -2,6 +2,8 @@
   "name": "logbookViz",
   "private": true,
   "dependencies": {
-    "jquery": "^3.2.1"
+    "jquery": "^3.2.1",
+    "leaflet": "^1.2.0",
+    "leaflet-fullscreen": "^1.0.2"
   }
 }
