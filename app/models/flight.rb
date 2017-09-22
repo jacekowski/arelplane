@@ -236,10 +236,11 @@ class Flight < ApplicationRecord
   end
 
   def self.parse_logbookpro(logbook_csv, user)
-    CSV.foreach(logbook_csv, {headers: true}) do |row|
+    file = File.read(logbook_csv).gsub!(/[\"\r]/," ")
+    CSV.parse(file, headers: true, skip_blanks: true) do |row|
       r = row.to_hash
       next unless date_format_two =~ r["DATE"]
-      route = r["ROUTE OF FLIGHT"].split("-")
+      route = r["ROUTE OF FLIGHT"].scan(/[\w']+/)
       f = Flight.find_or_initialize_by(
         user_id: user.id,
         flight_date: Date.strptime(r["DATE"], "%m/%d/%Y"),
