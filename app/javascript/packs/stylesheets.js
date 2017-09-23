@@ -1,2 +1,2 @@
-import 'leaflet/dist/leaflet';
-import 'leaflet-fullscreen/dist/Leaflet.fullscreen';
+import 'leaflet/dist/leaflet.css';
+import 'leaflet-fullscreen/dist/Leaflet.fullscreen.css';
