@@ -13,9 +13,6 @@
     "AWS_SECRET_ACCESS_KEY": {
       "required": true
     },
-    "BUGSNAG_API_KEY": {
-      "required": true
-    },
     "HEROKU_POSTGRESQL_AQUA_URL": {
       "required": true
     },
