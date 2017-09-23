@@ -12,8 +12,8 @@
  *
  *= require select2
  *= require select2-bootstrap
- *= require leaflet/dist/leaflet
- *= require leaflet-fullscreen/dist/leaflet.fullscreen
+ *= require leaflet/dist/leaflet.css
+ *= require leaflet-fullscreen/dist/leaflet.fullscreen.css
  *= require_tree .
  *= require_self
  */
