@@ -20,4 +20,3 @@
 //= require select2
 //= require leaflet/dist/leaflet
 //= require leaflet-fullscreen/dist/Leaflet.fullscreen
-//= require_tree .
