@@ -13,6 +13,7 @@
 // 16px == 1rem so 16px*0.0625 = 1rem
 //
 // Custom bootstrap variables must be set or imported *before* bootstrap.
+
 @import "map";
 @import "bootstrap";
 @import "bootstrap-overrides";
@@ -22,5 +23,5 @@
 @import "users";
 @import "select2";
 @import "select2-bootstrap";
-@import "leaflet/dist/leaflet";
-@import "leaflet-fullscreen/dist/leaflet.fullscreen";
+@import "leaflet-fullscreen/dist/leaflet.fullscreen.css";
+@import "leaflet/dist/leaflet.css";
