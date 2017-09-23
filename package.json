@@ -1,6 +1,7 @@
 {
   "name": "logbookViz",
   "private": true,
+  "engines.yarn": "1.0.2",
   "version": "1.0.2",
   "dependencies": {
     "jquery": "^3.2.1",
