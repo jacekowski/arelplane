@@ -73,4 +73,10 @@ $(document).ready(function() {
     fadeInOrOut(form, button)
   })
 
+  $("#garminpilot-lb").click(function(){
+    var form = "div#garminpilot-form"
+    var button = "#garminpilot-lb"
+    fadeInOrOut(form, button)
+  })
+
 });

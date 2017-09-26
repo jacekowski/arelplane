@@ -108,7 +108,7 @@ class Flight < ApplicationRecord
         )
       if f.new_record?
         if f.save
-          f.add_waypoints(r, " ", :route, :from_id, :to_id)
+          f.add_waypoints(r, :route, :from_id, :to_id)
         end
       end
     end
@@ -172,7 +172,7 @@ class Flight < ApplicationRecord
       )
       if f.new_record?
         if f.save
-          f.add_waypoints(r, ":", "Mission Via", "Mission Departure", "Mission Arrival")
+          f.add_waypoints(r, "Mission Via", "Mission Departure", "Mission Arrival")
         end
       end
     end
@@ -182,7 +182,7 @@ class Flight < ApplicationRecord
     CSV.foreach(logbook_csv, {headers: true}) do |row|
       r = row.to_hash
       next unless date_format_three =~ r["Date"]
-      route = r["Route"].split(" ")
+      route = r["Route"].scan(/[\w']+/)
       f = Flight.find_or_initialize_by(
         user_id: user.id,
         flight_date: r["Date"].to_date,
@@ -262,9 +262,32 @@ class Flight < ApplicationRecord
     end
   end
 
-  def add_waypoints(logbook_row, delimiter, waypoint_column, from_column, to_column)
+  def self.parse_garmin_pilot(logbook_csv, user)
+    CSV.parse(logbook_csv, headers: true, skip_blanks: true) do |row|
+      r = row.to_hash
+      next unless date_format_one =~ r["Date"]
+      f = Flight.find_or_initialize_by(
+        user_id: user.id,
+        flight_date: r["Date"].to_date,
+        aircraft_id: r["Aircraft ID"],
+        from_id: Location.find_by(identifier: r["Departure"].try(:upcase)).try(:id),
+        to_id: Location.find_by(identifier: r["Destination"].try(:upcase)).try(:id),
+        time_out: r["Time Out"],
+        time_in: r["Time In"],
+        pic: r["PIC Duration"],
+        total_time: r["Total Duration"]
+      )
+      if f.new_record?
+        if f.save
+          f.add_waypoints(r, "Route", "Departure", "Destination")
+        end
+      end
+    end
+  end
+
+  def add_waypoints(logbook_row, waypoint_column, from_column, to_column)
     if route = logbook_row[waypoint_column]
-      route = route.split(delimiter)
+      route = route.scan(/[\w']+/)
       # save route, but check if first and last values are same as start and end.
       if route.first == logbook_row[from_column] then route.shift end
       if route.last == logbook_row[to_column] then route.pop end
