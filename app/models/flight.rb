@@ -134,7 +134,7 @@ class Flight < ApplicationRecord
   end
 
   def self.parse_mccpilotlog(logbook_csv, user)
-    file = File.read(logbook_csv).gsub!(/[^\.0-9A-Za-z\s,;:@"\/_()&\\-]/, '')
+    file = logbook_csv.read.gsub(/[^\.0-9A-Za-z\s,;:@"\/_()&\\-]/, '')
     CSV.parse(file, {col_sep: ";", headers: true} ) do |row|
       r = row.to_hash
       next unless date_format_two =~ r["mcc_DATE"]
@@ -156,7 +156,7 @@ class Flight < ApplicationRecord
   end
 
   def self.parse_safelog(logbook_csv, user)
-    file = File.read(logbook_csv).gsub!(/\r/," ")
+    file = File.read(logbook_csv).gsub(/\r/," ")
     CSV.parse(file, headers: true, skip_blanks: true) do |row|
       r = row.to_hash
       next unless date_format_one =~ r["Date"]
@@ -206,7 +206,7 @@ class Flight < ApplicationRecord
   end
 
   def self.parse_myflightbook(logbook_csv, user)
-    file = File.read(logbook_csv).gsub!(/[^\.0-9A-Za-z\s,"\/\\-]/, '')
+    file = File.read(logbook_csv).gsub(/[^\.0-9A-Za-z\s,"\/\\-]/, '')
     delimiter = sniff(logbook_csv)
     CSV.parse(file, {col_sep: delimiter, headers: true} ) do |row|
       r = row.to_hash
@@ -237,7 +237,7 @@ class Flight < ApplicationRecord
   end
 
   def self.parse_logbookpro(logbook_csv, user)
-    file = File.read(logbook_csv).gsub!(/[\"\r]/," ")
+    file = File.read(logbook_csv).gsub(/[\"\r]/," ")
     CSV.parse(file, headers: true, skip_blanks: true) do |row|
       r = row.to_hash
       next unless date_format_two =~ r["DATE"]
