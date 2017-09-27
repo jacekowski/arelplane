@@ -134,7 +134,8 @@ class Flight < ApplicationRecord
   end
 
   def self.parse_mccpilotlog(logbook_csv, user)
-    CSV.foreach(logbook_csv, { col_sep: ";", headers: true}) do |row|
+    file = File.read(logbook_csv).gsub!(/[^\.0-9A-Za-z\s,;:@"\/_()&\\-]/, '')
+    CSV.parse(file, {col_sep: ";", headers: true} ) do |row|
       r = row.to_hash
       next unless date_format_two =~ r["mcc_DATE"]
       f = Flight.find_or_initialize_by(
