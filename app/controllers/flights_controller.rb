@@ -50,6 +50,9 @@ class FlightsController < ApplicationController
       elsif file = params["logbookpro"]
         Flight.parse_logbookpro(file.tempfile, current_user)
         redirect_back
+      elsif file = params["garminpilot"]
+        Flight.parse_garmin_pilot(file.tempfile, current_user)
+        redirect_back
       else
         @flight = current_user.flights.new(flight_params)
         respond_to do |format|
