@@ -18,5 +18,3 @@
 //= require bootstrap
 //= require bootstrap-sprockets
 //= require select2
-//= require leaflet/dist/leaflet
-//= require leaflet-fullscreen/dist/Leaflet.fullscreen
