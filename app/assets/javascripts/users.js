@@ -48,4 +48,35 @@ $(document).ready(function() {
     var button = "#mccpilotlog-lb"
     fadeInOrOut(form, button)
   })
+
+  $("#safelog-lb").click(function(){
+    var form = "div#safelog-form"
+    var button = "#safelog-lb"
+    fadeInOrOut(form, button)
+  })
+
+  $("#zululog-lb").click(function(){
+    var form = "div#zululog-form"
+    var button = "#zululog-lb"
+    fadeInOrOut(form, button)
+  })
+
+  $("#myflightbook-lb").click(function(){
+    var form = "div#myflightbook-form"
+    var button = "#myflightbook-lb"
+    fadeInOrOut(form, button)
+  })
+
+  $("#logbookpro-lb").click(function(){
+    var form = "div#logbookpro-form"
+    var button = "#logbookpro-lb"
+    fadeInOrOut(form, button)
+  })
+
+  $("#garminpilot-lb").click(function(){
+    var form = "div#garminpilot-form"
+    var button = "#garminpilot-lb"
+    fadeInOrOut(form, button)
+  })
+
 });

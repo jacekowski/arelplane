@@ -12,9 +12,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <%= csrf_meta_tags %>
     <%= favicon_link_tag 'favicon.ico' %>
+    <%= javascript_pack_tag 'application' %>
+    <%= stylesheet_pack_tag 'application' %>
     <%= javascript_include_tag 'application' %>
-    <%= stylesheet_link_tag    'application', media: 'all' %>
-    <%= render 'vendors/leaflet' %>
+    <%= stylesheet_link_tag 'application', media: 'all' %>
     <%= render 'vendors/fb_pixel' %>
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,800,900&amp;subset=latin-ext" rel="stylesheet">
   </head>
@@ -25,6 +26,6 @@
     <%= render 'layouts/flash_messages' %>
     <%= yield %>
     <%= render 'pages/login_modal' %>
-    <%= render 'users/logbook_upload_modal' %>
+    <%= render 'flights/logbook_upload_modal' %>
   </body>
 </html>
