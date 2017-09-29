@@ -21,7 +21,15 @@ $(document).ready(function(){
     opacity:0.15
   }
 
-  var mymap = L.map('mapid', {renderer: L.canvas()});
+  var mymap = L.map('mapid', {
+    renderer: L.canvas(),
+    fullscreenControl: true,
+    // OR
+    fullscreenControl: {
+        pseudoFullscreen: false // if true, fullscreen to page width and height
+    }
+  });
+
   if (whichPage === "homepage") {
     $.getJSON( basePath + "/api/v1/flights", function( data ) {
       renderMap(data);
