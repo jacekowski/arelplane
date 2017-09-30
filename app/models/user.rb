@@ -49,4 +49,12 @@ class User < ApplicationRecord
     Location.find(airports.flatten.uniq).pluck(:iso_region).uniq.count
   end
 
+  def username
+    if name.empty?
+      "Profile"
+    else
+      name
+    end
+  end
+
 end
