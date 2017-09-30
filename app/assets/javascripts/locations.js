@@ -1,5 +1,8 @@
 $(document).ready(function() {
-  
+  loadData();
+});
+
+function loadData() {
   $(".airport_lookup").select2({
     theme: "bootstrap",
     ajax: {
@@ -41,4 +44,4 @@ $(document).ready(function() {
   function formatLocationSelection (location) {
     return location.text;
   }
-});
+};
