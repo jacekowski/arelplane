@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <title><%= content_for?(:title) ? content_for(:title) : 'Arelplane' %></title>
-    <meta property="og:title" content="Arelplane" />
+    <meta property="og:title" content="<%= content_for?(:title) ? content_for(:title) : 'Arelplane' %>" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="<%= request.original_url %>" />
     <meta property="og:image" content="<%= image_url "demo-img.png" %>" />

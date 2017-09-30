@@ -19,6 +19,7 @@ class FlightsController < ApplicationController
   # GET /flights/new
   def new
     @flight = current_user.flights.new
+    @flight.waypoints.build
   end
 
   # GET /flights/1/edit
@@ -114,6 +115,17 @@ class FlightsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def flight_params
-      params.require(:flight).permit(:flight_date, :aircraft_id, :from_id, :to_id, :time_out, :time_in, :total_time, :pic, :distance)
+      params.require(:flight).permit(
+        :flight_date,
+        :aircraft_id,
+        :from_id,
+        :to_id,
+        :time_out,
+        :time_in,
+        :total_time,
+        :pic,
+        :distance,
+        waypoints_attributes: [:location_id]
+      )
     end
 end

@@ -6,7 +6,7 @@ class User < ApplicationRecord
 
   validates :name, presence: true, on: :create
 
-  has_many :flights
+  has_many :flights, dependent: :destroy
   has_many :waypoints, through: :flights
 
   def locations
@@ -47,6 +47,14 @@ class User < ApplicationRecord
 
   def num_regions
     Location.find(airports.flatten.uniq).pluck(:iso_region).uniq.count
+  end
+
+  def username
+    if name.empty?
+      "Profile"
+    else
+      name
+    end
   end
 
 end
