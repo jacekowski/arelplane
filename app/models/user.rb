@@ -50,7 +50,7 @@ class User < ApplicationRecord
   end
 
   def username
-    if name.empty?
+    if name.blank?
       "Profile"
     else
       name
