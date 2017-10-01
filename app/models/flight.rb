@@ -141,7 +141,7 @@ class Flight < ApplicationRecord
       next unless date_format_two =~ r["mcc_DATE"]
       f = Flight.find_or_initialize_by(
         user_id: user.id,
-        flight_date: r["mcc_DATE"].to_date,
+        flight_date: try_formatting_date(r["mcc_DATE"]),
         aircraft_id: r["AC_REG"],
         from_id: Location.find_by(identifier: r["AF_DEP"].try(:upcase)).try(:id),
         to_id: Location.find_by(identifier: r["AF_ARR"].try(:upcase)).try(:id),
@@ -332,6 +332,7 @@ private
     snif.size > 0 ? snif[0][0][1] : nil
   end
 
+  # This should really be on the string class
   def self.string_to_date(date_string)
     if date_format_one =~ date_string
       date_string.to_date
@@ -339,6 +340,15 @@ private
       Date.strptime(date_string, "%m/%d/%y")
     else
       date_string.to_date
+    end
+  end
+
+  # This is just for situations where I mccPilotLog dates aren't in the expected order
+  def self.try_formatting_date(date_string)
+    begin
+      date_string.to_date
+    rescue
+      Date.strptime(date_string, "%m/%d/%Y")
     end
   end
 
