@@ -12,6 +12,9 @@
         <%= link_to 'MANAGE FLIGHTS', flights_path, class: 'nav-link' %>
       </li>
       <li class="nav-item active">
+        <%= link_to 'UPLOAD INSTRUCTIONS', upload_instructions_path, class: 'nav-link' %>
+      </li>
+      <li class="nav-item active">
         <%= link_to 'LOG OUT', destroy_user_session_path, method: :delete, class: 'nav-link' %>
         <% end %>
       </li>
