@@ -15,9 +15,18 @@ body {
 }
 
 a {
-  color: $primaryLinkColor;
+  color: $highlightColor;
   font-family: 'Nunito', sans-serif;
   font-weight: 200;
+}
+
+a:hover {
+  color: $highlightColor;
+  text-decoration: none;
+}
+
+.light_link {
+  color: $lightLinkColor;
 }
 
 .dark-link {
