@@ -321,6 +321,11 @@ private
     /^\d{1,2}\/{1}\d{1,2}\/{1}\d{2}$/
   end
 
+  def self.date_format_five
+    # 5/5/2017
+    /^\d{1,2}\/{1}\d{1,2}\/{1}\d{2,4}$/
+  end
+
 
   def self.sniff(path)
     delimiters = ['","',"\"\t\""]
@@ -338,6 +343,8 @@ private
       date_string.to_date
     elsif date_format_four =~ date_string
       Date.strptime(date_string, "%m/%d/%y")
+    elsif date_format_five =~ date_string
+      Date.strptime(date_string, "%m/%d/%Y")
     else
       date_string.to_date
     end
