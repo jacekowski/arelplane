@@ -6,6 +6,7 @@
     <div class="col">
       <% if !user_signed_in? %>
         <p class='light-sub-text align-center'>Are you a pilot who keeps a digital logbook? Want to make your own map of all your flights? Create an account!</p>
+        <p class='light-sub-text align-center'>Want more info? See our <%= link_to 'upload instructions', upload_instructions_path %> and take a look at a sample <%= link_to "profile", user_path(64) %></p>
       <% end %>
     </div>
   </div>
