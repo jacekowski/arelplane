@@ -1,0 +1,2 @@
+json.extract! location, :id, :identifier, :location_type, :name, :latitude, :longitude, :elevation, :continent, :iso_country, :iso_region, :municipality, :scheduled_service, :gps_code, :iata_code, :local_code, :home_link, :wikipedia_link, :keywords, :created_at, :updated_at, :frequency_khz, :dme_frequency_khz, :dme_channel, :dme_latitude_deg, :dme_longitude_deg, :dme_elevation_ft, :slaved_variation_deg, :magnetic_variation_deg, :usage_type, :power,
+:associated_airport

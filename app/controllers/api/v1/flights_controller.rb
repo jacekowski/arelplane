@@ -1,4 +1,5 @@
 class Api::V1::FlightsController < ApiController
+  before_action :set_flight, only: [:show, :edit, :update, :destroy]
 
   def index
     if user_id = params[:user_id]
@@ -14,6 +15,14 @@ class Api::V1::FlightsController < ApiController
       # Use Arel's map becaue the agregate map looks cluttered
       # @flights = CacheDatum.last.map_data
     end
+  end
+
+  def show
+  end
+
+private
+  def set_flight
+    @flight = Flight.find(params[:id])
   end
 
 end

@@ -7,56 +7,58 @@
 
 <%= link_to 'New Flight', new_flight_path %>
 
-<table class='table table-inverse'>
-  <thead>
-    <tr>
-      <th>Flight date</th>
-      <th>Aircraft</th>
-      <th>From</th>
-      <th>To</th>
-      <th>Time out</th>
-      <th>Time in</th>
-      <th>Total time</th>
-      <th>Pic</th>
-      <th>Distance</th>
-      <th colspan="1"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @flights.each do |flight| %>
-      <tr>
-        <td><%= flight.flight_date %></td>
-        <td><%= flight.aircraft_id %></td>
-        <td><%= Location.find(flight.from_id).identifier %></td>
-        <td><%= Location.find(flight.to_id).identifier %></td>
-        <td><%= flight.time_out %></td>
-        <td><%= flight.time_in %></td>
-        <td><%= flight.total_time %></td>
-        <td><%= flight.pic %></td>
-        <td><%= flight.distance %></td>
-        <td><%= link_to 'Destroy', flight, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <!-- <td><%#= link_to 'Edit', edit_flight_path(flight) %></td> -->
-      </tr>
-      <% if !flight.waypoints.empty? %>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <table class='table table-striped table-inverse table-bordered'>
         <thead>
           <tr>
-            <th colspan="1"></th>
-            <th>Waypoints</th>
-            <th colspan="1"></th>
+            <th>Flight date</th>
+            <th>Aircraft</th>
+            <th>Origin</th>
+            <th>Destination</th>
+            <th>Time out</th>
+            <th>Time in</th>
+            <th>Total time</th>
+            <th>Pic</th>
+            <th>Distance</th>
+            <th colspan="2"></th>
           </tr>
         </thead>
-      <% end %>
-      <% flight.waypoints.each do |waypoint| %>
-        <tr>
-          <td></td>
-          <td><%= Location.find(waypoint.location_id).identifier %></td>
-          <td><%= link_to 'Destroy', waypoint_path(waypoint), method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        </tr>
-      <% end %>
-    <% end %>
-  </tbody>
-</table>
+
+        <tbody>
+          <% @flights.each do |flight| %>
+            <tr>
+              <td><%= flight.flight_date.to_date.to_formatted_s(:long)  %>
+                <% if !flight.waypoints.empty? %>
+                  <br><br>
+                  Waypoints:
+                  <br>
+                  <% flight.waypoints.each do |waypoint| %>
+                      <p class="ml-4">
+                        <%= Location.find(waypoint.location_id).identifier %>
+                        <%= link_to 'Destroy', waypoint_path(waypoint), method: :delete, data: { confirm: 'Are you sure?' } , class: "ml-2" %>
+                      </p>
+                  <% end %>
+                <% end %>
+              </td>
+              <td><%= flight.aircraft_id %></td>
+              <td><%= Location.find(flight.from_id).identifier %></td>
+              <td><%= Location.find(flight.to_id).identifier %></td>
+              <td><%= flight.time_out %></td>
+              <td><%= flight.time_in %></td>
+              <td><%= flight.total_time %></td>
+              <td><%= flight.pic %></td>
+              <td><%= flight.distance %></td>
+              <td><%= link_to 'Destroy', flight, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+              <td><%= link_to 'Edit', edit_flight_path(flight) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 
 <div class="ml-5">
   <%= paginate @flights, theme: 'bootstrap4' %>

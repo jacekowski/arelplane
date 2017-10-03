@@ -9,15 +9,6 @@ class LocationsController < ApplicationController
     @locations = Location.order(:identifier).page params[:page]
   end
 
-  def search_by_identifier
-    query = Location.where("identifier like :q", q: "%#{params[:q]}%".upcase)
-    @locations = query.order('identifier').page(params[:page])
-
-    respond_to do |format|
-      format.json { render json: {total: query.count, locations: @locations.map { |location| {id: location.id, text: "#{location.identifier} (#{location.name})"} }} }
-    end
-  end
-
   # GET /locations/1
   # GET /locations/1.json
   def show
@@ -80,14 +71,12 @@ class LocationsController < ApplicationController
     end
   end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_location
-      @location = Location.find(params[:id])
-    end
+private
+  def set_location
+    @location = Location.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def location_params
-      params.require(:location).permit(:identifier, :type, :name, :latitude, :longitude, :elevation, :continent, :iso_country, :iso_region, :municipality, :scheduled_service, :gps_code, :iata_code, :local_code, :home_link, :wikipedia_link, :keywords)
-    end
+  def location_params
+    params.require(:location).permit(:identifier, :type, :name, :latitude, :longitude, :elevation, :continent, :iso_country, :iso_region, :municipality, :scheduled_service, :gps_code, :iata_code, :local_code, :home_link, :wikipedia_link, :keywords)
+  end
 end

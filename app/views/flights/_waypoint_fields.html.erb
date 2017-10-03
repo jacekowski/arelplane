@@ -1,1 +1,1 @@
-<%= f.collection_select :location_id, Location.order(:identifier).page, :id, :identifier, { include_blank: true}, class: 'airport_lookup', style: 'width: 100%;' %>
+<%= f.collection_select :location_id, Location.order(:identifier).page, :id, :identifier, { include_blank: true }, class: 'identifier_lookup waypoint_field', style: 'width: 100%;' %>
