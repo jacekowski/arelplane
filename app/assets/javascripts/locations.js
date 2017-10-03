@@ -6,7 +6,7 @@ function loadData() {
   $(".airport_lookup").select2({
     theme: "bootstrap",
     ajax: {
-      url: '/identifier_search',
+      url: '/api/v1/identifier_search',
       data: function (params) {
         return {
           q: params.term,
