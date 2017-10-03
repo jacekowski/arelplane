@@ -24,6 +24,13 @@ class FlightsController < ApplicationController
 
   # GET /flights/1/edit
   def edit
+    if current_user.id != @flight.user_id
+      flash[:notice] = "You are not authorized to edit that flight"
+      redirect_back
+    end
+    if @flight.waypoints.empty?
+      @flight.waypoints.build
+    end
   end
 
   # POST /flights
@@ -56,14 +63,10 @@ class FlightsController < ApplicationController
         redirect_back
       else
         @flight = current_user.flights.new(flight_params)
-        respond_to do |format|
-          if @flight.save
-            format.html { redirect_to root_path, notice: 'Flight was successfully created.' }
-            format.json { render :show, status: :created, location: @flight }
-          else
-            format.html { render :new }
-            format.json { render json: @flight.errors, status: :unprocessable_entity }
-          end
+        if @flight.save
+          redirect_to root_path, notice: 'Flight was successfully created.'
+        else
+          render :new
         end
       end
     rescue
@@ -77,55 +80,59 @@ class FlightsController < ApplicationController
   # PATCH/PUT /flights/1
   # PATCH/PUT /flights/1.json
   def update
-    respond_to do |format|
+    if current_user.id == @flight.user_id
       if @flight.update(flight_params)
-        format.html { redirect_to root_path, notice: 'Flight was successfully updated.' }
-        format.json { render :show, status: :ok, location: @flight }
+        redirect_to flights_path, notice: 'Flight was successfully updated.'
       else
-        format.html { render :edit }
-        format.json { render json: @flight.errors, status: :unprocessable_entity }
+        render :edit
       end
+    else
+      flash[:notice] = "You are not authorized to update that flight"
+      redirect_back
     end
   end
 
   # DELETE /flights/1
   # DELETE /flights/1.json
   def destroy
-    @flight.destroy
-    respond_to do |format|
-      format.html { redirect_to flights_url, notice: 'Flight was successfully destroyed.' }
-      format.json { head :no_content }
+    if current_user.id = @flight.user_id
+      @flight.destroy
+      redirect_to flights_url, notice: 'Flight was successfully destroyed.'
+    else
+      flash[:notice] = "You are not authorized to delete that flight"
+      redirect_back
     end
   end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_flight
-      @flight = Flight.find(params[:id])
-    end
+private
+  def set_flight
+    @flight = Flight.find(params[:id])
+  end
 
-    def update_cache
-      CacheUserMapJob.perform_later(current_user)
-      # GenerateHomepageMapJob.perform_later
-    end
+  def update_cache
+    CacheUserMapJob.perform_later(current_user)
+    # GenerateHomepageMapJob.perform_later
+  end
 
-    def redirect_back
-      redirect_to user_path(current_user.id)
-    end
+  def redirect_back
+    redirect_to user_path(current_user.id)
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def flight_params
-      params.require(:flight).permit(
-        :flight_date,
-        :aircraft_id,
-        :from_id,
-        :to_id,
-        :time_out,
-        :time_in,
-        :total_time,
-        :pic,
-        :distance,
-        waypoints_attributes: [:location_id]
-      )
+  def flight_params
+    params.require(:flight).permit(
+      :flight_date,
+      :aircraft_id,
+      :from_id,
+      :to_id,
+      :time_out,
+      :time_in,
+      :total_time,
+      :pic,
+      :distance,
+      waypoints_attributes: [
+        :location_id,
+        :id
+      ]
+    )
     end
 end

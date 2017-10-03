@@ -7,7 +7,8 @@ Rails.application.routes.draw do
       resources :users, only: [] do
         resources :flights, only: :index
       end
-      resources :flights, only: :index
+      resources :flights, only: [:index, :show]
+      resources :locations, only: :show
       get 'identifier_search', to: 'locations#search_by_identifier'
     end
   end
@@ -15,7 +16,6 @@ Rails.application.routes.draw do
   resources :users, only: [:show]
   resources :flights, except: [:show]
   resources :waypoints, only: :destroy
-  resources :locations, only: [:index, :show]
 
   devise_for :users,
     controllers: {
