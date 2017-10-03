@@ -24,7 +24,7 @@ function loadData() {
         return {
           results: data.locations,
           pagination: {
-            more: (params.page * 30) < data.total_count
+            more: (params.page * 30) < data.total
           }
         };
       },
