@@ -44,7 +44,7 @@
             <div class="mb-3">
               <%= label :waypoint, "Waypoints", class: 'light-sub-text' %><br />
               <%= form.fields_for :waypoints do |waypoint_fields| %>
-                <div class="waypoint_fields">
+                <div class="waypoint_fields mb-2">
                   <%= render 'flights/waypoint_fields', f: waypoint_fields %>
                 </div>
               <% end %>
