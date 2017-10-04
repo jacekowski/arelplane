@@ -37,7 +37,7 @@
                   <% flight.waypoints.each do |waypoint| %>
                       <p class="ml-4">
                         <%= Location.find(waypoint.location_id).identifier %>
-                        <%= link_to 'Destroy', waypoint_path(waypoint), method: :delete, data: { confirm: 'Are you sure?' } , class: "ml-2" %>
+                        <%= link_to 'Delete', waypoint_path(waypoint), method: :delete, data: { confirm: 'Are you sure?' } , class: "ml-2" %>
                       </p>
                   <% end %>
                 <% end %>
@@ -50,7 +50,7 @@
               <td><%= flight.total_time %></td>
               <td><%= flight.pic %></td>
               <td><%= flight.distance %></td>
-              <td><%= link_to 'Destroy', flight, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+              <td><%= link_to 'Delete', flight, method: :delete, data: { confirm: 'Are you sure?' } %></td>
               <td><%= link_to 'Edit', edit_flight_path(flight) %></td>
             </tr>
           <% end %>
