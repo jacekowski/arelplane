@@ -1,14 +1,40 @@
 <%= title "Arelplane | flights" %>
-<h1 class='light-header'>Flights</h1>
-
-<div class="ml-5">
-  <%= paginate @flights, theme: 'bootstrap4' %>
-</div>
 
 <div class="container-fluid">
   <div class="row">
     <div class="col-12">
-      <%= link_to 'New Flight', new_flight_path %>
+      <div class="row">
+        <div class="col-12">
+          <h1 class='light-header text-center'>Manage Flights</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <%= link_to 'New Flight', new_flight_path %>
+        </div>
+      </div>
+      <div class="row mt-2 mb-2">
+        <div class="col-6">
+          <%= paginate @flights, theme: 'bootstrap4' %>
+        </div>
+        <div class="col-6">
+          <div class="float-right">
+            <%= form_with url: flight_search_path, method: :post, local: true do |f| %>
+              <div class="form-inline">
+                <% if params[:query].present? %>
+                  <%= link_to 'Reset Search', flights_path, class: 'mr-2' %>
+                <% end %>
+                <div class="input-group">
+                  <%= f.text_field :query, id: :query, placeholder: 'Search by identifier', value: params[:query], class: 'form-control' %>
+                  <span class="input-group-btn">
+                    <%= f.submit "Search", class: 'btn btn-secondary' %>
+                  </span>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
       <table class='table table-striped table-inverse table-bordered'>
         <thead>
           <tr>
@@ -29,7 +55,7 @@
           <% @flights.each do |flight| %>
             <tr>
               <td><%= flight.flight_date.to_date.to_formatted_s(:long)  %>
-                <% if !flight.waypoints.empty? %>
+                <% if flight.waypoints.present? %>
                   <br><br>
                   Waypoints:
                   <br>

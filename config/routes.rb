@@ -15,6 +15,8 @@ Rails.application.routes.draw do
 
   resources :users, only: [:show]
   resources :flights, except: [:show]
+  post 'flight_search', to: 'flights#search'
+  get 'flight_search', to: 'flights#search'
   resources :waypoints, only: :destroy
 
   devise_for :users,
