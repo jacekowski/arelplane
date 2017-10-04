@@ -1,28 +1,24 @@
 require 'csv'
 
 class FlightsController < ApplicationController
-  before_action :set_flight, only: [:show, :edit, :update, :destroy]
+  before_action :set_flight, only: [:edit, :update, :destroy]
   after_action :update_cache, only: [:create, :update, :destroy]
   before_action :authenticate_user!
 
-  # GET /flights
-  # GET /flights.json
   def index
     @flights = current_user.flights.order('flight_date DESC').page params[:page]
   end
 
-  # GET /flights/1
-  # GET /flights/1.json
-  def show
+  def search
+    @flights = current_user.flight_search(params[:query]).page params[:page]
+    render :index
   end
 
-  # GET /flights/new
   def new
     @flight = current_user.flights.new
     @flight.waypoints.build
   end
 
-  # GET /flights/1/edit
   def edit
     if current_user.id != @flight.user_id
       flash[:notice] = "You are not authorized to edit that flight"
@@ -33,8 +29,6 @@ class FlightsController < ApplicationController
     end
   end
 
-  # POST /flights
-  # POST /flights.json
   def create
     begin
       if file = params["foreflight"]
@@ -77,8 +71,6 @@ class FlightsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /flights/1
-  # PATCH/PUT /flights/1.json
   def update
     if current_user.id == @flight.user_id
       if @flight.update(flight_params)
@@ -92,8 +84,6 @@ class FlightsController < ApplicationController
     end
   end
 
-  # DELETE /flights/1
-  # DELETE /flights/1.json
   def destroy
     if current_user.id = @flight.user_id
       @flight.destroy

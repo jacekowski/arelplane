@@ -3,6 +3,12 @@
 
 <div class="ml-5">
   <%= paginate @flights, theme: 'bootstrap4' %>
+
+  <%= form_with url: flight_search_path, method: :post, local: true do |f| %>
+    <%= f.label :q, "Search for:" %>
+    <%= f.text_field :query, id: :query %>
+    <%= f.submit "Search" %>
+  <% end %>
 </div>
 
 <div class="container-fluid">
@@ -29,7 +35,7 @@
           <% @flights.each do |flight| %>
             <tr>
               <td><%= flight.flight_date.to_date.to_formatted_s(:long)  %>
-                <% if !flight.waypoints.empty? %>
+                <% if flight.waypoints.present? %>
                   <br><br>
                   Waypoints:
                   <br>
