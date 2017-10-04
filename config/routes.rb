@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   post 'flight_search', to: 'flights#search'
   get 'flight_search', to: 'flights#search'
   resources :waypoints, only: :destroy
+  resources :locations
 
   devise_for :users,
     controllers: {
