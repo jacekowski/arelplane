@@ -1,8 +1,8 @@
 $(document).ready(function() {
   $('#add_waypoint_select').click(function (event) {
     var field = $("div.waypoint_fields:last").clone();
-    field.find(":selected").remove()
     field.find("span").remove();
+    field.find("select").empty();
     field.find("select").select2();
     field.addClass("mt-2");
     var name = field.find('select').attr("name");

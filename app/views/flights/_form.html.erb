@@ -11,64 +11,91 @@
   <% end %>
 
   <div class="form">
-    <div class="mb-3">
-      <%= form.label :flight_date, class: 'light-sub-text' %><br />
-      <%= form.datetime_select :flight_date, id: :flight_flight_date %><br />
-    </div>
-
-    <div class="mb-3">
-      <%= form.label :aircraft_id, 'Aircraft Identifier, e.g. N17AV', class: 'light-sub-text' %><br />
-      <%= form.text_field :aircraft_id, id: :flight_aircraft_id, class: 'form-control' %>
-    </div>
-
-    <div class="mb-3">
-      <%= form.label :from_airport, 'Departure Airport (ICAO Code)', class: 'light-sub-text' %><br />
-      <%= form.collection_select :from_id, Location.order(:identifier).page, :id, :identifier, { include_blank: true}, class: 'identifier_lookup', id: 'departure_airport', style: 'width: 100%;' %>
-    </div>
-
-    <div class="mb-3">
-      <%= label :waypoint, "Waypoints", class: 'light-sub-text' %><br />
-      <%= form.fields_for :waypoints do |waypoint_fields| %>
-        <div class="waypoint_fields">
-          <div class="mt-2"></div>
-          <%= render 'flights/waypoint_fields', f: waypoint_fields %>
+    <div class="card bg-dark border-light">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 col-lg-6">
+            <div class="mb-3">
+              <%= form.label :flight_date, class: 'light-sub-text' %><br />
+              <%= form.date_select :flight_date, id: :flight_flight_date %><br />
+            </div>
+          </div>
+          <div class="col-12 col-lg-6">
+            <div class="mb-3">
+              <%= form.label :aircraft_id, 'Aircraft Identifier, e.g. N17AV', class: 'light-sub-text' %><br />
+              <%= form.text_field :aircraft_id, id: :flight_aircraft_id, class: 'form-control' %>
+            </div>
+          </div>
         </div>
-      <% end %>
-      <a href="#" id="add_waypoint_select">Add waypoint</a>
+        <div class="row">
+          <div class="col-12 col-lg-4">
+            <div class="mb-3">
+              <%= form.label :from_airport, 'Departure Airport (ICAO)', class: 'light-sub-text' %><br />
+              <%= form.collection_select :from_id, Location.order(:identifier).page, :id, :identifier, { include_blank: true}, class: 'identifier_lookup', id: 'departure_airport', style: 'width: 100%;' %>
+            </div>
+          </div>
+          <div class="col-12 col-lg-4">
+            <div class="mb-3">
+              <%= form.label :to_airport, 'Arrival Airport (ICAO)', class: 'light-sub-text' %><br />
+              <%= form.collection_select :to_id, Location.order(:identifier).page, :id, :identifier, { include_blank: true}, class: 'identifier_lookup', id: 'arrival_airport', style: 'width: 100%;' %>
+            </div>
+          </div>
+          <div class="col-12 col-lg-4">
+            <div class="mb-3">
+              <%= label :waypoint, "Waypoints", class: 'light-sub-text' %><br />
+              <%= form.fields_for :waypoints do |waypoint_fields| %>
+                <div class="waypoint_fields">
+                  <%= render 'flights/waypoint_fields', f: waypoint_fields %>
+                </div>
+              <% end %>
+              <a href="#" id="add_waypoint_select">Add waypoint</a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <div class="mb-3">
-      <%= form.label :to_airport, 'Arrival Airport (ICAO Code)', class: 'light-sub-text' %><br />
-      <%= form.collection_select :to_id, Location.order(:identifier).page, :id, :identifier, { include_blank: true}, class: 'identifier_lookup', id: 'arrival_airport', style: 'width: 100%;' %>
+    <div class="card bg-dark mt-2">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 col-lg-3">
+            <div class="mb-3">
+              <%= form.label :time_out, 'Time Out', class: 'light-sub-text' %><br />
+              <%= form.text_field :time_out, id: :flight_time_out, class: 'form-control' %>
+            </div>
+          </div>
+          <div class="col-12 col-lg-3">
+            <div class="mb-3">
+              <%= form.label :time_in, 'Time In', class: 'light-sub-text' %><br />
+              <%= form.text_field :time_in, id: :flight_time_in, class: 'form-control' %>
+            </div>
+          </div>
+          <div class="col-12 col-lg-3">
+            <div class="mb-3">
+              <%= form.label :total_time, 'Total Time (hours)', class: 'light-sub-text' %><br />
+              <%= form.number_field :total_time, id: :flight_total_time, class: 'form-control', step: 0.1 %>
+            </div>
+          </div>
+          <div class="col-12 col-lg-3">
+            <div class="mb-3">
+              <%= form.label :pic, 'PIC (hours)', class: 'light-sub-text' %><br />
+              <%= form.number_field :pic, id: :flight_pic, class: 'form-control', step: 0.1 %>
+            </div>
+          </div>
+          <div class="col-12 col-lg-3">
+            <div class="mb-3">
+              <%= form.label :distance, 'Distance (nautical miles)', class: 'light-sub-text' %><br />
+              <%= form.number_field :distance, id: :flight_distance, class: 'form-control', step: 0.1 %>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <div class="mb-3">
-      <%= form.label :time_out, 'Time Out', class: 'light-sub-text' %><br />
-      <%= form.text_field :time_out, id: :flight_time_out, class: 'form-control' %>
+    <div class="row">
+      <div class="col-12 col-lg-3">
+        <div class="actions">
+          <%= form.submit class: 'btn btn-primary mt-2' %>
+        </div>
+      </div>
     </div>
-
-    <div class="mb-3">
-      <%= form.label :time_in, 'Time In', class: 'light-sub-text' %><br />
-      <%= form.text_field :time_in, id: :flight_time_in, class: 'form-control' %>
-    </div>
-
-    <div class="mb-3">
-      <%= form.label :total_time, 'Total Time (hours) e.g. 1.5', class: 'light-sub-text' %><br />
-      <%= form.number_field :total_time, id: :flight_total_time, class: 'form-control', step: 0.1 %>
-    </div>
-
-    <div class="mb-3">
-      <%= form.label :pic, 'PIC (hours)', class: 'light-sub-text' %><br />
-      <%= form.number_field :pic, id: :flight_pic, class: 'form-control', step: 0.1 %>
-    </div>
-
-    <div class="mb-3">
-      <%= form.label :distance, 'Distance (nautical miles)', class: 'light-sub-text' %><br />
-      <%= form.number_field :distance, id: :flight_distance, class: 'form-control', step: 0.1 %>
-    </div>
-  </div>
-
-  <div class="actions">
-    <%= form.submit class: 'btn btn-primary mt-2' %>
   </div>
 <% end %>
