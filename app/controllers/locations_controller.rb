@@ -27,15 +27,19 @@ class LocationsController < ApplicationController
   # POST /locations.json
   def create
     if params["location_db"]
-      # locations = File.read(params["location_db"].tempfile)
-      # csv = CSV.parse(locations, :headers => true)
-      # csv.each do |row|
-      #   l = Location.find(row.to_hash)
-      #   if l.flight.count == 0
-      #     if Location.where(identifier: l.identifier)
-      #   end
-      #   # Location.find_or_create_by(row.to_hash)
-      # end
+      locations = File.read(params["location_db"].tempfile)
+      csv = CSV.parse(locations, :headers => true)
+      csv.each do |row|
+        l = Location.find_by(latitude: row.to_hash["latitude"], longitude: row.to_hash["longitude"], name: nil)
+        if l
+          if l.flights.count == 0
+            if Location.where(identifier: l.identifier).count > 1
+              l.destroy
+            end
+          end
+        end
+        # Location.find_or_create_by(row.to_hash)
+      end
     else
       @location = Location.new(location_params)
 
