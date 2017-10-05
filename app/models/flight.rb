@@ -43,7 +43,7 @@ class Flight < ApplicationRecord
   end
 
   def self.find_feature_if_exists(feature_collection, location)
-    feature_collection[:features].find {|feature| feature[:properties][:identifier] == location.identifier }
+    feature_collection[:features].find {|feature| feature[:properties][:identifier] == location.try(:identifier) }
   end
 
   def self.get_coordinates(location)
