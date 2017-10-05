@@ -14,10 +14,10 @@
         </div>
       </div>
       <div class="row mt-2 mb-2">
-        <div class="col-6">
+        <div class="col-12 col-md-6">
           <%= paginate @flights, theme: 'bootstrap4' %>
         </div>
-        <div class="col-6">
+        <div class="col-12 col-md-6">
           <div class="float-right">
             <%= form_with url: flight_search_path, method: :post, local: true do |f| %>
               <div class="form-inline">
