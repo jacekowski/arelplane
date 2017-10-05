@@ -6,14 +6,14 @@ $(document).ready(function(){
     iconUrl: "<%= asset_path('waypoint.png') %>",
     iconSize:     [50, 50], // size of the icon
     iconAnchor:   [25, 25], // point of the icon which will correspond to marker's location
-    popupAnchor:  [-3, -76], // point from which the popup should open relative to the iconAnchor
+    popupAnchor:  [0, -20], // point from which the popup should open relative to the iconAnchor
   });
 
   var airportIcon = L.icon({
     iconUrl: "<%= asset_path('airport.png') %>",
     iconSize:     [50, 50],
     iconAnchor:   [25, 25],
-    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+    popupAnchor:  [0, -20] // point from which the popup should open relative to the iconAnchor
   });
 
   var lineStyle = {
@@ -47,15 +47,28 @@ $(document).ready(function(){
       pointToLayer: function (feature, latlng) {
         if (feature.properties.feature_type === "airport") {
           return L.marker(latlng, {
-            title: feature.properties.identifier,
             opacity: Math.max((feature.properties.count/max_count) * 12, 0.3),
             icon: airportIcon
+          })
+          .bindPopup(locationName(feature))
+          .on('mouseover', function (e) {
+            this.openPopup();
+          })
+          .on('mouseout', function (e) {
+            this.closePopup();
           });
         } else if (feature.properties.feature_type === "waypoint") {
           return L.marker(latlng, {
-            title: feature.properties.identifier,
             opacity: Math.max((feature.properties.count/max_count) * 12, 0.4),
-            icon: waypointIcon});
+            icon: waypointIcon
+          })
+          .bindPopup(locationName(feature))
+          .on('mouseover', function (e) {
+            this.openPopup();
+          })
+          .on('mouseout', function (e) {
+            this.closePopup();
+          });
         }
       }
     }).addTo(mymap);
@@ -93,6 +106,14 @@ $(document).ready(function(){
       mymap.setView(airportCords, 13);
     } else {
       mymap.fitBounds(flightsLayer.getBounds(), {padding: [30, 30]});
+    }
+
+    function locationName(feature) {
+      if (feature.properties.name != null) {
+        return feature.properties.name + " (" + feature.properties.identifier + ")"
+      } else {
+        return feature.properties.identifier
+      }
     }
 
 // https://api.mapbox.com/styles/v1/arelenglish/cj68kq87a1gqk2srsnul2iwee.html?title=true&access_token=pk.eyJ1IjoiYXJlbGVuZ2xpc2giLCJhIjoiY2l6ZzNrNHZ3MDB1cDMzb3dqdmh3emhjbSJ9.1WoDWsWNnIg-Wq8LPf1j-A#12.4/40.652369/-73.799612/0
