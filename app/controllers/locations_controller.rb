@@ -30,7 +30,17 @@ class LocationsController < ApplicationController
       locations = File.read(params["location_db"].tempfile)
       csv = CSV.parse(locations, :headers => true)
       csv.each do |row|
-        Location.find_or_create_by(row.to_hash)
+        l = Location.find_by(latitude: row.to_hash["latitude"], longitude: row.to_hash["longitude"], name: nil)
+        if l
+          if l.flights.count == 0
+            if l.flight_waypoints.count == 0
+              if Location.where(identifier: l.identifier).count > 1
+                l.destroy
+              end
+            end
+          end
+        end
+        # Location.find_or_create_by(row.to_hash)
       end
     else
       @location = Location.new(location_params)
