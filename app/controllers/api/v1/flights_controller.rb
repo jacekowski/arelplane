@@ -11,7 +11,7 @@ class Api::V1::FlightsController < ApiController
       end
     else
       arel = User.find_by(email: 'arelenglish@gmail.com')
-      @flights = Flight.map_data(arel.flights)
+      @flights = arel.map_cache
       # Use Arel's map becaue the agregate map looks cluttered
       # @flights = CacheDatum.last.map_data
     end
