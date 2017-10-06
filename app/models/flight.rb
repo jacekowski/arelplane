@@ -400,7 +400,10 @@ private
       type: :Feature,
       properties: {
         count: 0,
-        feature_type: :line
+        feature_type: :line,
+        geodesic: true,
+        geodesic_steps: 50,
+        geodesic_wrap: true
       },
       geometry: {
         type: :LineString,

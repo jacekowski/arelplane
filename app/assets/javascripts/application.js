@@ -18,3 +18,4 @@
 //= require bootstrap
 //= require bootstrap-sprockets
 //= require select2
+// = require Leaflet.Geodesic
