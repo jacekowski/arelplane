@@ -94,10 +94,10 @@ class Flight < ApplicationRecord
       :distance
       ]) do |row|
         r = row.to_hash
-        next unless date_format_one =~ r[:flight_date]
+        next unless date_format_one =~ r[:flight_date] || date_format_five =~ r[:flight_date]
         f = Flight.find_or_initialize_by(
           user_id: user.id,
-          flight_date: r[:flight_date].to_date,
+          flight_date: string_to_date(r[:flight_date]),
           aircraft_id: r[:aircraft_id],
           from_id: Location.find_by(identifier: r[:from_id].try(:upcase)).try(:id),
           to_id: Location.find_by(identifier: r[:to_id].try(:upcase)).try(:id),
