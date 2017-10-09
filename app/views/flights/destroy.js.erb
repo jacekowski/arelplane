@@ -1,0 +1,7 @@
+$('.delete_flight').bind('ajax:success', function() {
+  $(this).closest('tr').fadeOut();
+});
+
+$('.delete_waypoint').bind('ajax:success', function() {
+  $(this).closest('p').fadeOut();
+});

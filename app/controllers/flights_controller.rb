@@ -87,7 +87,10 @@ class FlightsController < ApplicationController
   def destroy
     if current_user.id = @flight.user_id
       @flight.destroy
-      redirect_to flights_url, notice: 'Flight was successfully destroyed.'
+      respond_to do |format|
+        format.html { redirect_to flights_url, notice: 'Flight was successfully destroyed.' }
+        format.js   { render layout: false }
+      end
     else
       flash[:notice] = "You are not authorized to delete that flight"
       redirect_back

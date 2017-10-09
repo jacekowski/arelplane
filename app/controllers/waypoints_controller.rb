@@ -7,7 +7,7 @@ class WaypointsController < ApplicationController
       @waypoint.destroy
       respond_to do |format|
         format.html { redirect_to flights_url, notice: 'Waypoint was successfully destroyed.' }
-        format.json { head :no_content }
+        format.js   { render :layout => false }
       end
     end
   end
