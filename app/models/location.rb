@@ -6,4 +6,12 @@ class Location < ApplicationRecord
 
   # validates :identifier, uniqueness: true, on: :create
   validates :latitude, uniqueness: { scope: :longitude }
+
+  def name_and_identifier
+    if name
+      identifier + " (#{name})"
+    else
+      identifier
+    end
+  end
 end

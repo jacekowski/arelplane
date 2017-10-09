@@ -61,15 +61,15 @@
                   <br>
                   <% flight.waypoints.each do |waypoint| %>
                       <p class="ml-4">
-                        <%= Location.find(waypoint.location_id).identifier %>
+                        <%= Location.find(waypoint.location_id).name_and_identifier %>
                         <%= link_to 'Delete', waypoint_path(waypoint), method: :delete, data: { confirm: 'Are you sure?' } , class: "ml-2" %>
                       </p>
                   <% end %>
                 <% end %>
               </td>
               <td><%= flight.aircraft_id %></td>
-              <td><%= Location.find(flight.from_id).identifier %></td>
-              <td><%= Location.find(flight.to_id).identifier %></td>
+              <td><%= Location.find(flight.from_id).name_and_identifier %></td>
+              <td><%= Location.find(flight.to_id).name_and_identifier %></td>
               <td><%= flight.time_out %></td>
               <td><%= flight.time_in %></td>
               <td><%= flight.total_time %></td>
