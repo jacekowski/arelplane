@@ -133,8 +133,9 @@ class Flight < ApplicationRecord
 
   def self.parse_mccpilotlog(logbook_csv, user)
     file = logbook_csv.read.gsub(/[^\.0-9A-Za-z\s,;:@"\/_()&\\-]/, '')
+    delimiter = sniff(logbook_csv)
     user.flights.destroy_all
-    CSV.parse(file, headers: true) do |row|
+    CSV.parse(file, {col_sep: delimiter, headers: true}) do |row|
       r = row.to_hash
       f = Flight.new(
         user_id: user.id,
@@ -314,7 +315,7 @@ private
 
 
   def self.sniff(path)
-    delimiters = ['","',"\"\t\""]
+    delimiters = ['","',"\"\t\"",'";"']
     first_line = File.open(path).first
     return nil unless first_line
     snif = {}
