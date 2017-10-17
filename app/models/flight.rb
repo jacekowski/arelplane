@@ -98,7 +98,7 @@ class Flight < ApplicationRecord
         next unless date_format_one =~ r[:flight_date] || date_format_five =~ r[:flight_date]
         f = Flight.new(
           user_id: user.id,
-          flight_date: string_to_date(r[:flight_date]),
+          flight_date: r[:flight_date],
           aircraft_id: r[:aircraft_id],
           from_id: Location.find_by(identifier: r[:from_id].try(:upcase)).try(:id),
           to_id: Location.find_by(identifier: r[:to_id].try(:upcase)).try(:id),
@@ -118,10 +118,9 @@ class Flight < ApplicationRecord
     user.flights.destroy_all
     CSV.foreach(logbook_csv, { col_sep: "\t", headers: true}) do |row|
       r = row.to_hash
-      next unless date_format_one =~ r["Date"]
       f = Flight.new(
         user_id: user.id,
-        flight_date: r["Date"].to_date,
+        flight_date: r["Date"],
         aircraft_id: r["Aircraft ID"],
         from_id: Location.find_by(identifier: r["From"].try(:upcase)).try(:id),
         to_id: Location.find_by(identifier: r["To"].try(:upcase)).try(:id),
@@ -135,12 +134,11 @@ class Flight < ApplicationRecord
   def self.parse_mccpilotlog(logbook_csv, user)
     file = logbook_csv.read.gsub(/[^\.0-9A-Za-z\s,;:@"\/_()&\\-]/, '')
     user.flights.destroy_all
-    CSV.parse(file, {col_sep: ";", headers: true} ) do |row|
+    CSV.parse(file, headers: true) do |row|
       r = row.to_hash
-      next unless date_format_two =~ r["mcc_DATE"]
       f = Flight.new(
         user_id: user.id,
-        flight_date: try_formatting_date(r["mcc_DATE"]),
+        flight_date: r["mcc_DATE"],
         aircraft_id: r["AC_REG"],
         from_id: Location.find_by(identifier: r["AF_DEP"].try(:upcase)).try(:id),
         to_id: Location.find_by(identifier: r["AF_ARR"].try(:upcase)).try(:id),
@@ -158,10 +156,9 @@ class Flight < ApplicationRecord
     user.flights.destroy_all
     CSV.parse(file, headers: true, skip_blanks: true) do |row|
       r = row.to_hash
-      next unless date_format_one =~ r["Date"]
       f = Flight.find_or_initialize_by(
         user_id: user.id,
-        flight_date: r["Date"].to_date,
+        flight_date: r["Date"],
         aircraft_id: r["Aircraft Registration"],
         from_id: get_safelog_departure(row),
         to_id: get_safelog_arrival(row),
@@ -180,11 +177,10 @@ class Flight < ApplicationRecord
     user.flights.destroy_all
     CSV.foreach(logbook_csv, {headers: true}) do |row|
       r = row.to_hash
-      next unless date_format_three =~ r["Date"]
       route = r["Route"].scan(/[\w']+/)
       f = Flight.new(
         user_id: user.id,
-        flight_date: r["Date"].to_date,
+        flight_date: r["Date"],
         aircraft_id: r["Aircraft ID"],
         from_id: Location.find_by(identifier: route.first.try(:upcase)).try(:id),
         to_id: Location.find_by(identifier: route.last.try(:upcase)).try(:id),
@@ -211,7 +207,7 @@ class Flight < ApplicationRecord
         route = raw_route.scan(/[\w']+/)
         f = Flight.new(
           user_id: user.id,
-          flight_date: string_to_date(r["Date"]),
+          flight_date: r["Date"],
           aircraft_id: r["Tail Number"],
           from_id: Location.find_by(identifier: route.first.try(:upcase)).try(:id),
           to_id: Location.find_by(identifier: route.last.try(:upcase)).try(:id),
@@ -236,11 +232,10 @@ class Flight < ApplicationRecord
     user.flights.destroy_all
     CSV.parse(file, headers: true, skip_blanks: true) do |row|
       r = row.to_hash
-      next unless date_format_two =~ r["DATE"]
       route = r["ROUTE OF FLIGHT"].scan(/[\w']+/)
       f = Flight.new(
         user_id: user.id,
-        flight_date: Date.strptime(r["DATE"], "%m/%d/%Y"),
+        flight_date: r["DATE"],
         aircraft_id: r["AIRCRAFT IDENT"],
         from_id: Location.find_by(identifier: route.first.try(:upcase)).try(:id),
         to_id: Location.find_by(identifier: route.last.try(:upcase)).try(:id),
@@ -261,10 +256,9 @@ class Flight < ApplicationRecord
     user.flights.destroy_all
     CSV.parse(logbook_csv, headers: true, skip_blanks: true) do |row|
       r = row.to_hash
-      next unless date_format_one =~ r["Date"]
       f = Flight.new(
         user_id: user.id,
-        flight_date: r["Date"].to_date,
+        flight_date: r["Date"],
         aircraft_id: r["Aircraft ID"],
         from_id: Location.find_by(identifier: r["Departure"].try(:upcase)).try(:id),
         to_id: Location.find_by(identifier: r["Destination"].try(:upcase)).try(:id),
@@ -342,7 +336,7 @@ private
     end
   end
 
-  # This is just for situations where I mccPilotLog dates aren't in the expected order
+  # This is just for situations where mccPilotLog dates aren't in the expected order
   def self.try_formatting_date(date_string)
     begin
       date_string.to_date
