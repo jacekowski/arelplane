@@ -54,7 +54,7 @@
         <tbody>
           <% @flights.each do |flight| %>
             <tr>
-              <td><%= flight.flight_date.to_date.to_formatted_s(:long)  %>
+              <td><%= flight.flight_date.to_date.to_formatted_s(:long) rescue flight.flight_date %>
                 <% if flight.waypoints.present? %>
                   <br><br>
                   Waypoints:
