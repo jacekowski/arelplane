@@ -154,7 +154,7 @@ class Flight < ApplicationRecord
   end
 
   def self.parse_safelog(logbook_csv, user)
-    file = File.read(logbook_csv).gsub(/\r/," ")
+    file = logbook_csv.read.gsub(/[^\.0-9A-Za-z\s,;:@"\/_()&\\-]/, '')
     user.flights.destroy_all
     CSV.parse(file, headers: true, skip_blanks: true) do |row|
       r = row.to_hash
@@ -166,8 +166,8 @@ class Flight < ApplicationRecord
         to_id: get_safelog_arrival(row),
         time_out: r["Depart Time"],
         time_in: r["Arrival Time"],
-        pic: r["Day Single-Engine (SE) Pilot"] || r["Day Single-Engine (SE) in Command"],
-        total_time: r["Mission Duration"] || r["Total Flight Time"]
+        pic: r["Day Single-Engine (SE) Pilot"] || convert_time(r["Day Single-Engine (SE) in Command"]),
+        total_time: r["Mission Duration"] || convert_time(r["Total Flight Time"])
       )
       if f.save
         f.add_waypoints(r, "Mission Via", "Mission Departure", "Mission Arrival")
@@ -375,17 +375,21 @@ private
 
   def self.get_safelog_departure(row)
     if identifier = row["Mission Departure"]
-      Location.find_by(identifier: identifier).id
-    else
-      Location.find_by(identifier: row["Flight Details From"]).try(:id)
+      Location.find_by(identifier: identifier).try(:id)
+    elsif identifier = row["Flight Details From"]
+      Location.find_by(identifier: identifier).try(:id)
+    elsif identifier = row["Flight Details Departure"]
+      Location.find_by(identifier: identifier).try(:id)
     end
   end
 
   def self.get_safelog_arrival(row)
     if identifier = row["Mission Arrival"]
-      Location.find_by(identifier: identifier).id
-    else
-      Location.find_by(identifier: row["Flight Details To"]).try(:id)
+      Location.find_by(identifier: identifier).try(:id)
+    elsif identifier = row["Flight Details To"]
+      Location.find_by(identifier: identifier).try(:id)
+    elsif identifier = row["Flight Details Arrival"]
+      Location.find_by(identifier: identifier).try(:id)
     end
   end
 
