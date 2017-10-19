@@ -50,7 +50,7 @@ $(document).ready(function(){
             opacity: Math.max((feature.properties.count/max_count) * 12, 0.3),
             icon: airportIcon
           })
-          .bindPopup(locationName(feature))
+          .bindPopup(popupContent(feature))
           .on('mouseover', function (e) {
             this.openPopup();
           })
@@ -62,7 +62,7 @@ $(document).ready(function(){
             opacity: Math.max((feature.properties.count/max_count) * 12, 0.4),
             icon: waypointIcon
           })
-          .bindPopup(locationName(feature))
+          .bindPopup(popupContent(feature))
           .on('mouseover', function (e) {
             this.openPopup();
           })
@@ -108,17 +108,22 @@ $(document).ready(function(){
       }
       mymap.setView(airportCords, 13);
     } else if (southWest["lat"] === northEast["lat"] && southWest["lng"] === northEast["lng"]) {
-      mymap.setView(southWest ,13);
+      mymap.setView(southWest, 13);
     } else {
-      mymap.fitBounds(flightsLayer.getBounds(), {padding: [30, 30]});
+      mymap.fitBounds(flightsLayer.getBounds(), {padding: [40, 40]});
     }
 
-    function locationName(feature) {
-      if (feature.properties.name != null) {
-        return feature.properties.name + " (" + feature.properties.identifier + ")"
-      } else {
-        return feature.properties.identifier
+    function popupContent(feature) {
+      var count = ""
+      if (feature.properties.feature_type === "airport") {
+        count = "<br>Number of takeoffs/landings: " + feature.properties.count
       }
+      if (feature.properties.name != null) {
+        var popupText = feature.properties.name + " (" + feature.properties.identifier + ")"
+      } else {
+        var popupText = feature.properties.identifier
+      }
+      return popupText + count
     }
 
 // https://api.mapbox.com/styles/v1/arelenglish/cj68kq87a1gqk2srsnul2iwee.html?title=true&access_token=pk.eyJ1IjoiYXJlbGVuZ2xpc2giLCJhIjoiY2l6ZzNrNHZ3MDB1cDMzb3dqdmh3emhjbSJ9.1WoDWsWNnIg-Wq8LPf1j-A#12.4/40.652369/-73.799612/0
