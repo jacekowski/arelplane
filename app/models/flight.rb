@@ -31,6 +31,7 @@ class Flight < ApplicationRecord
 
   def self.add_feature_to_map(feature_collection, feature, location, feature_type)
     feature[:properties][:feature_type] = feature_type
+    feature[:properties][:count] = 1
     feature[:properties][:name] = location.name
     feature[:properties][:identifier] = location.identifier
     feature[:geometry][:coordinates] = [location.longitude.to_f, location.latitude.to_f]
