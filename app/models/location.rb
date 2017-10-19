@@ -4,7 +4,6 @@ class Location < ApplicationRecord
 
   has_many :flight_waypoints
 
-  # validates :identifier, uniqueness: true, on: :create
   validates :latitude, uniqueness: { scope: :longitude }
 
   def name_and_identifier

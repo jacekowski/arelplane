@@ -72,6 +72,9 @@ $(document).ready(function(){
         }
       }
     }).addTo(mymap);
+
+    var southWest = flightsLayer.getBounds()["_southWest"];
+    var northEast = flightsLayer.getBounds()["_northEast"];
     if (Object.keys(flightsLayer.getBounds()).length === 0) {
       var airportCords = [0,0];
       switch (new Date().getDay()) {
@@ -104,6 +107,8 @@ $(document).ready(function(){
           airportCords = [25.2527999878, 55.3643989563];
       }
       mymap.setView(airportCords, 13);
+    } else if (southWest["lat"] === northEast["lat"] && southWest["lng"] === northEast["lng"]) {
+      mymap.setView(southWest ,13);
     } else {
       mymap.fitBounds(flightsLayer.getBounds(), {padding: [30, 30]});
     }
