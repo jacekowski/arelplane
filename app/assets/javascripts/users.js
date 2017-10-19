@@ -79,4 +79,10 @@ $(document).ready(function() {
     fadeInOrOut(form, button)
   })
 
+  $("#flylogio-lb").click(function(){
+    var form = "div#flylogio-form"
+    var button = "#flylogio-lb"
+    fadeInOrOut(form, button)
+  })
+
 });

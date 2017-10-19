@@ -275,6 +275,25 @@ class Flight < ApplicationRecord
     end
   end
 
+  def self.parse_fly_logio(logbook_csv, user)
+    user.flights.destroy_all
+    CSV.parse(logbook_csv, headers: true, skip_blanks: true) do |row|
+      r = row.to_hash
+      f = Flight.new(
+        user_id: user.id,
+        flight_date: r["date"],
+        aircraft_id: r["aircraft_registration"],
+        from_id: Location.find_by(identifier: r["departure_airport"].try(:upcase)).try(:id),
+        to_id: Location.find_by(identifier: r["arrival_airport"].try(:upcase)).try(:id),
+        time_out: r["departure_time"],
+        time_in: r["arrival_time"],
+        pic: convert_time(r["pic"]),
+        total_time: convert_time(r["total_time"])
+      )
+      f.save
+    end
+  end
+
   def add_waypoints(logbook_row, waypoint_column, from_column, to_column)
     if route = logbook_row[waypoint_column]
       route = route.scan(/[\w']+/)
@@ -345,6 +364,13 @@ private
     rescue
       Date.strptime(date_string, "%m/%d/%Y")
     end
+  end
+
+  # when time is in format 00:34
+  def self.convert_time(time)
+     hours, minutes = time.split(":")
+     result = hours.to_f + (minutes.to_f/60)
+     result.round(1)
   end
 
   def self.get_safelog_departure(row)
