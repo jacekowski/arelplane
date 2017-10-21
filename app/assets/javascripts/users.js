@@ -85,4 +85,10 @@ $(document).ready(function() {
     fadeInOrOut(form, button)
   })
 
+  $("#pilotpro-lb").click(function(){
+    var form = "div#pilotpro-form"
+    var button = "#pilotpro-lb"
+    fadeInOrOut(form, button)
+  })
+
 });

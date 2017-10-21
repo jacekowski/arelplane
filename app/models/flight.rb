@@ -294,6 +294,28 @@ class Flight < ApplicationRecord
     end
   end
 
+  def self.parse_pilot_pro(logbook_csv, user)
+    user.flights.destroy_all
+    CSV.parse(logbook_csv, headers: true, skip_blanks: true) do |row|
+      r = row.to_hash
+      f = Flight.new(
+        user_id: user.id,
+        flight_date: r["Date"],
+        aircraft_id: r["AircraftID"],
+        from_id: Location.find_by(identifier: r["From"].try(:upcase)).try(:id),
+        to_id: Location.find_by(identifier: r["To"].try(:upcase)).try(:id),
+        time_out: r["TimeOut"],
+        time_in: r["TimeIn"],
+        pic: r["PIC"],
+        total_time: r["TotalTime"],
+        distance: r["Distance"]
+      )
+      if f.save
+        f.add_waypoints(r, "Route", "From", "To")
+      end
+    end
+  end
+
   def add_waypoints(logbook_row, waypoint_column, from_column, to_column)
     if route = logbook_row[waypoint_column]
       route = route.scan(/[\w']+/)
