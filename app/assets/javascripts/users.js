@@ -91,4 +91,10 @@ $(document).ready(function() {
     fadeInOrOut(form, button)
   })
 
+  $("#aviationpilotlogbook-lb").click(function(){
+    var form = "div#aviationpilotlogbook-form"
+    var button = "#aviationpilotlogbook-lb"
+    fadeInOrOut(form, button)
+  })
+
 });

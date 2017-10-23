@@ -61,6 +61,9 @@ class FlightsController < ApplicationController
       elsif file = params["pilotpro"]
         Flight.parse_pilot_pro(file.tempfile, current_user)
         redirect_back
+      elsif file = params["aviationpilotlogbook"]
+        Flight.parse_aviation_pilot_logbook(file.tempfile, current_user)
+        redirect_back
       else
         @flight = current_user.flights.new(flight_params)
         if @flight.save
