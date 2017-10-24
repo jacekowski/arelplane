@@ -328,7 +328,7 @@ class Flight < ApplicationRecord
         to_id: Location.find_by(identifier: r["ICAO_Destination"].try(:upcase)).try(:id),
         time_out: r["Off_Block"],
         time_in: r["On_Block"],
-        pic: r["Flight_Time_Total"],
+        pic: r["Block_Time"],
         total_time: r["Flight_Time_Total"]
       )
       f.save
