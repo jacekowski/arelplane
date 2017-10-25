@@ -127,12 +127,6 @@ function loadUsers() {
   });
 };
 
-function flightID() {
-  var pathname = window.user.pathname;
-  var match = pathname.match(/\d+/);
-  return Number(match[0]);
-};
-
 function formatUser (user) {
   if (user.loading) {
     return user.username;
@@ -142,5 +136,5 @@ function formatUser (user) {
 }
 
 function formatUserSelection (user) {
-  return user.username;
+  return user.text;
 }

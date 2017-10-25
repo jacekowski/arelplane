@@ -10,7 +10,7 @@ class UsersController < ApplicationController
   end
 
   def search
-    puts "working"
+    byebug
   end
 
   private
