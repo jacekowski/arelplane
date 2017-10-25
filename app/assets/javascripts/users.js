@@ -94,52 +94,53 @@ $(document).ready(function() {
     fadeInOrOut(form, button)
   })
 
+  loadUsers();
 });
 
-// function loadData() {
-//   $(".user_lookup").select2({
-//     theme: "bootstrap",
-//     ajax: {
-//       url: '/api/v1/identifier_search',
-//       data: function (params) {
-//         return {
-//           q: params.term,
-//           page: params.page
-//         };
-//       },
-//       processResults: function (data, params) {
-//         params.page = params.page || 1;
-//         return {
-//           results: data.locations,
-//           pagination: {
-//             more: (params.page * 30) < data.total
-//           }
-//         };
-//       },
-//       cache: true
-//     },
-//     placeholder: 'Search for a identifier',
-//     escapeMarkup: function (markup) { return markup; },
-//     minimumInputLength: 1,
-//     templateResult: formatLocation,
-//     templateSelection: formatLocationSelection
-//   });
-// };
-//
-// function flightID() {
-//   var pathname = window.location.pathname;
-//   var match = pathname.match(/\d+/);
-//   return Number(match[0]);
-// };
-//
-// function formatLocation (location) {
-//   if (location.loading) {
-//     return location.text;
-//   }
-//   var markup = location.text
-//   return markup;
-// }
-//
-// function formatLocationSelection (location) {
-//   return location.text;
-// }
+function loadUsers() {
+  $(".user_lookup").select2({
+    theme: "bootstrap",
+    ajax: {
+      url: '/api/v1/user_search',
+      data: function (params) {
+        return {
+          q: params.term,
+          page: params.page
+        };
+      },
+      processResults: function (data, params) {
+        params.page = params.page || 1;
+        return {
+          results: data.users,
+          pagination: {
+            more: (params.page * 30) < data.total
+          }
+        };
+      },
+      cache: true
+    },
+    placeholder: 'User Search',
+    escapeMarkup: function (markup) { return markup; },
+    minimumInputLength: 1,
+    templateResult: formatUser,
+    templateSelection: formatUserSelection
+  });
+};
+
+function flightID() {
+  var pathname = window.user.pathname;
+  var match = pathname.match(/\d+/);
+  return Number(match[0]);
+};
+
+function formatUser (user) {
+  if (user.loading) {
+    return user.username;
+  }
+  var markup = user.username
+  return markup;
+}
+
+function formatUserSelection (user) {
+  return user.username;
+}

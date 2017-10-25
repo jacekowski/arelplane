@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       resources :flights, only: [:index, :show]
       resources :locations, only: :show
       get 'identifier_search', to: 'locations#search_by_identifier'
+      get 'user_search', to: 'users#search_by_username'
     end
   end
 
