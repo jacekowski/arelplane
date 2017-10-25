@@ -29,4 +29,5 @@ Rails.application.routes.draw do
       sign_in: 'login',
       sign_out: 'logout'
     }
+  resources :users, param: :username, path: '', only: [:show]
 end
