@@ -9,8 +9,6 @@ class User < ApplicationRecord
                      uniqueness: {case_sensitive: false},
                      length: { maximum: 100 }
 
-  before_save :add_slug
-
   has_many :flights, dependent: :destroy
   has_many :locations, through: :flights
   has_many :waypoints, through: :flights
@@ -64,10 +62,4 @@ class User < ApplicationRecord
     search_results = flight_results + waypoint_results
     Kaminari.paginate_array(search_results.sort_by(&:flight_date).reverse)
   end
-
-private
-  def add_slug
-    self.slug = "@#{self.username}"
-  end
-
 end

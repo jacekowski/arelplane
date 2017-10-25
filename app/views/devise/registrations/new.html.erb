@@ -9,12 +9,25 @@
         <%= devise_error_messages! %>
 
         <div class="form">
-          <%= f.label :email, class: 'light-sub-text' %><br />
+          <%= f.label :email, class: 'light-sub-text' %>
           <%= f.email_field :email, autofocus: true, class: 'form-control' %>
-          <%= f.label :name, class: 'light-sub-text' %><br />
+          <br>
+
+          <%= f.label :name, class: 'light-sub-text' %>
           <%= f.text_field :name, class: 'form-control' %>
+          <br>
+
           <%= f.label :username, class: 'light-sub-text' %>
-          <%= f.text_field :username, class: 'form-control' %>
+          <% if @user.username.blank? %>
+            <div class="input-group">
+              <span class="input-group-addon">@</span>
+              <%= f.text_field :username, class: 'form-control' %>
+            </div>
+          <% else %>
+            <%= f.text_field :username, class: 'form-control' %>
+          <% end %>
+          <br>
+          
           <%= f.label :password, class: 'light-sub-text' %>
           <% if @minimum_password_length %>
           <em>(<%= @minimum_password_length %> characters minimum)</em>
