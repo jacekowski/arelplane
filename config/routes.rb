@@ -30,4 +30,5 @@ Rails.application.routes.draw do
       sign_out: 'logout'
     }
   resources :users, param: :username, path: '', only: [:show], as: :username
+  get 'user_search', to: 'users#search'
 end

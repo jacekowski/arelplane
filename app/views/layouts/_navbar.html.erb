@@ -19,6 +19,12 @@
         <% end %>
       </li>
     </ul>
+    <form class="form-inline my-2 my-lg-0 mr-2">
+      <%= form_with(url: user_search_path, local: true) do |form| %>
+        <%= form.collection_select :user_id, User.page, :id, :username, { include_blank: true}, class: 'user_lookup form-control mr-sm-2' %>
+        <%= form.submit 'Go', class: 'btn btn-outline-light my-2 my-sm-0' %>
+      <% end %>
+    </form>
     <ul class="navbar-nav">
       <% if current_user %>
         <li class="nav-item active">

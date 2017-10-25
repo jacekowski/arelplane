@@ -9,6 +9,10 @@ class UsersController < ApplicationController
     end
   end
 
+  def search
+    puts "working"
+  end
+
   private
     def set_user
       if params[:username]

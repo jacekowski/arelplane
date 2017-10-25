@@ -30,7 +30,7 @@ function loadData() {
       },
       cache: true
     },
-    placeholder: 'Search for a identifier',
+    placeholder: 'Search for an identifier',
     escapeMarkup: function (markup) { return markup; },
     minimumInputLength: 1,
     templateResult: formatLocation,
@@ -38,23 +38,23 @@ function loadData() {
   });
 };
 
-  function flightID() {
-    var pathname = window.location.pathname;
-    var match = pathname.match(/\d+/);
-    return Number(match[0]);
-  };
+function flightID() {
+  var pathname = window.location.pathname;
+  var match = pathname.match(/\d+/);
+  return Number(match[0]);
+};
 
-  function formatLocation (location) {
-    if (location.loading) {
-      return location.text;
-    }
-    var markup = location.text
-    return markup;
-  }
-
-  function formatLocationSelection (location) {
+function formatLocation (location) {
+  if (location.loading) {
     return location.text;
   }
+  var markup = location.text
+  return markup;
+}
+
+function formatLocationSelection (location) {
+  return location.text;
+}
 
 function fetchExistingValues() {
   var departureSelect = $('#departure_airport');
