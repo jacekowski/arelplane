@@ -2,6 +2,11 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:show]
 
   def show
+    if user_id = params[:id]
+      if username = User.find(user_id).username
+        redirect_to username_path(username)
+      end
+    end
   end
 
   private
