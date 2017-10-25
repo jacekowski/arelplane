@@ -5,6 +5,11 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   validates :name, presence: true, on: :create
+  validates :username, presence: true,
+                     uniqueness: {case_sensitive: false},
+                     length: { maximum: 100 }
+
+  before_save :add_slug
 
   has_many :flights, dependent: :destroy
   has_many :locations, through: :flights
@@ -50,14 +55,6 @@ class User < ApplicationRecord
     Location.find(airports.flatten.uniq).pluck(:iso_region).uniq.count
   end
 
-  def username
-    if name.blank?
-      "Profile"
-    else
-      name
-    end
-  end
-
   def flight_search(identifier)
     locations = Location.where(
       Location.arel_table[:identifier].lower.matches("%#{identifier.downcase}%")
@@ -66,6 +63,11 @@ class User < ApplicationRecord
     waypoint_results = Flight.find(self.waypoints.where(location_id: locations).pluck(:flight_id))
     search_results = flight_results + waypoint_results
     Kaminari.paginate_array(search_results.sort_by(&:flight_date).reverse)
+  end
+
+private
+  def add_slug
+    self.slug = "@#{self.username}"
   end
 
 end
