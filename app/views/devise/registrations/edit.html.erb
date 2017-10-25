@@ -16,13 +16,19 @@
           <% if @user.username.blank? %>
             <div class="input-group mb-2 mb-sm-0">
               <div class="input-group-addon">@</div>
-              <%= f.text_field :username, class: 'form-control' %><br />
-            </div>
+              <%= f.text_field :username, class: 'form-control' %>
+            </div><br />
           <% else %>
+            <small id="passwordHelpInline" class="text-warning">
+              WARNING! changing this will change your profile URL
+            </small>
             <%= f.text_field :username, class: 'form-control' %><br />
           <% end %>
 
-          <%= f.label :current_password, class: 'light-sub-text' %> <i class="light-sub-text">(we need your current password to confirm your changes)</i><br />
+          <%= f.label :current_password, class: 'light-sub-text' %><br>
+          <small id="passwordHelpInline" class="text-muted">
+            we need your current password to confirm your changes
+          </small>
           <%= f.password_field :current_password, autocomplete: "off", class: 'form-control' %>
         </div>
 
