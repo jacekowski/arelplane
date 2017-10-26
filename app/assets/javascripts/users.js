@@ -94,10 +94,10 @@ $(document).ready(function() {
     fadeInOrOut(form, button)
   })
 
-  loadUsers();
+  loadUserData();
 });
 
-function loadUsers() {
+function loadUserData() {
   $(".user_lookup").select2({
     theme: "bootstrap",
     ajax: {
@@ -131,10 +131,10 @@ function formatUser (user) {
   if (user.loading) {
     return user.text;
   }
-  var markup = user.username
+  var markup = user.username;
   return markup;
-}
+};
 
 function formatUserSelection (user) {
   return user.text;
-}
+};
