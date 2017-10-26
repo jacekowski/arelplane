@@ -136,5 +136,5 @@ function formatUser (user) {
 }
 
 function formatUserSelection (user) {
-  return user.text;
+  return user.username;
 }
