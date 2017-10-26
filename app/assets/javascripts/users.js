@@ -122,14 +122,19 @@ function loadUsers() {
     placeholder: 'User Search',
     escapeMarkup: function (markup) { return markup; },
     minimumInputLength: 1,
-    templateResult: formatUser
+    templateResult: formatUser,
+    templateSelection: formatUserSelection
   });
 };
 
 function formatUser (user) {
   if (user.loading) {
-    return user.username;
+    return user.text;
   }
   var markup = user.username
   return markup;
+}
+
+function formatUserSelection (user) {
+  return user.text;
 }
