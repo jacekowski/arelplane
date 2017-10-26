@@ -10,7 +10,7 @@ class UsersController < ApplicationController
   end
 
   def search
-    byebug
+    redirect_to username_path(User.find(params[:user_id]).username)
   end
 
   private
