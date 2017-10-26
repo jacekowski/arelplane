@@ -122,8 +122,7 @@ function loadUsers() {
     placeholder: 'User Search',
     escapeMarkup: function (markup) { return markup; },
     minimumInputLength: 1,
-    templateResult: formatUser,
-    templateSelection: formatUserSelection
+    templateResult: formatUser
   });
 };
 
@@ -133,8 +132,4 @@ function formatUser (user) {
   }
   var markup = user.username
   return markup;
-}
-
-function formatUserSelection (user) {
-  return user.username;
 }
