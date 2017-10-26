@@ -1,6 +1,3 @@
-// Place all the behaviors and hooks related to the matching controller here.
-// All this logic will automatically be available in application.js.
-
 $(document).ready(function() {
   $(".upload-logbook-btn").click(function(){
     $('#logbookUploadModal').modal('hide');
@@ -97,4 +94,47 @@ $(document).ready(function() {
     fadeInOrOut(form, button)
   })
 
+  loadUsers();
 });
+
+function loadUsers() {
+  $(".user_lookup").select2({
+    theme: "bootstrap",
+    ajax: {
+      url: '/api/v1/user_search',
+      data: function (params) {
+        return {
+          q: params.term,
+          page: params.page
+        };
+      },
+      processResults: function (data, params) {
+        params.page = params.page || 1;
+        return {
+          results: data.users,
+          pagination: {
+            more: (params.page * 30) < data.total
+          }
+        };
+      },
+      cache: true
+    },
+    placeholder: 'User Search',
+    escapeMarkup: function (markup) { return markup; },
+    minimumInputLength: 1,
+    templateResult: formatUser,
+    templateSelection: formatUserSelection
+  });
+};
+
+function formatUser (user) {
+  if (user.loading) {
+    return user.username;
+  }
+  var markup = user.username
+  return markup;
+}
+
+function formatUserSelection (user) {
+  return user.text;
+}
