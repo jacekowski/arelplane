@@ -131,7 +131,7 @@ function formatUser (user) {
   if (user.loading) {
     return user.text;
   }
-  var markup = user.username;
+  var markup = user.text;
   return markup;
 };
 

@@ -5,7 +5,7 @@ class Api::V1::UsersController < ApiController
     @users = query.order('username').page(params[:page])
 
     respond_to do |format|
-      format.json { render json: {total: query.count, users: @users.map { |user| {id: user.id, username: user.username} }} }
+      format.json { render json: {total: query.count, users: @users.map { |user| {id: user.id, text: user.username} }} }
     end
   end
 
