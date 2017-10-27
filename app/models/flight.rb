@@ -409,9 +409,11 @@ private
 
   # when time is in format 00:34
   def self.convert_time(time)
-     hours, minutes = time.split(":")
-     result = hours.to_f + (minutes.to_f/60)
-     result.round(1)
+    if time
+      hours, minutes = time.split(":")
+      result = hours.to_f + (minutes.to_f/60)
+      result.round(1)
+    end
   end
 
   def self.get_safelog_departure(row)
