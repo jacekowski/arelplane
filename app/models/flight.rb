@@ -125,8 +125,8 @@ class Flight < ApplicationRecord
         aircraft_id: r["Aircraft ID"],
         from_id: Location.find_by(identifier: r["From"].try(:upcase)).try(:id),
         to_id: Location.find_by(identifier: r["To"].try(:upcase)).try(:id),
-        total_time: r["Total Time"],
-        pic: r["PIC"],
+        total_time: convert_time(r["Total Time"]),
+        pic: convert_time(r["PIC"]),
       )
       f.save
     end
@@ -385,34 +385,14 @@ private
     snif.size > 0 ? snif[0][0][1] : nil
   end
 
-  # This should really be on the string class
-  def self.string_to_date(date_string)
-    if date_format_one =~ date_string
-      date_string.to_date
-    elsif date_format_four =~ date_string
-      Date.strptime(date_string, "%m/%d/%y")
-    elsif date_format_five =~ date_string
-      Date.strptime(date_string, "%m/%d/%Y")
-    else
-      date_string.to_date
-    end
-  end
-
-  # This is just for situations where mccPilotLog dates aren't in the expected order
-  def self.try_formatting_date(date_string)
-    begin
-      date_string.to_date
-    rescue
-      Date.strptime(date_string, "%m/%d/%Y")
-    end
-  end
-
   # when time is in format 00:34
   def self.convert_time(time)
-    if time
+    if time && time.include?(":")
       hours, minutes = time.split(":")
       result = hours.to_f + (minutes.to_f/60)
       result.round(1)
+    else
+      time.to_f
     end
   end
 
