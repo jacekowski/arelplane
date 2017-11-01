@@ -90,3 +90,36 @@ h6 {
   padding-right: 0;
   padding-left: 0;
 }
+
+.follow-button {
+  border: 0.125rem solid $primaryTextColor;
+  min-width: 8.1rem;
+  height: 2.7rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: 'Nunito', sans-serif;
+  cursor: pointer;
+}
+
+.follow-button-normal {
+  @extend .follow-button;
+  background-color: white;
+  color: $primaryTextColor;
+}
+.following-button {
+  @extend .follow-button;
+  background-color: $primaryTextColor;
+  color: white;
+}
+.clear-follow-button {
+  @extend .follow-button;
+  background-color: Transparent;
+  color: $lightTextColor;
+  border-color: $lightTextColor;
+}
+.clear-following-button {
+  @extend .follow-button;
+  background-color: Transparent;
+  color: $lightTextColor;
+  border-color: $lightTextColor;
+}
