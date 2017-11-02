@@ -15,6 +15,9 @@ class Flight < ApplicationRecord
     flights.all.each do |flight|
       departure_location = flight.from
       arrival_location = flight.to
+      if departure_location.latitude == nil || arrival_location.latitude == nil
+        next
+      end
       line_feature = line_feature_structure
 
       add_or_increment_location(map_data, departure_location, :airport)
@@ -70,6 +73,9 @@ class Flight < ApplicationRecord
   def self.add_or_increment_waypoint_data(flight, feature_collection, line_feature)
     flight.waypoints.each do |waypoint|
       location = waypoint.location
+      if location.latitude == nil
+        next
+      end
       add_or_increment_location(feature_collection, location, :waypoint)
       line_feature[:geometry][:coordinates] << get_coordinates(location)
     end
@@ -101,8 +107,8 @@ class Flight < ApplicationRecord
           user_id: user.id,
           flight_date: r[:flight_date],
           aircraft_id: r[:aircraft_id],
-          from_id: Location.find_by(identifier: r[:from_id].try(:upcase)).try(:id),
-          to_id: Location.find_by(identifier: r[:to_id].try(:upcase)).try(:id),
+          from_id: find_location_from(r[:from_id]),
+          to_id: find_location_from(r[:to_id]),
           time_out: r[:time_out],
           time_in: r[:time_in],
           total_time: r[:total_time],
@@ -123,8 +129,8 @@ class Flight < ApplicationRecord
         user_id: user.id,
         flight_date: r["Date"],
         aircraft_id: r["Aircraft ID"],
-        from_id: Location.find_by(identifier: r["From"].try(:upcase)).try(:id),
-        to_id: Location.find_by(identifier: r["To"].try(:upcase)).try(:id),
+        from_id: find_location_from(r["From"]),
+        to_id: find_location_from(r["To"]),
         total_time: convert_time(r["Total Time"]),
         pic: convert_time(r["PIC"]),
       )
@@ -142,8 +148,8 @@ class Flight < ApplicationRecord
         user_id: user.id,
         flight_date: r["mcc_DATE"],
         aircraft_id: r["AC_REG"],
-        from_id: Location.find_by(identifier: r["AF_DEP"].try(:upcase)).try(:id),
-        to_id: Location.find_by(identifier: r["AF_ARR"].try(:upcase)).try(:id),
+        from_id: find_location_from(r["AF_DEP"]),
+        to_id: find_location_from(r["AF_ARR"]),
         time_out: r["TIME_DEP"],
         time_in: r["TIME_ARR"],
         total_time: r["TIME_TOTAL"].to_f/60,
@@ -184,8 +190,8 @@ class Flight < ApplicationRecord
         user_id: user.id,
         flight_date: r["Date"],
         aircraft_id: r["Aircraft ID"],
-        from_id: Location.find_by(identifier: route.first.try(:upcase)).try(:id),
-        to_id: Location.find_by(identifier: route.last.try(:upcase)).try(:id),
+        from_id: find_location_from(route.first),
+        to_id: find_location_from(route.last),
         pic: r["PIC"],
         total_time: r["Total Time"]
       )
@@ -193,7 +199,7 @@ class Flight < ApplicationRecord
         route.shift
         route.pop
         route.each do |waypoint|
-          f.waypoints.create(location_id: Location.find_by(identifier: waypoint.try(:upcase)).try(:id))
+          f.waypoints.create(location_id: find_location_from(waypoint))
         end
       end
     end
@@ -211,8 +217,8 @@ class Flight < ApplicationRecord
           user_id: user.id,
           flight_date: r["Date"],
           aircraft_id: r["Tail Number"],
-          from_id: Location.find_by(identifier: route.first.try(:upcase)).try(:id),
-          to_id: Location.find_by(identifier: route.last.try(:upcase)).try(:id),
+          from_id: find_location_from(route.first),
+          to_id: find_location_from(route.last),
           time_out: r["Engine Start"],
           time_in: r["Engine End"],
           pic: r["PIC"],
@@ -222,7 +228,7 @@ class Flight < ApplicationRecord
           route.shift
           route.pop
           route.each do |waypoint|
-            f.waypoints.create(location_id: Location.find_by(identifier: waypoint.try(:upcase)).try(:id))
+            f.waypoints.create(location_id: find_location_from(waypoint))
           end
         end
       end
@@ -239,8 +245,8 @@ class Flight < ApplicationRecord
         user_id: user.id,
         flight_date: r["DATE"],
         aircraft_id: r["AIRCRAFT IDENT"],
-        from_id: Location.find_by(identifier: route.first.try(:upcase)).try(:id),
-        to_id: Location.find_by(identifier: route.last.try(:upcase)).try(:id),
+        from_id: find_location_from(route.first),
+        to_id: find_location_from(route.last),
         pic: r["PILOT IN COMMAND"],
         total_time: r["DURATION"]
       )
@@ -248,7 +254,7 @@ class Flight < ApplicationRecord
         route.shift
         route.pop
         route.each do |waypoint|
-          f.waypoints.create(location_id: Location.find_by(identifier: waypoint.try(:upcase)).try(:id))
+          f.waypoints.create(location_id: find_location_from(waypoint))
         end
       end
     end
@@ -262,8 +268,8 @@ class Flight < ApplicationRecord
         user_id: user.id,
         flight_date: r["Date"],
         aircraft_id: r["Aircraft ID"],
-        from_id: Location.find_by(identifier: r["Departure"].try(:upcase)).try(:id),
-        to_id: Location.find_by(identifier: r["Destination"].try(:upcase)).try(:id),
+        from_id: find_location_from(r["Departure"]),
+        to_id: find_location_from(r["Destination"]),
         time_out: r["Time Out"],
         time_in: r["Time In"],
         pic: r["PIC Duration"],
@@ -283,8 +289,8 @@ class Flight < ApplicationRecord
         user_id: user.id,
         flight_date: r["date"],
         aircraft_id: r["aircraft_registration"],
-        from_id: Location.find_by(identifier: r["departure_airport"].try(:upcase)).try(:id),
-        to_id: Location.find_by(identifier: r["arrival_airport"].try(:upcase)).try(:id),
+        from_id: find_location_from(r["departure_airport"]),
+        to_id: find_location_from(r["arrival_airport"]),
         time_out: r["departure_time"],
         time_in: r["arrival_time"],
         pic: convert_time(r["pic"]),
@@ -302,8 +308,8 @@ class Flight < ApplicationRecord
         user_id: user.id,
         flight_date: r["Date"],
         aircraft_id: r["AircraftID"],
-        from_id: Location.find_by(identifier: r["From"].try(:upcase)).try(:id),
-        to_id: Location.find_by(identifier: r["To"].try(:upcase)).try(:id),
+        from_id: find_location_from(r["From"]),
+        to_id: find_location_from(r["To"]),
         time_out: r["TimeOut"],
         time_in: r["TimeIn"],
         pic: r["PIC"],
@@ -324,8 +330,8 @@ class Flight < ApplicationRecord
         user_id: user.id,
         flight_date: r["Depature_Date"],
         aircraft_id: r["Registration"],
-        from_id: Location.find_by(identifier: r["ICAO_Depature"].try(:upcase)).try(:id),
-        to_id: Location.find_by(identifier: r["ICAO_Destination"].try(:upcase)).try(:id),
+        from_id: find_location_from(r["ICAO_Depature"]),
+        to_id: find_location_from(r["ICAO_Destination"]),
         time_out: r["Off_Block"],
         time_in: r["On_Block"],
         pic: r["Block_Time"],
@@ -342,7 +348,7 @@ class Flight < ApplicationRecord
       if route.first == logbook_row[from_column] then route.shift end
       if route.last == logbook_row[to_column] then route.pop end
       route.each do |waypoint|
-        waypoints.create(location_id: Location.find_by(identifier: waypoint.try(:upcase)).try(:id))
+        waypoints.create(location_id: find_location_from(waypoint))
       end
     end
   end
@@ -374,7 +380,6 @@ private
     /^\d{1,2}\/{1}\d{1,2}\/{1}\d{2,4}$/
   end
 
-
   def self.sniff(path)
     delimiters = ['","',"\"\t\"",'";"']
     first_line = File.open(path).first
@@ -398,21 +403,29 @@ private
 
   def self.get_safelog_departure(row)
     if identifier = row["Mission Departure"]
-      Location.find_by(identifier: identifier).try(:id)
+      find_location_from(identifier)
     elsif identifier = row["Flight Details From"]
-      Location.find_by(identifier: identifier).try(:id)
+      find_location_from(identifier)
     elsif identifier = row["Flight Details Departure"]
-      Location.find_by(identifier: identifier).try(:id)
+      find_location_from(identifier)
     end
   end
 
   def self.get_safelog_arrival(row)
     if identifier = row["Mission Arrival"]
-      Location.find_by(identifier: identifier).try(:id)
+      find_location_from(identifier)
     elsif identifier = row["Flight Details To"]
-      Location.find_by(identifier: identifier).try(:id)
+      find_location_from(identifier)
     elsif identifier = row["Flight Details Arrival"]
-      Location.find_by(identifier: identifier).try(:id)
+      find_location_from(identifier)
+    end
+  end
+
+  def self.find_location_from(identifier)
+    if location = Location.find_by(identifier: identifier.try(:upcase)).try(:id)
+      location
+    else
+      Location.find_by(identifier: "XXXX").id
     end
   end
 
@@ -451,6 +464,19 @@ private
         coordinates: []
       }
     }
+  end
+
+  def self.flights_with_missing_identifiers_for(user)
+    unknown_placeholder = Location.find_by(identifier:"XXXX")
+    user_flight_ids = user.flights.pluck(:id)
+
+    missing_froms = self.where(user_id: user.id, from_id: unknown_placeholder.id)
+    missing_tos = self.where(user_id: user.id, to_id: unknown_placeholder.id)
+    missing_waypoint_flights = FlightWaypoint.where(flight_id: user_flight_ids, location_id: unknown_placeholder.id).pluck(:flight_id)
+    flights_from_waypoints = Flight.where(id: missing_waypoint_flights)
+
+    all_flights = missing_froms + missing_tos + flights_from_waypoints
+    all_flights.uniq
   end
 
 end
