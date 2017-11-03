@@ -37,7 +37,7 @@
       </div>
 
       <% nonconforming_flights = Flight.flights_with_missing_identifiers_for(current_user) %>
-      <% if nonconforming_flight_count = nonconforming_flights.count > 0 %>
+      <% if nonconforming_flight_count = nonconforming_flights.count > 0 && params[:action] != "search" %>
 
         <div class="alert alert-warning" role="alert">
           <h4 class="alert-heading">Heads up</h4>
