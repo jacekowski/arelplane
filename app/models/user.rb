@@ -82,6 +82,6 @@ class User < ApplicationRecord
     flight_results   = self.flights.where(from_id: locations).or(self.flights.where(to_id: locations))
     waypoint_results = Flight.find(self.waypoints.where(location_id: locations).pluck(:flight_id))
     search_results = flight_results + waypoint_results
-    Kaminari.paginate_array(search_results.sort_by(&:flight_date).reverse)
+    Kaminari.paginate_array(search_results.uniq.sort_by(&:flight_date).reverse)
   end
 end

@@ -35,6 +35,63 @@
           </div>
         </div>
       </div>
+
+      <% nonconforming_flights = Flight.flights_with_missing_identifiers_for(current_user) %>
+      <% if nonconforming_flight_count = nonconforming_flights.count > 0 && params[:action] != "search" %>
+
+        <div class="alert alert-warning" role="alert">
+          <h4 class="alert-heading">Heads up</h4>
+          <%= nonconforming_flight_count %> flights had identifiers that aren't in our system. Cross check them with your logbook. If We're missing an identifier, send us a message from your <%= link_to 'profile page', username_path(current_user.username) %>. If you mistyped an identifier, just update the entry below, or fix it in your logbook and re upload it.
+        </div>
+
+        <table class='table warningTable table-striped table-inverse table-bordered'>
+          <thead>
+            <tr>
+              <th>Flight date</th>
+              <th>Aircraft</th>
+              <th>Origin</th>
+              <th>Destination</th>
+              <th>Time out</th>
+              <th>Time in</th>
+              <th>Total time</th>
+              <th>Pic</th>
+              <th>Distance</th>
+              <th colspan="2"></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% nonconforming_flights.each do |flight| %>
+              <tr>
+                <td><%= flight.flight_date.to_date.to_formatted_s(:long) rescue flight.flight_date %>
+                  <% if flight.waypoints.present? %>
+                    <br><br>
+                    Waypoints:
+                    <br>
+                    <% flight.waypoints.each do |waypoint| %>
+                        <p class="ml-4">
+                          <%= Location.find(waypoint.location_id).name_and_identifier %>
+                          <%= link_to 'Delete', waypoint_path(waypoint), method: :delete, data: { confirm: 'Are you sure?' }, remote: true, class: "ml-2 delete_waypoint" %>
+                        </p>
+                    <% end %>
+                  <% end %>
+                </td>
+                <td><%= flight.aircraft_id %></td>
+                <td><%= Location.find(flight.from_id).name_and_identifier %></td>
+                <td><%= Location.find(flight.to_id).name_and_identifier %></td>
+                <td><%= flight.time_out %></td>
+                <td><%= flight.time_in %></td>
+                <td><%= flight.total_time.try(:round, 1) %></td>
+                <td><%= flight.pic.try(:round, 1) %></td>
+                <td><%= flight.distance %></td>
+                <td><%= link_to 'Delete', flight, method: :delete, data: { confirm: 'Are you sure?' }, remote: true, class: 'delete_flight' %></td>
+                <td><%= link_to 'Edit', edit_flight_path(flight) %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% end %>
+
       <table class='table table-striped table-inverse table-bordered'>
         <thead>
           <tr>
@@ -72,8 +129,8 @@
               <td><%= Location.find(flight.to_id).name_and_identifier %></td>
               <td><%= flight.time_out %></td>
               <td><%= flight.time_in %></td>
-              <td><%= flight.total_time %></td>
-              <td><%= flight.pic %></td>
+              <td><%= flight.total_time.try(:round, 1) %></td>
+              <td><%= flight.pic.try(:round, 1) %></td>
               <td><%= flight.distance %></td>
               <td><%= link_to 'Delete', flight, method: :delete, data: { confirm: 'Are you sure?' }, remote: true, class: 'delete_flight' %></td>
               <td><%= link_to 'Edit', edit_flight_path(flight) %></td>

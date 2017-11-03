@@ -6,7 +6,7 @@ class FlightsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @flights = current_user.flights.order('flight_date DESC').page params[:page]
+    @flights = current_user.flights.order('created_at DESC').page params[:page]
   end
 
   def search
