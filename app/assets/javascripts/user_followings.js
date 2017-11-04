@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  $('input[class="following_button"]').hover(
+  $('input[class="following-button"]').hover(
       function() {
           var $this = $(this); // caching $(this)
           $this.data('initialText', $this.val());
@@ -10,5 +10,4 @@ $(document).ready(function() {
           $this.val($this.data('initialText'));
       }
   );
-
 });
