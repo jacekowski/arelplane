@@ -6,6 +6,6 @@ class UploadErrorMailer < ApplicationMailer
     @file = file
 
     attachments[@file.original_filename] = File.read(@file.tempfile)
-    mail(to: 'arelenglish@gmail.com', subject: 'another upload error')
+    mail(to: 'arel@arelplane.com', subject: 'another upload error')
   end
 end

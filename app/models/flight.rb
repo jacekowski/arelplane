@@ -334,8 +334,8 @@ class Flight < ApplicationRecord
         to_id: find_location_from(r["ICAO_Destination"]),
         time_out: r["Off_Block"],
         time_in: r["On_Block"],
-        pic: r["Block_Time"],
-        total_time: r["Flight_Time_Total"]
+        pic: convert_time(r["Block_Time"]),
+        total_time: convert_time(r["Block_Time"])
       )
       f.save
     end
