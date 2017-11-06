@@ -1,8 +1,8 @@
 <% if current_user %>
   <%= form_for(current_user.active_relationships.build, remote: true) do |f| %>
     <%= f.hidden_field :following_id, value: @user.id %>
-    <%= f.submit 'FOLLOW', class: 'follow-button-normal' %>
+    <%= f.submit 'LIKE 🤩', class: 'follow-button-normal' %>
   <% end %>
 <% else %>
-  <%= link_to "FOLLOW", new_user_registration_path, class: 'btn btn-primary' %>
+  <%= link_to "LIKE 🤩", new_user_registration_path, class: 'btn btn-primary' %>
 <% end %>

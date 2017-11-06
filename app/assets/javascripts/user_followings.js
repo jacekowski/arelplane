@@ -3,7 +3,7 @@ $(document).ready(function() {
       function() {
           var $this = $(this); // caching $(this)
           $this.data('initialText', $this.val());
-          $this.val("UNFOLLOW");
+          $this.val("UNLIKE 🤨");
       },
       function() {
           var $this = $(this); // caching $(this)
