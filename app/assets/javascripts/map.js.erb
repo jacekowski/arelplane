@@ -132,6 +132,7 @@ $(document).ready(function(){
     L.tileLayer('https://api.mapbox.com/styles/v1/arelenglish/cj68kq87a1gqk2srsnul2iwee/tiles/256/{z}/{x}/{y}?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
         maxZoom: 18,
+        worldCopyJump: true,
         accessToken: 'pk.eyJ1IjoiYXJlbGVuZ2xpc2giLCJhIjoiY2l6ZzNrNHZ3MDB1cDMzb3dqdmh3emhjbSJ9.1WoDWsWNnIg-Wq8LPf1j-A'
     }).addTo(mymap);
   }
