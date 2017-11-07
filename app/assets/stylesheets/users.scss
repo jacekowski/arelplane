@@ -1,3 +1,6 @@
+@import "colors";
+@import "fonts";
+
 #user-map {}
 
 .user-map {
@@ -6,26 +9,26 @@
 }
 
 #user-sticky-sidebar {
-  background-color: #343234;
+  background-color: $primaryTextColor;
   z-index: 0;
 }
 
 #top-background-flag {
-  border-top: 2px solid #C2C2C2; /* top border on the parent */
+  border-top: 2px solid $lightSubTextColor; /* top border on the parent */
   position: relative;
   height: auto;
   overflow: hidden;
 }
 
 #top-background-flag:after {
-  background-color: #5DCAD3;
+  background-color: $secondaryColor;
   -webkit-transform: skewY(-8deg);
   -moz-transform: skewY(-8deg);
   -ms-transform: skewY(-8deg);
   -o-transform: skewY(-8deg);
   transform: skewY(-8deg);
   transform-origin: bottom left;
-  border-bottom: 2px solid #C2C2C2; /* bottom border skews with the object */
+  border-bottom: 2px solid $lightSubTextColor; /* bottom border skews with the object */
   content: ' ';
   display: block;
   height: 100%;
@@ -36,15 +39,15 @@
 }
 
 #mid-background-flag {
-  background-color: #5DCAD3;
+  background-color: $secondaryColor;
   height: 15rem;
   -webkit-transform: skewY(8deg);
   -moz-transform: skewY(8deg);
   -ms-transform: skewY(8deg);
   -o-transform: skewY(8deg);
   transform: skewY(8deg);
-  border-top: 2px solid #C2C2C2;
-  border-bottom: 2px solid #C2C2C2;
+  border-top: 2px solid $lightSubTextColor;
+  border-bottom: 2px solid $lightSubTextColor;
 }
 
 #background-flag-text {
@@ -108,14 +111,14 @@
 }
 
 .lb-provider-name {
-  color: #7F7F7F;
+  color: $secondaryButtonColor;
   font-size: 1rem;
 }
 
 .provider-btn {
   color: white;
   width: 6.1rem;
-  background-color: #7F7F7F;
+  background-color: $secondaryButtonColor;
   letter-spacing: 0.1rem;
 }
 
@@ -124,8 +127,43 @@
 }
 
 .form-background {
-  background-color: #7F7F7F;
+  background-color: $secondaryButtonColor;
 }
+
+// Follow/like button
+
+.follow-button {
+  border: 0.0625rem solid $primaryTextColor;
+  font-size: 1.125rem;
+  font-weight: $semiBold;
+  font-family: $baseFont;
+  cursor: pointer;
+}
+
+.follow-button-normal {
+  @extend .follow-button;
+  background-color: transparent;
+  color: $primaryTextColor;
+}
+.following-button {
+  @extend .follow-button;
+  background-color: $primaryTextColor;
+  color: white;
+}
+.clear-follow-button {
+  @extend .follow-button;
+  background-color: Transparent;
+  color: $lightTextColor;
+  border-color: $lightTextColor;
+}
+.clear-following-button {
+  @extend .follow-button;
+  background-color: Transparent;
+  color: $lightTextColor;
+  border-color: $lightTextColor;
+}
+
+// end follow/like button
 
 @media (max-width: 767px) {
   .user-map {
