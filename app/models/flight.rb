@@ -182,8 +182,9 @@ class Flight < ApplicationRecord
   end
 
   def self.parse_zululog(logbook_csv, user)
+    file = logbook_csv.read.gsub(/[^\.0-9A-Za-z\s,;:@"\/_()&\\-]/, '')
     user.flights.destroy_all
-    CSV.foreach(logbook_csv, {headers: true}) do |row|
+    CSV.parse(file, headers: true, skip_blanks: true) do |row|
       r = row.to_hash
       route = r["Route"].scan(/[\w']+/)
       f = Flight.new(
