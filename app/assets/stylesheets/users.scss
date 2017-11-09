@@ -145,11 +145,30 @@
   background-color: transparent;
   color: $primaryTextColor;
 }
+
 .following-button {
   @extend .follow-button;
   background-color: $primaryTextColor;
-  color: white;
+  color: $lightTextColor;
 }
+
+.following-button-text {
+  border-right-color: $lightSubTextColor;
+}
+
+.following-button-text:hover {
+  border-right-color: $lightSubTextColor;
+}
+
+.following-count {
+  border-left-color: $lightSubTextColor;
+  color: $lightSubTextColor;
+}
+
+.following-count:hover {
+  border-left-color: $lightSubTextColor;
+}
+
 .clear-follow-button {
   @extend .follow-button;
   background-color: Transparent;

@@ -2,13 +2,17 @@
   <%= form_for(current_user.active_relationships.build, remote: true) do |f| %>
     <%= f.hidden_field :following_id, value: @user.id %>
     <div class="btn-group">
-      <%#= f.submit "LIKE", class: 'btn follow-button-normal' %>
       <%= button_tag( class: "btn follow-button-normal") do %>
-        <%= image_tag "icons/heart_icon.png", height: '17', width: '19', class: 'mb-1' %> Like
+        <%= image_tag "icons/heart_icon.png", height: '17', width: '19', class: 'mb-1' %><span> Like</span>
       <% end %>
       <p class="btn follow-button-normal"><%= @user.followers.count %></p>
     </div>
   <% end %>
 <% else %>
-  <%= link_to "LIKE 🤩", new_user_registration_path, class: 'btn btn-primary' %>
+  <div class="btn-group">
+    <%= link_to new_user_registration_path, class: "btn follow-button-normal" do %>
+      <%= image_tag "icons/heart_icon.png", height: '17', width: '19', class: 'mb-1' %> Like
+    <% end %>
+    <p class="btn follow-button-normal"><%= @user.followers.count %></p>
+  </div>
 <% end %>
