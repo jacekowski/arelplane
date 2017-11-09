@@ -6,8 +6,11 @@
         <%= link_to image_tag('settings.png', height: '23', width: '23'), edit_user_registration_path, class: 'ml-2' %>
       <% end %>
     </div>
-    <div class='sub-text pl-3 mb-5'>
+    <div class='sub-text pl-3'>
       Joined <%= @user.created_at.strftime('%B %e, %Y') %>
+    </div>
+    <div class="sub-text pl-3 mb-5 mt-2">
+      <%= render 'follow_form' %>
     </div>
   </div>
 </div>

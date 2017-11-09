@@ -13,6 +13,28 @@ class User < ApplicationRecord
   has_many :locations, through: :flights
   has_many :waypoints, through: :flights
 
+  has_many :passive_relationships, foreign_key: :following_id,
+                                class_name: 'UserFollowing',
+                                 dependent: :destroy
+  has_many :followers, through: :passive_relationships, source: :follower
+
+  has_many :active_relationships, foreign_key: :follower_id,
+                                   class_name: 'UserFollowing',
+                                    dependent: :destroy
+  has_many :following, through: :active_relationships, source: :following
+
+  def follow_user(other_user)
+    following << other_user
+  end
+
+  def unfollow_user(other_user)
+    following.delete(other_user)
+  end
+
+  def following_user?(other_user)
+    following.include?(other_user)
+  end
+
   def locations
     (waypoints.pluck(:location_id) + airports).flatten
   end
