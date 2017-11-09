@@ -1,10 +1,16 @@
-// $(document).ready(function(){
-//   $("button.following-button-text").hover(
-//     function () {
-//       console.log($(this).find('img').attr('src'))
-//     },
-//     function () {
-//         alert("out");
-//     }
-//   );
-// });
+$(document).ready(function() {
+    updateButton();
+});
+
+function updateButton() {
+  $("button.following-button-text").hover(
+    function () {
+      $(this).find('img').attr('src', "<%= asset_path('icons/broken_heart_icon.png') %>")
+      $(this).find('span').text(" Unlike")
+    },
+    function () {
+      $(this).find('img').attr('src', "<%= asset_path('icons/heart_icon_solid.png') %>")
+      $(this).find('span').text(" Liked")
+    }
+  );
+}
