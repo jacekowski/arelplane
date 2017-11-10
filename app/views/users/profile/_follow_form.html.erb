@@ -1,11 +1,11 @@
 <div class="follow_button">
   <% if current_user %>
     <% if current_user.following_user?(@user) %>
-      <%= render 'unfollow_button' %>
+      <%= render 'users/profile/unfollow_button' %>
     <% else %>
-      <%= render 'follow_button' %>
+      <%= render 'users/profile/follow_button' %>
     <% end %>
   <% else %>
-    <%= render 'follow_button' %>
+    <%= render 'users/profile/follow_button' %>
   <% end %>
 </div>
