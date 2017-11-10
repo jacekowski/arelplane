@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  root to: 'pages#index'
+  authenticated do
+    root :to => 'users#home', as: :authenticated
+  end
+  root :to => 'pages#index'
+
   get 'upload_instructions', to: 'pages#upload_instructions'
 
   namespace :api, constraints: {format: :json} do
