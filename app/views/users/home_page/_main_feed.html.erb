@@ -1,0 +1,3 @@
+<% FlightFeed.feed.each do |user_id| %>
+  <p><%= User.find(user_id).name %></p>
+<% end %>
