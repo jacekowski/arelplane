@@ -1,7 +1,48 @@
-<div class="card m-2">
-  <%= image_tag 'demo-img.png', class: 'card-img-top', alt: 'Map image'%>
-  <div class="card-body">
-    <h4 class="card-title">Card title</h4>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+<%= link_to user_path(current_user) do %>
+  <div class="card m-4 user_card">
+    <%= image_tag 'demo-img.png', class: 'card-img-top', alt: 'Map image'%>
+    <div class="card-body">
+      <h4 class="card-title name"><%= current_user.name %></h4>
+      <p class="subtitle">Joined <%= current_user.created_at.strftime('%B %e, %Y') %></p>
+      <hr>
+      <div class="row text-center">
+        <div class="col-4 stats">
+          <div class="row value">
+            <div class="col-12">
+              <%= current_user.flights.count %>
+            </div>
+          </div>
+          <div class="row heading">
+            <div class="col-12">
+              Flights
+            </div>
+          </div>
+        </div>
+        <div class="col-4 stats">
+          <div class="row value">
+            <div class="col-12">
+              <%= current_user.num_airports %>
+            </div>
+          </div>
+          <div class="row heading">
+            <div class="col-12">
+              Airports
+            </div>
+          </div>
+        </div>
+        <div class="col-4 stats">
+          <div class="row value">
+            <div class="col-12">
+              <%= current_user.total_flight_hours %>
+            </div>
+          </div>
+          <div class="row heading">
+            <div class="col-12">
+              Hours
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+<% end %>

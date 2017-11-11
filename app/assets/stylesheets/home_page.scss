@@ -1,6 +1,35 @@
 @import "colors";
+@import "fonts";
 
-#home-sticky-sidebar {
-  background-color: $homeSidebarBackground;
-  z-index: 0;
+.home_page {
+  #sticky-sidebar {
+    z-index: 0;
+  }
+  .user_card {
+    color: $primaryTextColor;
+    font-family: $baseFont;
+    .stats {
+      .value {
+        font-size: 1.125rem;
+        font-weight: $black;
+      }
+      .heading {
+        font-size: 1rem;
+        font-weight: $regular;
+      }
+    }
+    .name {
+      font-size: 1.875rem;
+      font-weight: $black;
+    }
+    .subtitle {
+      font-size: 1rem;
+      font-weight: $regular;
+      color: $lightSubTextColor;
+    }
+  }
+  #main_feed {
+    min-height: 100vh;
+    background-color: $feedBackground;
+  }
 }
