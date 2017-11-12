@@ -1,10 +1,10 @@
-<% FlightFeed.feed.each do |user_id| %>
-  <% user = User.find(user_id)%>
+<% @feed.user_feed.each do |user| %>
   <%= link_to user_path(user) do %>
     <div class="card m-4 user_card">
       <%= image_tag 'demo-img.png', class: 'card-img-top', alt: 'Map image'%>
       <div class="card-body">
         <h4 class="card-title name"><%= user.name %></h4>
+        <p>added <%= user.lastest_upload.count %> new flights <%= time_ago_in_words(user.datetime_of_last_flight) %></p> 
         <p class="subtitle">Joined <%= user.created_at.strftime('%B %e, %Y') %></p>
         <hr>
         <div class="row text-center">

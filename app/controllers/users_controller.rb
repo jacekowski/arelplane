@@ -15,6 +15,7 @@ class UsersController < ApplicationController
 
   def home
     @user = current_user
+    @feed = NewsFeed.new
   end
 
   private
