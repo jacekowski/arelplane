@@ -1,3 +1,51 @@
 <% FlightFeed.feed.each do |user_id| %>
-  <p><%= User.find(user_id).name %></p>
+  <% user = User.find(user_id)%>
+  <%= link_to user_path(user) do %>
+    <div class="card m-4 user_card">
+      <%= image_tag 'demo-img.png', class: 'card-img-top', alt: 'Map image'%>
+      <div class="card-body">
+        <h4 class="card-title name"><%= user.name %></h4>
+        <p class="subtitle">Joined <%= user.created_at.strftime('%B %e, %Y') %></p>
+        <hr>
+        <div class="row text-center">
+          <div class="col-4 stats">
+            <div class="row value">
+              <div class="col-12">
+                <%= user.flights.count %>
+              </div>
+            </div>
+            <div class="row heading">
+              <div class="col-12">
+                Flights
+              </div>
+            </div>
+          </div>
+          <div class="col-4 stats">
+            <div class="row value">
+              <div class="col-12">
+                <%= user.num_airports %>
+              </div>
+            </div>
+            <div class="row heading">
+              <div class="col-12">
+                Airports
+              </div>
+            </div>
+          </div>
+          <div class="col-4 stats">
+            <div class="row value">
+              <div class="col-12">
+                <%= user.total_flight_hours %>
+              </div>
+            </div>
+            <div class="row heading">
+              <div class="col-12">
+                Hours
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
 <% end %>
