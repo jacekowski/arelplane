@@ -3,6 +3,6 @@
     <%= button_tag( class: "btn following-button following-button-text") do %>
       <%= image_tag "icons/heart_icon_solid.png", height: '17', width: '19', class: 'mb-1 like-icon' %><span> Liked</span>
     <% end %>
-    <p class="btn following-button following-count"><%= @user.followers.count %></p>
+    <span class="btn following-button following-count"><%= @user.followers.count %></span>
   </div>
 <% end %>
