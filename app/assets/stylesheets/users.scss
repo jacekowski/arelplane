@@ -1,16 +1,34 @@
 @import "colors";
 @import "fonts";
 
+.user-profile {
+  background-color: $darkBackgroundColor;
+  .joined-date {
+    color: $lightSubTextColor;
+  }
+  #sticky-sidebar {
+    background-color: $primaryTextColor;
+    z-index: 0;
+    .top-values {
+      .value {
+        font-size: 1.5rem;
+        font-weight: $black;
+        color: $primaryTextColor;
+      }
+      .title {
+        font-size: 1rem;
+        font-weight: $regular;
+        color: $lightSubTextColor;
+      }
+    }
+  }
+}
+
 #user-map {}
 
 .user-map {
   min-height: 100vh;
   min-width: 100%;
-}
-
-#user-sticky-sidebar {
-  background-color: $primaryTextColor;
-  z-index: 0;
 }
 
 #top-background-flag {
@@ -21,7 +39,7 @@
 }
 
 #top-background-flag:after {
-  background-color: $secondaryColor;
+  background-color: white;
   -webkit-transform: skewY(-8deg);
   -moz-transform: skewY(-8deg);
   -ms-transform: skewY(-8deg);

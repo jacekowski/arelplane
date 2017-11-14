@@ -42,21 +42,21 @@
   height: 2.7rem;
 }
 
-.warningTable, .warningTable td{
+.warningTable, .warningTable td {
    border-color: $warningColor;
 }
 
-.warningTable, .warningTable th{
+.warningTable, .warningTable th {
    border-color: $warningColor !important;
 }
 
-.navbar-nav > li{
+.navbar-nav > li {
   margin-right: 1rem;
   font-size: 1.125rem;
   font-family: $baseFont;
   font-weight: $semiBold;
 }
 
-.nav-item {
-
+.navbar-dark .navbar-nav > li > a:hover, .navbar-dark .navbar-nav > li > a:hover {
+    color: $linkColor !important;
 }

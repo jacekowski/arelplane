@@ -2,6 +2,7 @@
 @import "fonts";
 
 .home_page {
+  background-color: $backgroundColor;
   font-family: $baseFont;
   #sticky-sidebar {
     z-index: 0;
