@@ -2,34 +2,89 @@
 @import "fonts";
 
 .home_page {
+  font-family: $baseFont;
   #sticky-sidebar {
     z-index: 0;
-  }
-  .user_card {
-    color: $primaryTextColor;
-    font-family: $baseFont;
-    .stats {
-      .value {
-        font-size: 1.125rem;
+    .user_card {
+      .name {
+        font-size: 1.875rem;
         font-weight: $black;
+        color: $primaryTextColor;
       }
-      .heading {
+      .subtitle {
         font-size: 1rem;
         font-weight: $regular;
+        color: $lightSubTextColor;
+      }
+      .stats {
+        .value {
+          font-size: 1.125rem;
+          font-weight: $black;
+          color: $primaryTextColor;
+        }
+        .heading {
+          font-size: 1rem;
+          font-weight: $regular;
+          color: $lightSubTextColor;
+        }
+      }
+      .link_section {
+        font-size: 1rem;
+        font-weight: $regular;
+        color: $linkColor;
       }
     }
-    .name {
-      font-size: 1.875rem;
-      font-weight: $black;
-    }
-    .subtitle {
-      font-size: 1rem;
-      font-weight: $regular;
-      color: $lightSubTextColor;
+    .flights_leaderboard_card {
+      .title {
+        font-size: 1.125rem;
+        font-weight: $black;
+        color: $primaryTextColor;
+      }
+      .name a {
+        font-size: 1.125rem;
+        font-weight: $regular;
+        color: $linkColor;
+      }
+      .count {
+        font-size: 1rem;
+        font-weight: $regular;
+        color: $lightSubTextColor;
+      }
     }
   }
   #main_feed {
     min-height: 100vh;
-    background-color: $feedBackground;
+    .feed_card {
+      .date {
+        font-size: 1.125rem;
+        font-weight: $regular;
+        color: $lightSubTextColor;
+      }
+      .name {
+        font-size: 1.5rem;
+        font-weight: $black;
+        color: $primaryTextColor;
+      }
+      .flight-count {
+        font-weight: $regular;
+      }
+      .stats {
+        .value {
+          font-size: 1.5rem;
+          font-weight: $black;
+          color: $primaryTextColor;
+        }
+        .heading {
+          font-size: 1rem;
+          font-weight: $regular;
+          color: $lightSubTextColor;
+        }
+      }
+      .link_section {
+        font-size: 1rem;
+        font-weight: $regular;
+        color: $linkColor;
+      }
+    }
   }
 }

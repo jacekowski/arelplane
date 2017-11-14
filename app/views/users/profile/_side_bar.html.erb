@@ -10,7 +10,7 @@
       Joined <%= @user.created_at.strftime('%B %e, %Y') %>
     </div>
     <div class="sub-text pl-3 mb-5 mt-2">
-      <%= render 'users/profile/follow_form' %>
+      <%= render 'users/profile/follow_form', user: @user %>
     </div>
   </div>
 </div>

@@ -1,51 +1,83 @@
+<!-- TODO: add infinite scroll -->
 <% @feed.user_feed.each do |user| %>
-  <%= link_to user_path(user) do %>
-    <div class="card m-4 user_card">
-      <%= image_tag 'demo-img.png', class: 'card-img-top', alt: 'Map image'%>
-      <div class="card-body">
-        <h4 class="card-title name"><%= user.name %></h4>
-        <p>added <%= user.lastest_upload.count %> new flights <%= time_ago_in_words(user.datetime_of_last_flight) %></p> 
-        <p class="subtitle">Joined <%= user.created_at.strftime('%B %e, %Y') %></p>
-        <hr>
-        <div class="row text-center">
-          <div class="col-4 stats">
-            <div class="row value">
-              <div class="col-12">
-                <%= user.flights.count %>
-              </div>
-            </div>
-            <div class="row heading">
-              <div class="col-12">
-                Flights
-              </div>
+  <% if user == current_user then next end %>
+  <div class="card mb-4 feed_card">
+    <%#= image_tag 'demo-img.png', class: 'card-img-top', alt: 'Map image'%>
+    <div class="card-body">
+      <span class="date"><%= time_ago_in_words(user.datetime_of_last_flight) %> ago</span>
+      <div class="row">
+        <div class="col-8">
+          <h4 class="card-title name"><%= user.name %> <span class="flight-count">added <%= pluralize(number_with_delimiter(user.lastest_upload.count), "new flight") %> to their Map.</span></h4>
+        </div>
+        <div class="col-4">
+          <div class="float-right">
+            <%= render 'users/profile/follow_form', user: user %>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="row text-center">
+        <div class="col-2 stats">
+          <div class="row value">
+            <div class="col-12">
+              <%= number_with_delimiter(user.flights.count) %>
             </div>
           </div>
-          <div class="col-4 stats">
-            <div class="row value">
-              <div class="col-12">
-                <%= user.num_airports %>
-              </div>
-            </div>
-            <div class="row heading">
-              <div class="col-12">
-                Airports
-              </div>
+          <div class="row heading">
+            <div class="col-12">
+              Flights
             </div>
           </div>
-          <div class="col-4 stats">
-            <div class="row value">
-              <div class="col-12">
-                <%= user.total_flight_hours %>
-              </div>
+        </div>
+        <div class="col-2 stats">
+          <div class="row value">
+            <div class="col-12">
+              <%= number_with_delimiter(user.num_airports) %>
             </div>
-            <div class="row heading">
-              <div class="col-12">
-                Hours
-              </div>
+          </div>
+          <div class="row heading">
+            <div class="col-12">
+              Airports
+            </div>
+          </div>
+        </div>
+        <div class="col-2 stats">
+          <div class="row value">
+            <div class="col-12">
+              <%= number_with_delimiter(user.total_flight_hours) %>
+            </div>
+          </div>
+          <div class="row heading">
+            <div class="col-12">
+              Hours
+            </div>
+          </div>
+        </div>
+        <div class="col-2 stats">
+          <div class="row value">
+            <div class="col-12">
+              <%= number_with_delimiter(user.num_regions) %>
+            </div>
+          </div>
+          <div class="row heading">
+            <div class="col-12">
+              Regions
             </div>
           </div>
         </div>
       </div>
     </div>
-  <% end %>
+    <ul class="list-group list-group-flush">
+      <%= link_to user_path(user) do %>
+        <li class="list-group-item link_section">
+          <span>
+            View their Map
+          </span>
+          <span class="float-right">
+            <%= image_tag 'icons/chevron_icon.png', width: 12, height: 10 %>
+          </span>
+        </li>
+      <% end %>
+    </ul>
+  </div>
 <% end %>

@@ -1,4 +1,5 @@
 @import "colors";
+@import "fonts";
 
 .btn-primary {
   background-color: #00CED6;
@@ -11,8 +12,8 @@
 
 .navbar-brand {
   color: white;
-  font-family: 'Nunito Sans', sans-serif;
-  font-weight: 900;
+  font-family: $baseFont;
+  font-weight: $black;
   font-size: 1.5rem;
   letter-spacing: 0.25rem;
 }
@@ -47,4 +48,15 @@
 
 .warningTable, .warningTable th{
    border-color: $warningColor !important;
+}
+
+.navbar-nav > li{
+  margin-right: 1rem;
+  font-size: 1.125rem;
+  font-family: $baseFont;
+  font-weight: $semiBold;
+}
+
+.nav-item {
+
 }

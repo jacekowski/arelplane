@@ -96,4 +96,8 @@ class User < ApplicationRecord
   def lastest_upload
     flights.where(created_at: date_of_last_flight.midnight..date_of_last_flight.end_of_day)
   end
+
+  def self.most_flights
+    left_joins(:flights).group(:id).order('COUNT(flights.id) DESC').limit(10)
+  end
 end
