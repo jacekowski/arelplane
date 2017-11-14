@@ -76,11 +76,18 @@
     </div>
   </div>
 </div>
-<div class="row pl-3 mt-3">
-  <div class="col-12">
-    <p class="recent-updates">
+<div class="row pl-3 mt-3 recent-updates">
+  <div class="col-11">
+    <p class="title">
       RECENT UPDATES
     </p>
+    <% @user.recent_updates.each do |update| %>
+      <p class="entry">
+        <span class="name"><%= @user.name %></span> added <%= pluralize(number_with_delimiter(update.last), 'new flight') %> to their Map.
+        <br>
+        <span class="date"><%= time_ago_in_words(update.first) %> ago</span>
+      </p>
+    <% end %>
   </div>
 </div>
 <div class='row mt-5 mb-5 align-center'>
