@@ -7,7 +7,7 @@
     color: $lightSubTextColor;
   }
   #sticky-sidebar {
-    background-color: $primaryTextColor;
+    background-color: $profileSidebarBackground;
     z-index: 0;
     .top-values {
       .value {
@@ -21,6 +21,23 @@
         color: $lightSubTextColor;
       }
     }
+    .stats {
+      .number {
+        font-size: 1.125rem;
+        font-weight: $black;
+        color: $primaryTextColor;
+      }
+      .title {
+        font-size: 1rem;
+        font-weight: $regular;
+        color: $lightSubTextColor;
+      }
+    }
+    .recent-updates {
+      font-size: 1rem;
+      font-weight: $extraBold;
+      color: $primaryTextColor;
+    }
   }
 }
 
@@ -32,7 +49,7 @@
 }
 
 #top-background-flag {
-  border-top: 2px solid $lightSubTextColor; /* top border on the parent */
+  border-top: 1px solid $flagBorder; /* top border on the parent */
   position: relative;
   height: auto;
   overflow: hidden;
@@ -46,7 +63,7 @@
   -o-transform: skewY(-8deg);
   transform: skewY(-8deg);
   transform-origin: bottom left;
-  border-bottom: 2px solid $lightSubTextColor; /* bottom border skews with the object */
+  border-bottom: 1px solid $flagBorder; /* bottom border skews with the object */
   content: ' ';
   display: block;
   height: 100%;

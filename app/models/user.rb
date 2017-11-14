@@ -100,4 +100,8 @@ class User < ApplicationRecord
   def self.most_flights
     left_joins(:flights).group(:id).order('COUNT(flights.id) DESC').limit(10)
   end
+
+  def group_flights_by_created_at
+
+  end
 end
