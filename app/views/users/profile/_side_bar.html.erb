@@ -13,10 +13,10 @@
       <%= render 'users/profile/follow_form', user: @user %>
     </div>
     <hr class="ml-3 mr-3">
-    <div class="row top-values ml-1 mr-2 text-nowrap">
+    <div class="row top-values ml-1 mr-2 text-nowrap text-center">
       <div class="col-4">
         <div class='value'>
-          <%= @user.top_region || 'No Flights' %>
+          <%= @user.top_region || '🤷‍' %>
         </div>
         <div class='title'>
           Top Region
@@ -24,7 +24,7 @@
       </div>
       <div class="col-4">
         <div class='value'>
-          <%= @user.top_location || 'No Flights' %>
+          <%= @user.top_location || '🤷' %>
         </div>
         <div class='title'>
           Top Airport
@@ -32,7 +32,7 @@
       </div>
       <div class="col-4">
         <div class='value'>
-          <%= @user.top_aircraft || 'Nothing Yet' %>
+          <%= @user.top_aircraft || '🤷' %>
         </div>
         <div class='title'>
           Top Aircraft
