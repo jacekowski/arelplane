@@ -16,7 +16,11 @@
     <div class="row top-values ml-1 mr-2 text-nowrap text-center">
       <div class="col-4">
         <div class='value'>
-          <%= @user.top_region || '🤷‍' %>
+          <% if @user.top_region.blank? %>
+            '🤷'
+          <% else %>
+            <%= @user.top_region %>
+          <% end %>
         </div>
         <div class='title'>
           Top Region
@@ -24,7 +28,11 @@
       </div>
       <div class="col-4">
         <div class='value'>
-          <%= @user.top_location || '🤷' %>
+          <% if @user.top_location.blank? %>
+            '🤷'
+          <% else %>
+            <%= @user.top_location %>
+          <% end %>
         </div>
         <div class='title'>
           Top Airport
@@ -32,7 +40,11 @@
       </div>
       <div class="col-4">
         <div class='value'>
-          <%= @user.top_aircraft || '🤷' %>
+          <% if @user.top_aircraft.blank? %>
+            '🤷'
+          <% else %>
+            <%= @user.top_aircraft %>
+          <% end %>
         </div>
         <div class='title'>
           Top Aircraft
