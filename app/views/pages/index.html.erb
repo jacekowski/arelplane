@@ -4,10 +4,9 @@
 <div class='container mt-2 mb-2'>
   <div class='row'>
     <div class="col">
-      <% if !user_signed_in? %>
-        <p class='light-sub-text align-center'>Are you a pilot who keeps a digital logbook? Want to make your own map of all your flights? Create an account!</p>
-        <p class='light-sub-text align-center'>Want more info? See our <%= link_to 'upload instructions', upload_instructions_path %> and take a look at a sample <%= link_to "profile", user_path(64) %></p>
-      <% end %>
+        <p class='light-sub-text align-center'>Are you a pilot with a digital logbook? Sign up to make a map of all your flights!</p>
+        <p class='light-sub-text align-center'>Not a pilot? Like aviation? Create an account and see where everyone is flying!</p>
+        <p class='light-sub-text align-center'>Want more info? See our <%= link_to 'upload instructions', upload_instructions_path %> and see a sample <%= link_to "profile", username_path("@arelenglish") %></p>
     </div>
   </div>
   <div class='row justify-content-center'>
