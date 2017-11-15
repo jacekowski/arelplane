@@ -8,7 +8,7 @@
       <div class="col-4 stats">
         <div class="row value">
           <div class="col-12 text-nowrap">
-            <%= current_user.flights.count %>
+            <%= number_with_delimiter(current_user.flights.count) %>
           </div>
         </div>
         <div class="row heading">
@@ -20,7 +20,7 @@
       <div class="col-4 stats">
         <div class="row value">
           <div class="col-12 text-nowrap">
-            <%= current_user.num_airports %>
+            <%= number_with_delimiter(current_user.num_airports) %>
           </div>
         </div>
         <div class="row heading">
@@ -32,7 +32,7 @@
       <div class="col-4 stats">
         <div class="row value">
           <div class="col-12 text-nowrap">
-            <%= current_user.total_flight_hours %>
+            <%= number_with_delimiter(current_user.total_flight_hours) %>
           </div>
         </div>
         <div class="row heading">

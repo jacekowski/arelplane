@@ -9,7 +9,7 @@
           <%= link_to user.name, username_path(user.username) %>
         </div>
         <div class="col-5 count">
-          <%= user.flights.count %>
+          <%= number_with_delimiter(user.flights.count) %>
         </div>
       </div>
     <% end %>
