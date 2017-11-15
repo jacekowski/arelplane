@@ -1,10 +1,10 @@
-<div class="card m-4 flights_leaderboard_card">
+<div class="card m-4 d-none d-md-block flights_leaderboard_card">
   <div class="card-body">
     <h4 class="card-title title">Most Flights</h4>
     <hr>
     <% User.most_flights.each do |user| %>
       <% if !user.username then next end %>
-      <div class="row">
+      <div class="row text-nowrap">
         <div class="col-7 name">
           <%= link_to user.name, username_path(user.username) %>
         </div>
