@@ -1,0 +1,115 @@
+@import "colors";
+@import "fonts";
+
+.home_page {
+  background-color: $backgroundColor;
+  font-family: $baseFont;
+  #sticky-sidebar {
+    z-index: 0;
+    .user_card {
+      .name {
+        font-size: 1.875rem;
+        font-weight: $black;
+        color: $primaryTextColor;
+      }
+      .subtitle {
+        font-size: 1rem;
+        font-weight: $regular;
+        color: $lightSubTextColor;
+      }
+      .stats {
+        .value {
+          font-size: 1.125rem;
+          font-weight: $black;
+          color: $primaryTextColor;
+        }
+        .heading {
+          font-size: 1rem;
+          font-weight: $regular;
+          color: $lightSubTextColor;
+        }
+      }
+      .link_section {
+        font-size: 1rem;
+        font-weight: $regular;
+        color: $linkColor;
+      }
+    }
+    .flights_leaderboard_card {
+      .title {
+        font-size: 1.125rem;
+        font-weight: $black;
+        color: $primaryTextColor;
+      }
+      .name a {
+        font-size: 1.125rem;
+        font-weight: $regular;
+        color: $linkColor;
+      }
+      .count {
+        font-size: 1rem;
+        font-weight: $regular;
+        color: $lightSubTextColor;
+      }
+    }
+  }
+  #main_feed {
+    min-height: 100vh;
+    .feed_card {
+      .date {
+        font-size: 1.125rem;
+        font-weight: $regular;
+        color: $lightSubTextColor;
+      }
+      .name {
+        font-size: 1.5rem;
+        font-weight: $black;
+        color: $primaryTextColor;
+      }
+      .flight-count {
+        font-weight: $regular;
+      }
+      .stats {
+        .value {
+          font-size: 1.5rem;
+          font-weight: $black;
+          color: $primaryTextColor;
+        }
+        .heading {
+          font-size: 1rem;
+          font-weight: $regular;
+          color: $lightSubTextColor;
+        }
+      }
+      .link_section {
+        font-size: 1rem;
+        font-weight: $regular;
+        color: $linkColor;
+      }
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .home_page {
+    #main_feed {
+      min-height: 100vh;
+      .feed_card {
+        .date {}
+        .name {
+          font-size: 1.2rem;
+        }
+        .flight-count {}
+        .stats {
+          .value {
+            font-size: 1.2rem;
+          }
+          .heading {
+            font-size: 0.8rem;
+          }
+        }
+        .link_section {}
+      }
+    }
+  }
+}

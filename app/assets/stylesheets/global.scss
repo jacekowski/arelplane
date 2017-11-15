@@ -11,13 +11,13 @@ html {
 }
 
 body {
-  font-family: 'Nunito', sans-serif;
-  background-color: $darkLinkColor;
+  font-family: $baseFont;
+  background-color: $darkBackgroundColor;
 }
 
 a {
   color: $highlightColor;
-  font-family: 'Nunito', sans-serif;
+  font-family: $baseFont;
   font-weight: $extraLight;
 }
 

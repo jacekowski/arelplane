@@ -1,6 +1,62 @@
 @import "colors";
 @import "fonts";
 
+.user-profile {
+  background-color: $darkBackgroundColor;
+  .joined-date {
+    color: $lightSubTextColor;
+  }
+  #sticky-sidebar {
+    background-color: $profileSidebarBackground;
+    z-index: 0;
+    .top-values {
+      .value {
+        font-size: 1.5rem;
+        font-weight: $black;
+        color: $primaryTextColor;
+      }
+      .title {
+        font-size: 1rem;
+        font-weight: $regular;
+        color: $lightSubTextColor;
+      }
+    }
+    .stats {
+      .number {
+        font-size: 1.125rem;
+        font-weight: $black;
+        color: $primaryTextColor;
+      }
+      .title {
+        font-size: 1rem;
+        font-weight: $regular;
+        color: $lightSubTextColor;
+      }
+    }
+    .recent-updates {
+      .title {
+        font-size: 1rem;
+        font-weight: $extraBold;
+        color: $primaryTextColor;
+      }
+      .entry {
+        font-size: 1rem;
+        font-weight: $light;
+        color: $primaryTextColor;
+      }
+      .name {
+        font-weight: $extraBold;
+        color: $linkColor;
+      }
+      .date {
+        font-size: 0.875rem;
+        font-weight: $light;
+        color: $lightSubTextColor;
+      }
+    }
+  }
+}
+
 #user-map {}
 
 .user-map {
@@ -8,27 +64,22 @@
   min-width: 100%;
 }
 
-#user-sticky-sidebar {
-  background-color: $primaryTextColor;
-  z-index: 0;
-}
-
 #top-background-flag {
-  border-top: 2px solid $lightSubTextColor; /* top border on the parent */
+  border-top: 1px solid $flagBorder; /* top border on the parent */
   position: relative;
   height: auto;
   overflow: hidden;
 }
 
 #top-background-flag:after {
-  background-color: $secondaryColor;
+  background-color: white;
   -webkit-transform: skewY(-8deg);
   -moz-transform: skewY(-8deg);
   -ms-transform: skewY(-8deg);
   -o-transform: skewY(-8deg);
   transform: skewY(-8deg);
   transform-origin: bottom left;
-  border-bottom: 2px solid $lightSubTextColor; /* bottom border skews with the object */
+  border-bottom: 1px solid $flagBorder; /* bottom border skews with the object */
   content: ' ';
   display: block;
   height: 100%;

@@ -13,6 +13,11 @@ class UsersController < ApplicationController
     redirect_to username_path(User.find(params[:user_id]).username)
   end
 
+  def home
+    @user = current_user
+    @feed = NewsFeed.new
+  end
+
   private
     def set_user
       if params[:username]

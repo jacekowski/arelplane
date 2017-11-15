@@ -2,17 +2,17 @@
 <%= content_tag :div, id: "current_page", data: {page: @user.id} do %>
 <% end %>
 
-<div class='container-fluid'>
+<div class='container-fluid user-profile'>
   <div class='row'>
-    <div class='col-md-3 col-12 d-none d-md-block remove-lr-padding' id='user-sticky-sidebar'>
-      <%= render 'users/side_bar' %>
+    <div class='col-md-3 col-12 d-none d-md-block remove-lr-padding' id='sticky-sidebar'>
+      <%= render 'users/profile/side_bar' %>
     </div>
     <div class='col-md-9 col-12 remove-lr-padding' id='user-map'>
-      <%= render 'users/share_button' %>
+      <%= render 'users/profile/share_button' %>
       <div class='user-map' id='mapid'></div>
     </div>
-    <div class='col-md-3 col-12 d-md-none remove-lr-padding' id='user-sticky-sidebar'>
-      <%= render 'users/side_bar' %>
+    <div class='col-md-3 col-12 d-md-none remove-lr-padding' id='sticky-sidebar'>
+      <%= render 'users/profile/side_bar' %>
     </div>
   </div>
 </div>

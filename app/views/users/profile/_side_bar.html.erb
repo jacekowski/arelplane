@@ -1,0 +1,103 @@
+<div class='col-12 remove-lr-padding'>
+  <div id='top-background-flag'>
+    <div class='header-text pl-3 pt-4'>
+      <%= @user.name %>
+      <% if current_user == @user %>
+        <%= link_to image_tag('settings.png', height: '23', width: '23'), edit_user_registration_path, class: 'ml-2' %>
+      <% end %>
+    </div>
+    <div class='sub-text joined-date pl-3'>
+      Joined <%= @user.created_at.strftime('%B %e, %Y') %>
+    </div>
+    <div class="sub-text pl-3 mt-2">
+      <%= render 'users/profile/follow_form', user: @user %>
+    </div>
+    <hr class="ml-3 mr-3">
+    <div class="row top-values ml-1 mr-2">
+      <div class="col-4">
+        <div class='value'>
+          <%= @user.top_region || 'No Flights' %>
+        </div>
+        <div class='title'>
+          Top Region
+        </div>
+      </div>
+      <div class="col-4">
+        <div class='value'>
+          <%= @user.top_location || 'No Flights' %>
+        </div>
+        <div class='title'>
+          Top Airport
+        </div>
+      </div>
+      <div class="col-4">
+        <div class='value'>
+          <%= @user.top_aircraft || 'Nothing Yet' %>
+        </div>
+        <div class='title'>
+          Top Aircraft
+        </div>
+      </div>
+    </div>
+    <hr class="ml-3 mr-3">
+    <div class="row stats ml-1 mr-2 mb-5 text-center">
+      <div class="col-3">
+        <div class="number">
+          <%= number_with_delimiter(@user.flights.count, delimiter: ',') || 'No Flights' %>
+        </div>
+        <div class="title">
+          Flights
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="number">
+          <%= number_with_delimiter(@user.num_airports, delimiter: ',') %>
+        </div>
+        <div class="title">
+          Airports
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="number">
+          <%= number_with_delimiter(@user.num_regions, delimiter: ',') %>
+        </div>
+        <div class="title">
+          Regions
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="number">
+          <%= number_with_delimiter(@user.total_flight_hours, delimiter: ',') %>
+        </div>
+        <div class="title">
+          Hours
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row pl-3 mt-3 recent-updates">
+  <div class="col-11">
+    <p class="title">
+      RECENT UPDATES
+    </p>
+    <% @user.recent_updates.each do |update| %>
+      <p class="entry">
+        <span class="name"><%= @user.name %></span> added <%= pluralize(number_with_delimiter(update.last), 'new flight') %> to their Map.
+        <br>
+        <span class="date"><%= time_ago_in_words(update.first) %> ago</span>
+      </p>
+    <% end %>
+  </div>
+</div>
+<div class='row mt-5 mb-5 align-center'>
+  <div class="col-12">
+    <p class='light-sub-text'>Feature requests? Questions?</p>
+    <div class="fb-messengermessageus"
+      messenger_app_id="720812044763701"
+      page_id="965418793603934"
+      color="blue"
+      size="large" >
+    </div>
+  </div>
+</div>

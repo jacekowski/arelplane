@@ -84,4 +84,24 @@ class User < ApplicationRecord
     search_results = flight_results + waypoint_results
     Kaminari.paginate_array(search_results.uniq.sort_by(&:flight_date).reverse)
   end
+
+  def datetime_of_last_flight
+    flights.last.created_at
+  end
+
+  def date_of_last_flight
+    datetime_of_last_flight.to_date
+  end
+
+  def lastest_upload
+    flights.where(created_at: date_of_last_flight.midnight..date_of_last_flight.end_of_day)
+  end
+
+  def self.most_flights
+    left_joins(:flights).group(:id).order('COUNT(flights.id) DESC').limit(10)
+  end
+
+  def recent_updates
+    flights.order('created_at::date DESC').group('created_at::date').limit(5).count
+  end
 end
