@@ -67,7 +67,7 @@ class FlightsController < ApplicationController
       else
         @flight = current_user.flights.new(flight_params)
         if @flight.save
-          redirect_to root_path, notice: 'Flight was successfully created.'
+          redirect_to new_flight_path, notice: 'Flight was successfully created.'
         else
           render :new
         end
