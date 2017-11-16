@@ -1,5 +1,4 @@
-<!-- TODO: add infinite scroll -->
-<% @feed.user_feed.each do |user| %>
+<% @feed.each do |user| %>
   <% if user == current_user then next end %>
   <div class="card mb-4 feed_card">
     <%#= image_tag 'demo-img.png', class: 'card-img-top', alt: 'Map image'%>
@@ -81,3 +80,5 @@
     </ul>
   </div>
 <% end %>
+
+<%= paginate @feed, theme: 'bootstrap4' %>

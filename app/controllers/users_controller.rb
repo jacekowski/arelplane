@@ -15,7 +15,7 @@ class UsersController < ApplicationController
 
   def home
     @user = current_user
-    @feed = NewsFeed.new
+    @feed = NewsFeed.user_feed.page(params[:page]).per(5)
   end
 
   private
