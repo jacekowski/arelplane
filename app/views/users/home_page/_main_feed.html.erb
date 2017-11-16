@@ -7,7 +7,7 @@
       <span class="date"><%= time_ago_in_words(user.datetime_of_last_flight) %> ago</span>
       <div class="row">
         <div class="col-lg-8 col-12">
-          <h4 class="card-title name"><%= user.name %> <span class="flight-count">added <%= pluralize(number_with_delimiter(user.lastest_upload.count), "new flight") %> to their Map.</span></h4>
+          <h4 class="card-title name"><%= link_to user.name, username_path(user.username) %> <span class="flight-count">added <%= pluralize(number_with_delimiter(user.lastest_upload.count), "new flight") %> to their Map.</span></h4>
         </div>
         <div class="col-lg-4 col-12">
           <div class="float-lg-right">
