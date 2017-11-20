@@ -68,7 +68,15 @@ class User < ApplicationRecord
   end
 
   def num_airports
-    airports.uniq.count
+    airport_count = 0
+    if map_cache
+      map_cache["features"].each do |f|
+        if f["properties"]["feature_type"].try(:include?, "airport")
+          airport_count += 1
+        end
+      end
+    end
+    airport_count
   end
 
   def num_regions
