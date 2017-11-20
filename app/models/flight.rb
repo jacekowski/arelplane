@@ -76,7 +76,12 @@ class Flight < ApplicationRecord
       if location.latitude == nil
         next
       end
-      add_or_increment_location(feature_collection, location, :waypoint)
+      if waypoint.location.location_type.location_type.try(:include?, "airport")
+        waypoint_type = :airport
+      else
+        waypoint_type = :waypoint
+      end
+      add_or_increment_location(feature_collection, location, waypoint_type)
       line_feature[:geometry][:coordinates] << get_coordinates(location)
     end
   end
