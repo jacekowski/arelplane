@@ -76,7 +76,7 @@ class Flight < ApplicationRecord
       if location.latitude == nil
         next
       end
-      if waypoint.location.location_type.location_type.try(:include?, "airport")
+      if waypoint.location.location_type.try(:include?, "airport")
         waypoint_type = :airport
       else
         waypoint_type = :waypoint
@@ -480,7 +480,7 @@ private
     missing_froms = self.where(user_id: user.id, from_id: unknown_placeholder.id)
     missing_tos = self.where(user_id: user.id, to_id: unknown_placeholder.id)
     missing_waypoint_flights = FlightWaypoint.where(flight_id: user_flight_ids, location_id: unknown_placeholder.id).pluck(:flight_id)
-    flights_from_waypoints = Flight.where(id: missing_waypoint_flights)
+    flights_from_waypoints = self.where(id: missing_waypoint_flights)
 
     all_flights = missing_froms + missing_tos + flights_from_waypoints
     all_flights.uniq
