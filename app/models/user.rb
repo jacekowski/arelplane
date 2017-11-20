@@ -80,7 +80,7 @@ class User < ApplicationRecord
   end
 
   def num_regions
-    Location.find(airports.flatten.uniq).pluck(:iso_region).uniq.count
+    Location.find(locations.uniq).pluck(:iso_region).uniq.count
   end
 
   def flight_search(identifier)
