@@ -247,7 +247,9 @@ class Flight < ApplicationRecord
     user.flights.destroy_all
     CSV.parse(file, headers: true, skip_blanks: true) do |row|
       r = row.to_hash
-      route = r["ROUTE OF FLIGHT"].scan(/[\w']+/)
+      if !route = r["ROUTE OF FLIGHT"].try(:scan, /[\w']+/)
+        next
+      end
       f = Flight.new(
         user_id: user.id,
         flight_date: r["DATE"],

@@ -1,8 +1,14 @@
 <div class="row mt-4 ml-2 mr-2" id=<%= name %>-form>
   <div class="col-12">
     <%= form_with(url: :flights, local: true) do |form| %>
-      <%= form.file_field name, class: 'btn form-background form-group' %>
-      <%= form.submit 'Submit', class:'btn btn-primary float-right upload-logbook-btn', disabled: true %>
+      <div class="row">
+        <div class="col-8">
+          <%= form.file_field name, class: 'btn form-background form-group' %>
+        </div>
+        <div class="col-4">
+          <%= form.submit 'Submit', class:'btn btn-primary float-right upload-logbook-btn', disabled: true %>
+        </div>
+      </div>
     <% end %>
   </div>
 </div>
