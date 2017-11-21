@@ -25,6 +25,15 @@
             <%= f.text_field :username, class: 'form-control' %><br />
           <% end %>
 
+          <%= f.label :instagram, class: 'light-sub-text' %><br />
+          <small id="passwordHelpInline" class="text-info">
+            Add a link to your instagram account on your profile
+          </small>
+          <div class="input-group mb-2 mb-sm-0">
+            <div class="input-group-addon">@</div>
+            <%= f.text_field :instagram, class: 'form-control' %>
+          </div><br />
+
           <%= f.label :current_password, class: 'light-sub-text' %><br>
           <small id="passwordHelpInline" class="text-muted">
             we need your current password to confirm your changes

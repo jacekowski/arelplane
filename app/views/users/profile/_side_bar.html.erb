@@ -88,6 +88,11 @@
     </div>
   </div>
 </div>
+<% if @user.instagram %>
+  <div class="pl-3">
+    <%= link_to image_tag('icons/instagram.png', height: '23', width: '23'), "https://www.instagram.com/#{@user.instagram}", target: :blank %>
+  </div>
+<% end %>
 <div class="row pl-3 mt-3 recent-updates">
   <div class="col-11">
     <p class="title">

@@ -1,7 +1,10 @@
 <div class="card m-1 m-md-4 user_card">
   <%#= image_tag 'demo-img.png', class: 'card-img-top', alt: 'Map image'%>
   <div class="card-body">
-    <h4 class="card-title name"><%= current_user.name %></h4>
+    <h4 class="card-title name">
+      <%= link_to current_user.name, username_path(current_user.username) %>
+      <%= link_to image_tag('settings.png', height: '23', width: '23'), edit_user_registration_path, class: 'ml-2' %>
+    </h4>
     <p class="subtitle">Joined <%= current_user.created_at.strftime('%B %e, %Y') %></p>
     <hr>
     <div class="row text-center text-nowrap">

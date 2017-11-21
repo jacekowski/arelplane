@@ -17,6 +17,7 @@ private
       :name,
       :email,
       :username,
+      :instagram,
       :password,
       :password_confirmation
     )
@@ -27,6 +28,7 @@ private
       :name,
       :email,
       :username,
+      :instagram,
       :password,
       :password_confirmation,
       :current_password

@@ -7,7 +7,7 @@
   #sticky-sidebar {
     z-index: 0;
     .user_card {
-      .name {
+      .name a {
         font-size: 1.875rem;
         font-weight: $black;
         color: $primaryTextColor;
