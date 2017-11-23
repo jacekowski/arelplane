@@ -12,6 +12,15 @@
             </div>
           </div>
         </div>
+        <div class="row mt-4">
+          <div class="col-12">
+            <% if user.flights.last %>
+              <span class="updated">Last Updated: <%= time_ago_in_words(user.flights.last.updated_at) %> ago</span>
+            <% else %>
+              <span class="updated">No flights added.</span>
+            <% end %>
+          </div>
+        </div>
       </div>
       <ul class="list-group list-group-flush">
         <%= link_to username_path(user.username) do %>
