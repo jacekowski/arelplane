@@ -62,6 +62,11 @@
       color: $primaryTextColor;
       font-weight: $semiBold;
     }
+    .count {
+      color: $lightSubTextColor;
+      font-weight: $light;
+      margin-left: 0.5rem;
+    }
     .feed_card {
       .date {
         font-size: 1.125rem;
