@@ -55,6 +55,13 @@
   }
   #main_feed {
     min-height: 100vh;
+    .nav-item.nav-link.active {
+      font-weight: $extraBold;
+    }
+    .nav-item.nav-link {
+      color: $primaryTextColor;
+      font-weight: $semiBold;
+    }
     .feed_card {
       .date {
         font-size: 1.125rem;
