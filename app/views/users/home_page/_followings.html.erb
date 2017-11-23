@@ -1,0 +1,30 @@
+<% instance_variable_get("@#{relationship}").each do |user| %>
+  <div class="col-12 col-md-6">
+    <div class="card mb-4 feed_card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-lg-8 col-12">
+            <h4 class="card-title name"><%= link_to user.name, username_path(user.username) %></h4>
+          </div>
+          <div class="col-lg-4 col-12">
+            <div class="float-lg-right">
+              <%= render 'users/profile/follow_form', user: user %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ul class="list-group list-group-flush">
+        <%= link_to username_path(user.username) do %>
+          <li class="list-group-item link_section">
+            <span>
+              View their Map
+            </span>
+            <span class="float-right">
+              <%= image_tag 'icons/chevron_icon.png', width: 12, height: 10 %>
+            </span>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>
