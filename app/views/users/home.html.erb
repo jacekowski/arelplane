@@ -2,11 +2,17 @@
 
 <div class='container-fluid home_page'>
   <div class='row'>
+    <div class="col-12 d-md-none mt-2">
+      <%= render 'users/home_page/notice_unit' %>
+    </div>
     <div class='col-lg-3 col-md-4 col-12 remove-lr-padding' id='sticky-sidebar'>
       <%= render 'users/home_page/side_bar' %>
     </div>
     <div class='col-md-6 col-12 remove-lr-padding mt-4' id='main_feed'>
       <%= render 'users/home_page/main_feed' %>
+    </div>
+    <div class="col-md-3 d-none d-md-block mt-4">
+      <%= render 'users/home_page/notice_unit' %>
     </div>
   </div>
 </div>
