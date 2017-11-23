@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   root :to => 'pages#index'
 
   get 'upload_instructions', to: 'pages#upload_instructions'
+  get 'privacy', to: 'pages#privacy_policy'
 
   namespace :api, constraints: {format: :json} do
     namespace :v1 do
