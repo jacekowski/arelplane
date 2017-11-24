@@ -4,17 +4,19 @@
   <a class="nav-item nav-link" id="nav-following-tab" data-toggle="tab" href="#nav-following" role="tab" aria-controls="nav-following" aria-selected="false">Following <span class="count"><%= @following.count %></span></a>
 </nav>
 <div class="tab-content" id="nav-tabContent">
-  <div class="tab-pane fade" id="nav-following" role="tabpanel" aria-labelledby="nav-following-tab">
-    <div class="row">
-      <%= render 'users/home_page/followings', relationship: :following %>
-    </div>
-  </div>
   <div class="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab">
-    <%= render 'users/home_page/all_users' %>
+    <div class="infinite-scroll">
+      <%= render 'users/home_page/all_users' %>
+    </div>
   </div>
   <div class="tab-pane fade" id="nav-followers" role="tabpanel" aria-labelledby="nav-followers-tab">
     <div class="row">
-      <%= render 'users/home_page/followings', relationship: :followers %>
+      <%= render 'users/home_page/followings', objects: @followers %>
+    </div>
+  </div>
+  <div class="tab-pane fade" id="nav-following" role="tabpanel" aria-labelledby="nav-following-tab">
+    <div class="row">
+      <%= render 'users/home_page/followings', objects: @following %>
     </div>
   </div>
 </div>

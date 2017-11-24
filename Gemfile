@@ -36,7 +36,7 @@ end
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-# gems for suggest as you type
+# suggest as you type and pagination
 gem 'select2-rails'
 gem 'kaminari'
 
