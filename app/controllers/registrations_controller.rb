@@ -2,7 +2,11 @@ class RegistrationsController < Devise::RegistrationsController
   include Usernameable
 
   def create
-    params["user"]["username"] = create_username(params["user"]["name"])
+    if params["user"]["username"]
+      params["user"]["username"] = create_username(params["user"]["username"])
+    else
+      params["user"]["username"] = create_username(params["user"]["name"])
+    end
     super
    end
 
