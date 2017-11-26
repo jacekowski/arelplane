@@ -9,10 +9,10 @@
     </div>
   <% end %>
 <% else %>
-  <div class="btn-group">
-    <%= link_to new_user_registration_path, class: "btn follow-button-normal" do %>
-      <%= image_tag "icons/heart_icon.png", height: '17', width: '19', class: 'mb-1' %> Like
-    <% end %>
-    <span class="btn follow-button-normal"><%= user.followers.count %></span>
-  </div>
+<div class="btn-group">
+  <a href="#" data-toggle='modal' data-target='#loginOrRegisterModal' class="btn follow-button-normal">
+    <%= image_tag "icons/heart_icon.png", height: '17', width: '19', class: 'mb-1' %> Like
+  </a>
+  <span class="btn follow-button-normal"><%= user.followers.count %></span>
+</div>
 <% end %>

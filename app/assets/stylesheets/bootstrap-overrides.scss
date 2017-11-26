@@ -21,11 +21,16 @@
 .btn-primary:hover {
   background-color: #00E6F0;
   border-color: #00E6F0;
+  color: $lightTextColor;
 }
 
 .btn-primary:disabled {
   background-color: #00E6F0;
   border-color: #00E6F0;
+}
+
+.btn-primary a {
+  color: $lightTextColor;
 }
 
 .container {

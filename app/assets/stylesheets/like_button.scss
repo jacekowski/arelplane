@@ -1,0 +1,56 @@
+@import "colors";
+@import "fonts";
+
+.follow-button {
+  border: 0.0625rem solid $primaryTextColor;
+  font-size: 1.125rem;
+  font-weight: $semiBold;
+  font-family: $baseFont;
+  cursor: pointer;
+}
+
+.follow-button-normal {
+  @extend .follow-button;
+  background-color: transparent;
+  color: $primaryTextColor;
+}
+
+.follow-button-normal:hover {
+  color: $primaryTextColor;
+}
+
+.following-button {
+  @extend .follow-button;
+  background-color: $primaryTextColor;
+  color: $lightTextColor;
+}
+
+.following-button-text {
+  border-right-color: $lightSubTextColor;
+}
+
+.following-button-text:hover a {
+  border-right-color: $lightSubTextColor;
+}
+
+.following-count {
+  border-left-color: $lightSubTextColor;
+  color: $lightSubTextColor;
+}
+
+.following-count:hover {
+  border-left-color: $lightSubTextColor;
+}
+
+.clear-follow-button {
+  @extend .follow-button;
+  background-color: Transparent;
+  color: $lightTextColor;
+  border-color: $lightTextColor;
+}
+.clear-following-button {
+  @extend .follow-button;
+  background-color: Transparent;
+  color: $lightTextColor;
+  border-color: $lightTextColor;
+}
