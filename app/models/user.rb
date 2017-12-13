@@ -64,23 +64,45 @@ class User < ApplicationRecord
   end
 
   def total_flight_hours
-    flights.pluck(:total_time).compact.sum.round(1)
+    total_flight_hours_cache ||
+    save_total_flight_hours
+  end
+
+  def save_total_flight_hours
+    update_attributes(
+      total_flight_hours_cache: flights.pluck(:total_time).compact.sum.round(1)
+    )
+    total_flight_hours_cache
   end
 
   def num_airports
-    airport_count = 0
-    if map_cache
-      map_cache["features"].each do |f|
-        if f["properties"]["feature_type"].try(:include?, "airport")
-          airport_count += 1
-        end
+    num_airports_cache ||
+    save_num_airports
+  end
+
+  def save_num_airports
+    airports = flights.pluck(:from_id, :to_id)
+    waypoints.each do |wp|
+      if wp.location.location_type.try(:include?, "airport")
+        airports << wp.location.id
       end
     end
-    airport_count
+    update_attributes(
+      num_airports_cache: airports.flatten.uniq.count
+    )
+    num_airports_cache
   end
 
   def num_regions
-    Location.find(locations.uniq).pluck(:iso_region).uniq.count
+    num_regions_cache ||
+    save_num_regions
+  end
+
+  def save_num_regions
+    update_attributes(
+      num_regions_cache: Location.find(locations.uniq).pluck(:iso_region).uniq.count
+    )
+    num_regions_cache
   end
 
   def flight_search(identifier)

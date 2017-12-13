@@ -114,6 +114,9 @@ private
   def update_cache
     CacheUserMapJob.perform_later(current_user)
     # GenerateHomepageMapJob.perform_later
+    current_user.save_total_flight_hours
+    current_user.save_num_airports
+    current_user.save_num_regions
   end
 
   def redirect_back
