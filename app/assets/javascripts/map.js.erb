@@ -1,4 +1,6 @@
 $(document).ready(function(){
+  var viewer = new Cesium.Viewer('cesiumContainer');
+    
   var whichPage = $('#current_page').data('page');
   var basePath = window.location.protocol + "//" + window.location.host;
 
