@@ -1,36 +1,51 @@
 $(document).ready(function(){
-  var viewer = new Cesium.Viewer('cesiumContainer');
-    
+  var MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoiYXJlbGVuZ2xpc2giLCJhIjoiY2l6ZzNrNHZ3MDB1cDMzb3dqdmh3emhjbSJ9.1WoDWsWNnIg-Wq8LPf1j-A';
+  var MAPBOX_STYLE_ID = 'cj68kq87a1gqk2srsnul2iwee';
+  var MAPBOX_USERNAME = 'arelenglish';
+  var viewer = new Cesium.Viewer('cesiumContainer', {
+    timeline : false,
+    animation : false,
+    geocoder: false
+  });
+
+  var layers = viewer.imageryLayers;
+  // Mapbox api url
+  var url = 'https://api.mapbox.com/styles/v1/' + MAPBOX_USERNAME + '/' + MAPBOX_STYLE_ID + '/tiles/256/{z}/{x}/{y}?access_token=' + MAPBOX_ACCESS_TOKEN;
+  var customImageryProvider = new Cesium.UrlTemplateImageryProvider({
+    url : url
+  });
+  layers.addImageryProvider(customImageryProvider);
+
   var whichPage = $('#current_page').data('page');
   var basePath = window.location.protocol + "//" + window.location.host;
 
-  var waypointIcon = L.icon({
-    iconUrl: "<%= asset_path('waypoint.png') %>",
-    iconSize:     [50, 50], // size of the icon
-    iconAnchor:   [25, 25], // point of the icon which will correspond to marker's location
-    popupAnchor:  [0, -20], // point from which the popup should open relative to the iconAnchor
-  });
+  // var waypointIcon = L.icon({
+  //   iconUrl: "<%= asset_path('waypoint.png') %>",
+  //   iconSize:     [50, 50], // size of the icon
+  //   iconAnchor:   [25, 25], // point of the icon which will correspond to marker's location
+  //   popupAnchor:  [0, -20], // point from which the popup should open relative to the iconAnchor
+  // });
+  //
+  // var airportIcon = L.icon({
+  //   iconUrl: "<%= asset_path('airport.png') %>",
+  //   iconSize:     [50, 50],
+  //   iconAnchor:   [25, 25],
+  //   popupAnchor:  [0, -20] // point from which the popup should open relative to the iconAnchor
+  // });
+  //
+  // var lineStyle = {
+  //   color:'#00E6F0',
+  //   opacity:0.15
+  // }
 
-  var airportIcon = L.icon({
-    iconUrl: "<%= asset_path('airport.png') %>",
-    iconSize:     [50, 50],
-    iconAnchor:   [25, 25],
-    popupAnchor:  [0, -20] // point from which the popup should open relative to the iconAnchor
-  });
-
-  var lineStyle = {
-    color:'#00E6F0',
-    opacity:0.15
-  }
-
-  var mymap = L.map('mapid', {
-    renderer: L.canvas(),
-    fullscreenControl: true,
-    // OR
-    fullscreenControl: {
-        pseudoFullscreen: false // if true, fullscreen to page width and height
-    }
-  });
+  // var mymap = L.map('mapid', {
+  //   renderer: L.canvas(),
+  //   fullscreenControl: true,
+  //   // OR
+  //   fullscreenControl: {
+  //       pseudoFullscreen: false // if true, fullscreen to page width and height
+  //   }
+  // });
 
   if (whichPage === "homepage") {
     $.getJSON( basePath + "/api/v1/flights", function( data ) {
@@ -42,100 +57,113 @@ $(document).ready(function(){
     });
   }
 
+  // viewer.dataSources.add(Cesium.GeoJsonDataSource.load(data, {
+  //   stroke: Cesium.Color.HOTPINK,
+  //   fill: Cesium.Color.PINK,
+  //   strokeWidth: 3,
+  //   markerSymbol: '?'
+  // }));
+
   function renderMap(data) {
-    var max_count = data["max_count"];
-    var flightsLayer = L.geoJSON(data, {
-      style: lineStyle,
-      pointToLayer: function (feature, latlng) {
-        if (feature.properties.feature_type === "airport") {
-          return L.marker(latlng, {
-            opacity: Math.max((feature.properties.count/max_count) * 12, 0.3),
-            icon: airportIcon
-          })
-          .bindPopup(popupContent(feature))
-          .on('mouseover', function (e) {
-            this.openPopup();
-          })
-          .on('mouseout', function (e) {
-            this.closePopup();
-          });
-        } else if (feature.properties.feature_type === "waypoint") {
-          return L.marker(latlng, {
-            opacity: Math.max((feature.properties.count/max_count) * 12, 0.4),
-            icon: waypointIcon
-          })
-          .bindPopup(popupContent(feature))
-          .on('mouseover', function (e) {
-            this.openPopup();
-          })
-          .on('mouseout', function (e) {
-            this.closePopup();
-          });
-        }
-      }
-    }).addTo(mymap);
-
-    var southWest = flightsLayer.getBounds()["_southWest"];
-    var northEast = flightsLayer.getBounds()["_northEast"];
-    if (Object.keys(flightsLayer.getBounds()).length === 0) {
-      var airportCords = [0,0];
-      switch (new Date().getDay()) {
-        case 0:
-          // Atlanta - NA
-          airportCords = [33.63669967651367, -84.4281005859375];
-          break;
-        case 1:
-          // London - Europe
-          airportCords = [51.4706, -0.461941];
-          break;
-        case 2:
-          // Beijing - Asia
-          airportCords = [40.080101013183594, 116.58499908447266];
-          break;
-        case 3:
-          // Rio - SA
-          airportCords = [-22.8099994659, -43.2505569458];
-          break;
-        case 4:
-          // Johannesburg - Africa
-          airportCords = [-26.1392, 28.246];
-          break;
-        case 5:
-          // Sydney - Oceania
-          airportCords = [-33.94609832763672, 151.177001953125];
-          break;
-        case 6:
-          // Dubai - Antarctica looked stupid
-          airportCords = [25.2527999878, 55.3643989563];
-      }
-      mymap.setView(airportCords, 13);
-    } else if (southWest["lat"] === northEast["lat"] && southWest["lng"] === northEast["lng"]) {
-      mymap.setView(southWest, 13);
-    } else {
-      mymap.fitBounds(flightsLayer.getBounds(), {padding: [40, 40]});
-    }
-
-    function popupContent(feature) {
-      var count = ""
-      if (feature.properties.feature_type === "airport") {
-        count = "<br>Number of takeoffs/landings: " + feature.properties.count
-      }
-      if (feature.properties.name != null) {
-        var popupText = feature.properties.name + " (" + feature.properties.identifier + ")"
-      } else {
-        var popupText = feature.properties.identifier
-      }
-      return popupText + count
-    }
-
-    // https://api.mapbox.com/styles/v1/arelenglish/cj68kq87a1gqk2srsnul2iwee.html?title=true&access_token=pk.eyJ1IjoiYXJlbGVuZ2xpc2giLCJhIjoiY2l6ZzNrNHZ3MDB1cDMzb3dqdmh3emhjbSJ9.1WoDWsWNnIg-Wq8LPf1j-A#12.4/40.652369/-73.799612/0
-
-    // MapBox Dark Map (Costs money after 50,000 impressions)
-    L.tileLayer('https://api.mapbox.com/styles/v1/arelenglish/cj68kq87a1gqk2srsnul2iwee/tiles/256/{z}/{x}/{y}?access_token={accessToken}', {
-        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-        maxZoom: 18,
-        worldCopyJump: true,
-        accessToken: 'pk.eyJ1IjoiYXJlbGVuZ2xpc2giLCJhIjoiY2l6ZzNrNHZ3MDB1cDMzb3dqdmh3emhjbSJ9.1WoDWsWNnIg-Wq8LPf1j-A'
-    }).addTo(mymap);
+    var dataSource = Cesium.GeoJsonDataSource.load(data);
+    viewer.dataSources.add(dataSource);
+    viewer.zoomTo(dataSource);
   }
+
+  // function renderMap(data) {
+  //   var max_count = data["max_count"];
+  //   var flightsLayer = L.geoJSON(data, {
+  //     style: lineStyle,
+  //     pointToLayer: function (feature, latlng) {
+  //       if (feature.properties.feature_type === "airport") {
+  //         return L.marker(latlng, {
+  //           opacity: Math.max((feature.properties.count/max_count) * 12, 0.3),
+  //           icon: airportIcon
+  //         })
+  //         .bindPopup(popupContent(feature))
+  //         .on('mouseover', function (e) {
+  //           this.openPopup();
+  //         })
+  //         .on('mouseout', function (e) {
+  //           this.closePopup();
+  //         });
+  //       } else if (feature.properties.feature_type === "waypoint") {
+  //         return L.marker(latlng, {
+  //           opacity: Math.max((feature.properties.count/max_count) * 12, 0.4),
+  //           icon: waypointIcon
+  //         })
+  //         .bindPopup(popupContent(feature))
+  //         .on('mouseover', function (e) {
+  //           this.openPopup();
+  //         })
+  //         .on('mouseout', function (e) {
+  //           this.closePopup();
+  //         });
+  //       }
+  //     }
+  //   }).addTo(mymap);
+  //
+  //   var southWest = flightsLayer.getBounds()["_southWest"];
+  //   var northEast = flightsLayer.getBounds()["_northEast"];
+  //   if (Object.keys(flightsLayer.getBounds()).length === 0) {
+  //     var airportCords = [0,0];
+  //     switch (new Date().getDay()) {
+  //       case 0:
+  //         // Atlanta - NA
+  //         airportCords = [33.63669967651367, -84.4281005859375];
+  //         break;
+  //       case 1:
+  //         // London - Europe
+  //         airportCords = [51.4706, -0.461941];
+  //         break;
+  //       case 2:
+  //         // Beijing - Asia
+  //         airportCords = [40.080101013183594, 116.58499908447266];
+  //         break;
+  //       case 3:
+  //         // Rio - SA
+  //         airportCords = [-22.8099994659, -43.2505569458];
+  //         break;
+  //       case 4:
+  //         // Johannesburg - Africa
+  //         airportCords = [-26.1392, 28.246];
+  //         break;
+  //       case 5:
+  //         // Sydney - Oceania
+  //         airportCords = [-33.94609832763672, 151.177001953125];
+  //         break;
+  //       case 6:
+  //         // Dubai - Antarctica looked stupid
+  //         airportCords = [25.2527999878, 55.3643989563];
+  //     }
+  //     mymap.setView(airportCords, 13);
+  //   } else if (southWest["lat"] === northEast["lat"] && southWest["lng"] === northEast["lng"]) {
+  //     mymap.setView(southWest, 13);
+  //   } else {
+  //     mymap.fitBounds(flightsLayer.getBounds(), {padding: [40, 40]});
+  //   }
+  //
+  //   function popupContent(feature) {
+  //     var count = ""
+  //     if (feature.properties.feature_type === "airport") {
+  //       count = "<br>Number of takeoffs/landings: " + feature.properties.count
+  //     }
+  //     if (feature.properties.name != null) {
+  //       var popupText = feature.properties.name + " (" + feature.properties.identifier + ")"
+  //     } else {
+  //       var popupText = feature.properties.identifier
+  //     }
+  //     return popupText + count
+  //   }
+  //
+  //   // https://api.mapbox.com/styles/v1/arelenglish/cj68kq87a1gqk2srsnul2iwee.html?title=true&access_token=pk.eyJ1IjoiYXJlbGVuZ2xpc2giLCJhIjoiY2l6ZzNrNHZ3MDB1cDMzb3dqdmh3emhjbSJ9.1WoDWsWNnIg-Wq8LPf1j-A#12.4/40.652369/-73.799612/0
+  //
+  //   // MapBox Dark Map (Costs money after 50,000 impressions)
+  //   L.tileLayer('https://api.mapbox.com/styles/v1/arelenglish/cj68kq87a1gqk2srsnul2iwee/tiles/256/{z}/{x}/{y}?access_token={accessToken}', {
+  //       attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+  //       maxZoom: 18,
+  //       worldCopyJump: true,
+  //       accessToken: 'pk.eyJ1IjoiYXJlbGVuZ2xpc2giLCJhIjoiY2l6ZzNrNHZ3MDB1cDMzb3dqdmh3emhjbSJ9.1WoDWsWNnIg-Wq8LPf1j-A'
+  //   }).addTo(mymap);
+  // }
 });
