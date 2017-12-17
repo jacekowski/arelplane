@@ -2,19 +2,22 @@ $(document).ready(function(){
   var MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoiYXJlbGVuZ2xpc2giLCJhIjoiY2l6ZzNrNHZ3MDB1cDMzb3dqdmh3emhjbSJ9.1WoDWsWNnIg-Wq8LPf1j-A';
   var MAPBOX_STYLE_ID = 'cj68kq87a1gqk2srsnul2iwee';
   var MAPBOX_USERNAME = 'arelenglish';
+  var url = 'https://api.mapbox.com/styles/v1/' + MAPBOX_USERNAME + '/' + MAPBOX_STYLE_ID + '/tiles/256/{z}/{x}/{y}?access_token=' + MAPBOX_ACCESS_TOKEN;
+
   var viewer = new Cesium.Viewer('cesiumContainer', {
     timeline : false,
     animation : false,
-    geocoder: false
+    geocoder: false,
+    imageryProvider: new Cesium.UrlTemplateImageryProvider({
+      url : url
+    }),
+    baseLayerPicker: false
   });
 
-  var layers = viewer.imageryLayers;
-  // Mapbox api url
-  var url = 'https://api.mapbox.com/styles/v1/' + MAPBOX_USERNAME + '/' + MAPBOX_STYLE_ID + '/tiles/256/{z}/{x}/{y}?access_token=' + MAPBOX_ACCESS_TOKEN;
-  var customImageryProvider = new Cesium.UrlTemplateImageryProvider({
-    url : url
+  var terrainProvider = new Cesium.CesiumTerrainProvider({
+    url : '//assets.agi.com/stk-terrain/world'
   });
-  layers.addImageryProvider(customImageryProvider);
+  viewer.terrainProvider = terrainProvider;
 
   var whichPage = $('#current_page').data('page');
   var basePath = window.location.protocol + "//" + window.location.host;
