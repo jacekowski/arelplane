@@ -15,8 +15,10 @@ $(document).ready(function(){
   });
 
   var terrainProvider = new Cesium.CesiumTerrainProvider({
-    url : '//assets.agi.com/stk-terrain/world'
+    url : '//assets.agi.com/stk-terrain/world',
+    requestVertexNormals : true // required for terrain lighting
   });
+  // viewer.scene.globe.depthTestAgainstTerrain = true;
   viewer.terrainProvider = terrainProvider;
 
   var whichPage = $('#current_page').data('page');
@@ -60,15 +62,21 @@ $(document).ready(function(){
     });
   }
 
-  // viewer.dataSources.add(Cesium.GeoJsonDataSource.load(data, {
-  //   stroke: Cesium.Color.HOTPINK,
-  //   fill: Cesium.Color.PINK,
-  //   strokeWidth: 3,
-  //   markerSymbol: '?'
-  // }));
-
   function renderMap(data) {
-    var dataSource = Cesium.GeoJsonDataSource.load(data);
+    var dataSource = Cesium.GeoJsonDataSource.load(data, {
+      stroke: Cesium.Color.fromBytes(0, 230, 240, 38)
+    });
+    console.log(dataSource)
+    // var entities = dataSource.entities.values;
+    //
+    // for (var i = 0; i < entities.length; i++) {
+    //   var entity = entities[i];
+    //   entity.billboard = undefined;
+    //   entity.point = new Cesium.PointGraphics({
+    //       color: Cesium.Color.fromRandom(),
+    //       pixelSize: 10
+    //   });
+    // }
     viewer.dataSources.add(dataSource);
     viewer.zoomTo(dataSource);
   }

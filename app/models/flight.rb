@@ -25,7 +25,9 @@ class Flight < ApplicationRecord
 
       line_feature[:geometry][:coordinates] << get_coordinates(departure_location)
       add_or_increment_waypoint_data(flight, map_data, line_feature)
-      line_feature[:geometry][:coordinates] << get_coordinates(arrival_location)
+      if departure_location != arrival_location
+        line_feature[:geometry][:coordinates] << get_coordinates(arrival_location)
+      end
       map_data[:features] << line_feature
     end
     set_top_visited_airport_count(map_data)
