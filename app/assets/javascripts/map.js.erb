@@ -63,22 +63,25 @@ $(document).ready(function(){
   }
 
   function renderMap(data) {
-    var dataSource = Cesium.GeoJsonDataSource.load(data, {
-      stroke: Cesium.Color.fromBytes(0, 230, 240, 38)
-    });
-    console.log(dataSource)
-    // var entities = dataSource.entities.values;
-    //
-    // for (var i = 0; i < entities.length; i++) {
-    //   var entity = entities[i];
-    //   entity.billboard = undefined;
-    //   entity.point = new Cesium.PointGraphics({
-    //       color: Cesium.Color.fromRandom(),
-    //       pixelSize: 10
-    //   });
-    // }
-    viewer.dataSources.add(dataSource);
-    viewer.zoomTo(dataSource);
+    var dataSource = new Cesium.GeoJsonDataSource();
+    var flights = dataSource.load(data);
+    flights.then(function(dataSource){
+      viewer.dataSources.add(dataSource);
+      viewer.zoomTo(dataSource);
+
+      var entities = dataSource.entities.values;
+
+      for (var i = 0; i < entities.length; i++) {
+        var entity = entities[i];
+        console.log(entity);
+        entity.billboard.color = Cesium.Color.fromBytes(0, 230, 240, 38);
+        // entity.point = new Cesium.PointGraphics({
+        //     color: Cesium.Color.fromRandom(),
+        //     pixelSize: 10
+        // });
+      }
+    })
+      // stroke: Cesium.Color.fromBytes(0, 230, 240, 38)
   }
 
   // function renderMap(data) {
