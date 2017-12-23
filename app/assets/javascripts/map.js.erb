@@ -36,7 +36,10 @@ $(document).ready(function(){
 
   function renderMap(data) {
     var promise = Cesium.GeoJsonDataSource.load(data, {
-      stroke: Cesium.Color.fromBytes(0, 230, 240, 40)
+      stroke: Cesium.Color.fromBytes(0, 230, 240, 40),
+      markerSize: 40,
+      markerColor: Cesium.Color.fromBytes(0, 230, 240),
+      markerSymbol: 'airfield'
     });
     promise.then(function(dataSource) {
       viewer.dataSources.add(dataSource);
@@ -45,18 +48,17 @@ $(document).ready(function(){
 
       for (var i = 0; i < entities.length; i++) {
         var entity = entities[i];
-        var name = entity.name;
         var max_count = data["max_count"];
         if (entity.billboard != undefined) {
-          if (entity.properties.feature_type._value === "airport") {
-            entity.billboard.image = "<%= asset_path('airport.png') %>";
-          } else if (entity.properties.feature_type._value === "waypoint") {
-            entity.billboard.image = "<%= asset_path('waypoint.png') %>";
-          }
-          entity.billboard.horizontalOrigin = Cesium.HorizontalOrigin.CENTER;
-          entity.billboard.verticalOrigin = Cesium.VerticalOrigin.CENTER;
-          entity.billboard.color = new Cesium.Color(1.0, 1.0, 1.0, setOpacity(max_count, entity));
-          entity.billboard.eyeOffset = new Cesium.Cartesian3( 0, 0, -100 );
+          // if (entity.properties.feature_type._value === "airport") {
+          //   entity.billboard.image = "<%= asset_path('airport.png') %>";
+          // } else if (entity.properties.feature_type._value === "waypoint") {
+          //   entity.billboard.image = "<%= asset_path('waypoint.png') %>";
+          // }
+          // entity.billboard.horizontalOrigin = Cesium.HorizontalOrigin.CENTER;
+          // entity.billboard.verticalOrigin = Cesium.VerticalOrigin.CENTER;
+          entity.billboard.color = new Cesium.Color.fromHsl(0, 0, 1, setOpacity(max_count, entity));
+          // entity.billboard.eyeOffset = new Cesium.Cartesian3( 0, 0, -100 );
         }
       }
     })
