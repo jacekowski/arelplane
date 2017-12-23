@@ -39,8 +39,7 @@ $(document).ready(function(){
       stroke: Cesium.Color.fromBytes(0, 230, 240, 40)
     });
     promise.then(function(dataSource) {
-
-      viewer.dataSources.add(dataSource)
+      viewer.dataSources.add(dataSource);
       viewer.zoomTo(dataSource);
       var entities = dataSource.entities.values;
 
@@ -70,5 +69,5 @@ $(document).ready(function(){
     }
     return opacity
   }
-  
+
 });
