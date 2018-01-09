@@ -64,7 +64,7 @@ class User < ApplicationRecord
   end
 
   def total_flight_hours
-    total_flight_hours_cache ||
+    total_flight_hours_cache&.nonzero? ||
     save_total_flight_hours
   end
 
