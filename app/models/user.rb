@@ -128,7 +128,7 @@ class User < ApplicationRecord
   end
 
   def self.most_flights
-    left_joins(:flights).group(:id).order('COUNT(flights.id) DESC').limit(10)
+    order("users.flights_count DESC").limit(10)
   end
 
   def recent_updates

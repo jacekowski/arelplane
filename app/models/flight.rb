@@ -3,7 +3,7 @@ class Flight < ApplicationRecord
 
   belongs_to :from, class_name: 'Location', foreign_key: 'from_id'
   belongs_to :to, class_name: 'Location', foreign_key: 'to_id'
-  belongs_to :user
+  belongs_to :user, counter_cache: true
 
   validates :flight_date, presence: true
 
