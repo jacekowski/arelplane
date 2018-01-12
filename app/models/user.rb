@@ -76,7 +76,7 @@ class User < ApplicationRecord
   end
 
   def num_airports
-    num_airports_cache ||
+    num_airports_cache&.nonzero? ||
     save_num_airports
   end
 
@@ -94,7 +94,7 @@ class User < ApplicationRecord
   end
 
   def num_regions
-    num_regions_cache ||
+    num_regions_cache&.nonzero? ||
     save_num_regions
   end
 
