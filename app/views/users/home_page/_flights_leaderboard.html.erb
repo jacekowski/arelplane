@@ -3,7 +3,7 @@
     <h4 class="card-title title">Most Flights</h4>
     <hr>
     <% User.most_flights.each do |user| %>
-      <% if !user.username then next end %>
+      <% if !user.flights_count then next end %>
       <div class="row text-nowrap">
         <div class="col-7 name">
           <%= link_to user.name, username_path(user.username) %>
