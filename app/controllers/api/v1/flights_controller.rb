@@ -8,6 +8,7 @@ class Api::V1::FlightsController < ApiController
         @flights = cache
       else
         @flights = Flight.map_data(user.flights)
+        CacheUserMapJob.perform_later(user)
       end
     else
       arel = User.find_by(email: 'arelenglish@gmail.com')

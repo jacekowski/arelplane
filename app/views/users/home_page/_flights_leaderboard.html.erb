@@ -2,8 +2,7 @@
   <div class="card-body">
     <h4 class="card-title title">Most Flights</h4>
     <hr>
-    <% User.most_flights.each do |user_id| %>
-      <% user = User.find(user_id) %>
+    <% User.most_flights.each do |user| %>
       <% if !user.username then next end %>
       <div class="row text-nowrap">
         <div class="col-7 name">

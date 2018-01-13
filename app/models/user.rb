@@ -129,7 +129,7 @@ class User < ApplicationRecord
   end
 
   def self.most_flights
-    order("users.flights_count DESC").limit(10).pluck(:id)
+    order("users.flights_count DESC").limit(10)
   end
 
   def recent_updates
