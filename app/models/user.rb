@@ -9,6 +9,7 @@ class User < ApplicationRecord
                      uniqueness: {case_sensitive: false},
                      length: { maximum: 100 }
 
+  has_one  :cache_datum, dependent: :destroy
   has_many :flights, dependent: :destroy
   has_many :locations, through: :flights
   has_many :waypoints, through: :flights
