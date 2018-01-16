@@ -433,7 +433,7 @@ private
   end
 
   def self.find_location_from(identifier)
-    if location = Location.find_by(identifier: identifier.try(:upcase)).try(:id)
+    if location = Location.find_by(identifier: identifier.try(:upcase).try(:strip)).try(:id)
       location
     else
       Location.find_by(identifier: "XXXX").id
