@@ -5,7 +5,6 @@ class Location < ApplicationRecord
   has_many :flight_waypoints
 
   validates :latitude, uniqueness: { scope: :longitude }
-  validates :identifier, uniqueness: true
 
   def name_and_identifier
     if name
