@@ -294,7 +294,8 @@ class Flight < ApplicationRecord
 
   def self.parse_fly_logio(logbook_csv, user)
     user.flights.destroy_all
-    CSV.parse(logbook_csv, headers: true, skip_blanks: true) do |row|
+    delimiter = sniff(logbook_csv)
+    CSV.parse(logbook_csv, col_sep: delimiter, headers: true, skip_blanks: true) do |row|
       r = row.to_hash
       f = Flight.new(
         user_id: user.id,
