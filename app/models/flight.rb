@@ -23,10 +23,10 @@ class Flight < ApplicationRecord
       add_or_increment_location(map_data, departure_location, :airport)
       add_or_increment_location(map_data, arrival_location, :airport)
 
-      line_feature[:geometry][:coordinates] << get_coordinates(departure_location)
+      line_feature[:geometry][:coordinates] << get_coordinates(departure_location).push(0)
       add_or_increment_waypoint_data(flight, map_data, line_feature)
       if departure_location != arrival_location
-        line_feature[:geometry][:coordinates] << get_coordinates(arrival_location)
+        line_feature[:geometry][:coordinates] << get_coordinates(arrival_location).push(0)
       end
       map_data[:features] << line_feature
     end
@@ -84,7 +84,7 @@ class Flight < ApplicationRecord
         waypoint_type = :waypoint
       end
       add_or_increment_location(feature_collection, location, waypoint_type)
-      line_feature[:geometry][:coordinates] << get_coordinates(location)
+      line_feature[:geometry][:coordinates] << get_coordinates(location).push(0)
     end
   end
 
