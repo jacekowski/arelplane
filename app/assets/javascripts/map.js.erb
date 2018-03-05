@@ -47,34 +47,30 @@ $(document).ready(function(){
     }).then(function(dataSource) {
       viewer.dataSources.add(dataSource);
       viewer.zoomTo(dataSource);
+      var entities = dataSource.entities.values;
+      for (var i = 0; i < entities.length; i++) {
+        var entity = entities[i];
+        if (entity.properties.feature_type._value === "airport") {
+          billboards.add({
+            position : entity.position.getValue(viewer.clock.currentTime),
+            image : airportIcon,
+            horizontalOrigin : Cesium.HorizontalOrigin.CENTER,
+            verticalOrigin : Cesium.VerticalOrigin.CENTER,
+            eyeOffset : new Cesium.Cartesian3( 0, 0, -100 ),
+            color : new Cesium.Color.fromHsl(0, 0, 1, setOpacity(max_count, entity))
+          });
+        } else if (entity.properties.feature_type._value === "waypoint") {
+          billboards.add({
+            position : entity.position.getValue(viewer.clock.currentTime),
+            image : waypointIcon,
+            horizontalOrigin : Cesium.HorizontalOrigin.CENTER,
+            verticalOrigin : Cesium.VerticalOrigin.CENTER,
+            eyeOffset : new Cesium.Cartesian3( 0, 0, -100 ),
+            color : new Cesium.Color.fromHsl(0, 0, 1, setOpacity(max_count, entity))
+          });
+        }
+      }
     })
-    for (var i = 0; i < data.features.length; i++) {
-      var entity = data.features[i];
-      if (entity.properties.feature_type === "airport") {
-        var lat = entity.geometry.coordinates[1];
-        var lon = entity.geometry.coordinates[0];
-        billboards.add({
-          position : new Cesium.Cartesian3.fromDegrees(lon, lat, 0),
-          image : airportIcon,
-          horizontalOrigin : Cesium.HorizontalOrigin.CENTER,
-          verticalOrigin : Cesium.VerticalOrigin.CENTER,
-          eyeOffset : new Cesium.Cartesian3( 0, 0, -100 ),
-          color : new Cesium.Color.fromHsl(0, 0, 1, setOpacity(max_count, entity))
-        })
-      }
-      if (entity.properties.feature_type === "waypoint") {
-        var lat = entity.geometry.coordinates[1];
-        var lon = entity.geometry.coordinates[0];
-        billboards.add({
-          position : new Cesium.Cartesian3.fromDegrees(lon, lat, 0),
-          image : waypointIcon,
-          horizontalOrigin : Cesium.HorizontalOrigin.CENTER,
-          verticalOrigin : Cesium.VerticalOrigin.CENTER,
-          eyeOffset : new Cesium.Cartesian3( 0, 0, -100 ),
-          color : new Cesium.Color.fromHsl(0, 0, 1, setOpacity(max_count, entity))
-        })
-      }
-    }
     viewer.scene.primitives.add(billboards);
   }
 
