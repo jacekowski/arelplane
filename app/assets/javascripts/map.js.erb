@@ -41,13 +41,13 @@ $(document).ready(function(){
 
   function renderMap(data) {
     var max_count = data["max_count"];
-    // Cesium.GeoJsonDataSource.load(data, {
-    //   stroke: Cesium.Color.fromBytes(0, 230, 240, 40),
-    //   markerSize: 0
-    // }).then(function(dataSource) {
-    // //   viewer.dataSources.add(dataSource);
-    //   viewer.zoomTo(dataSource);
-    // })
+    Cesium.GeoJsonDataSource.load(data, {
+      stroke: Cesium.Color.fromBytes(0, 230, 240, 40),
+      markerColor: Cesium.Color.fromHsl(0, 0, 0, 0)
+    }).then(function(dataSource) {
+      viewer.dataSources.add(dataSource);
+      viewer.zoomTo(dataSource);
+    })
     for (var i = 0; i < data.features.length; i++) {
       var entity = data.features[i];
       if (entity.properties.feature_type === "airport") {
@@ -73,16 +73,6 @@ $(document).ready(function(){
           eyeOffset : new Cesium.Cartesian3( 0, 0, -100 ),
           color : new Cesium.Color.fromHsl(0, 0, 1, setOpacity(max_count, entity))
         })
-      }
-      if (entity.properties.feature_type === "line") {
-        var coordinates = [].concat.apply([], entity.geometry.coordinates)
-        viewer.entities.add({
-          polyline : {
-            positions : Cesium.Cartesian3.fromDegreesArray(coordinates),
-            width : 5,
-            material : Cesium.Color.fromBytes(0, 230, 240, 40)
-          }
-        });
       }
     }
     viewer.scene.primitives.add(billboards);
