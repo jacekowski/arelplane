@@ -15,12 +15,8 @@ $(document).ready(function(){
     })
   });
 
-  var terrainProvider = new Cesium.CesiumTerrainProvider({
-    url : '//assets.agi.com/stk-terrain/world',
-    requestVertexNormals : true // required for terrain lighting
-  });
+  viewer.terrainProvider = Cesium.createWorldTerrain();
   // viewer.scene.globe.depthTestAgainstTerrain = true;
-  viewer.terrainProvider = terrainProvider;
 
   var whichPage = $('#current_page').data('page');
   var basePath = window.location.protocol + "//" + window.location.host;
@@ -37,48 +33,53 @@ $(document).ready(function(){
 
   var airportIcon = "<%= asset_path('airport.png') %>";
   var waypointIcon = "<%= asset_path('waypoint.png') %>";
-  var billboards = viewer.scene.primitives.add(new Cesium.BillboardCollection());
-  billboards.add({
-    image : airportIcon
-  });
-  billboards.add({
-    image : waypointIcon
-  });
+  var billboards = new Cesium.BillboardCollection();
 
   function renderMap(data) {
-    var promise = Cesium.GeoJsonDataSource.load(data, {
+    var top_airport_visit_count = data["max_count"];
+    Cesium.GeoJsonDataSource.load(data, {
       stroke: Cesium.Color.fromBytes(0, 230, 240, 40),
-      markerSize: 40,
-      markerColor: Cesium.Color.fromBytes(0, 230, 240),
-      markerSymbol: 'airfield'
-    });
-    promise.then(function(dataSource) {
+      markerColor: Cesium.Color.fromHsl(0, 0, 0, 0)
+    }).then(function(dataSource) {
       viewer.dataSources.add(dataSource);
       viewer.zoomTo(dataSource);
       var entities = dataSource.entities.values;
-
       for (var i = 0; i < entities.length; i++) {
-        var entity = entities[i];
-        var max_count = data["max_count"];
-        if (entity.billboard != undefined) {
-          if (entities.length < 1500) {
-            if (entity.properties.feature_type._value === "airport") {
-              entity.billboard = billboards.get(0);
-            } else if (entity.properties.feature_type._value === "waypoint") {
-              entity.billboard = billboards.get(1);
-            }
-            entity.billboard.horizontalOrigin = Cesium.HorizontalOrigin.CENTER;
-            entity.billboard.verticalOrigin = Cesium.VerticalOrigin.CENTER;
-            entity.billboard.eyeOffset = new Cesium.Cartesian3( 0, 0, -100 );
-          }
-          entity.billboard.color = new Cesium.Color.fromHsl(0, 0, 1, setOpacity(max_count, entity));
+        var feature_type = entities[i].properties.feature_type._value;
+        if (feature_type === "airport") {
+          setAirportIcon(entities[i], top_airport_visit_count);
+        } else if (feature_type === "waypoint") {
+          setWaypointIcon(entities[i], top_airport_visit_count);
         }
       }
     })
+    viewer.scene.primitives.add(billboards);
   }
 
-  function setOpacity(max_count, entity) {
-    var opacity = Math.max((entity.properties.count/max_count) * 12, 0.3)
+  function setAirportIcon(entity, top_airport_visit_count) {
+    billboards.add({
+      position : entity.position.getValue(viewer.clock.currentTime),
+      image : airportIcon,
+      horizontalOrigin : Cesium.HorizontalOrigin.CENTER,
+      verticalOrigin : Cesium.VerticalOrigin.CENTER,
+      eyeOffset : new Cesium.Cartesian3( 0, 0, -100 ),
+      color : new Cesium.Color.fromHsl(0, 0, 1, setOpacity(top_airport_visit_count, entity))
+    });
+  }
+
+  function setWaypointIcon(entity, top_airport_visit_count) {
+    billboards.add({
+      position : entity.position.getValue(viewer.clock.currentTime),
+      image : waypointIcon,
+      horizontalOrigin : Cesium.HorizontalOrigin.CENTER,
+      verticalOrigin : Cesium.VerticalOrigin.CENTER,
+      eyeOffset : new Cesium.Cartesian3( 0, 0, -100 ),
+      color : new Cesium.Color.fromHsl(0, 0, 1, setOpacity(top_airport_visit_count, entity))
+    });
+  }
+
+  function setOpacity(top_airport_visit_count, entity) {
+    var opacity = Math.max((entity.properties.count/top_airport_visit_count) * 12, 0.3)
     if (opacity > 1) {
       opacity = 1
     }
