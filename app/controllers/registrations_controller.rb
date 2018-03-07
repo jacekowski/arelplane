@@ -8,6 +8,7 @@ class RegistrationsController < Devise::RegistrationsController
       params["user"]["username"] = create_username(params["user"]["name"])
     end
     super
+    UserMailer.welcome_email(@user).deliver_later
    end
 
    def update
