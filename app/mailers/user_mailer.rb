@@ -5,6 +5,7 @@ class UserMailer < ApplicationMailer
     @user = user
     mail(
      to: @user.email,
+     reply_to: "arel@arelplane.com",
      subject: "How can I make Arelplane more helpful for you?"
    )
   end
