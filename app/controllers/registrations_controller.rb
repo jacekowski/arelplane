@@ -8,7 +8,9 @@ class RegistrationsController < Devise::RegistrationsController
       params["user"]["username"] = create_username(params["user"]["name"])
     end
     super
-    UserMailer.welcome_email(@user).deliver_later
+    if @user.persisted?
+      UserMailer.welcome_email(@user).deliver_later
+    end
    end
 
    def update
