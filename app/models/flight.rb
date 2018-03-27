@@ -89,7 +89,6 @@ class Flight < ApplicationRecord
   end
 
   def self.parse_foreflight(logbook_csv, user)
-    user.flights.destroy_all
     CSV.foreach(logbook_csv, headers: [
       :flight_date,
       :aircraft_id,
@@ -110,7 +109,7 @@ class Flight < ApplicationRecord
       ]) do |row|
         r = row.to_hash
         next unless date_format_one =~ r[:flight_date] || date_format_five =~ r[:flight_date]
-        f = Flight.new(
+        f = Flight.find_or_create_by(
           user_id: user.id,
           flight_date: r[:flight_date],
           aircraft_id: r[:aircraft_id],
