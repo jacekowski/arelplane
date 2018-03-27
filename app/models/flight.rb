@@ -13,25 +13,35 @@ class Flight < ApplicationRecord
   def self.map_data(flights)
     map_data = feature_collection
     flights.all.each do |flight|
-      departure_location = flight.from
-      arrival_location = flight.to
-      if departure_location.latitude == nil || arrival_location.latitude == nil
+      origin = flight.from
+      destination = flight.to
+      if origin.latitude == nil || destination.latitude == nil
         next
       end
       line_feature = line_feature_structure
 
-      add_or_increment_location(map_data, departure_location, :airport)
-      add_or_increment_location(map_data, arrival_location, :airport)
+      add_or_increment_location(map_data, origin, :airport)
+      add_or_increment_location(map_data, destination, :airport)
 
-      line_feature[:geometry][:coordinates] << get_coordinates(departure_location)
+      line_feature[:geometry][:coordinates] << get_coordinates(origin)
       add_or_increment_waypoint_data(flight, map_data, line_feature)
-      if departure_location != arrival_location
-        line_feature[:geometry][:coordinates] << get_coordinates(arrival_location)
+      if !flight.out_and_back?(origin, destination)
+        line_feature[:geometry][:coordinates] << get_coordinates(destination)
       end
       map_data[:features] << line_feature
     end
     set_top_visited_airport_count(map_data)
     map_data
+  end
+
+  def out_and_back?(origin, destination)
+    if self.waypoints.count <= 1
+      if origin == destination
+        return true
+      end
+      return false
+    end
+    return false
   end
 
   def self.add_feature_to_map(feature_collection, feature, location, feature_type)
@@ -89,7 +99,6 @@ class Flight < ApplicationRecord
   end
 
   def self.parse_foreflight(logbook_csv, user)
-    user.flights.destroy_all
     CSV.foreach(logbook_csv, headers: [
       :flight_date,
       :aircraft_id,
@@ -110,7 +119,7 @@ class Flight < ApplicationRecord
       ]) do |row|
         r = row.to_hash
         next unless date_format_one =~ r[:flight_date] || date_format_five =~ r[:flight_date]
-        f = Flight.new(
+        f = Flight.find_or_create_by(
           user_id: user.id,
           flight_date: r[:flight_date],
           aircraft_id: r[:aircraft_id],
