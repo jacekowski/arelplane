@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   root :to => 'pages#index'
 
   get 'upload_instructions', to: 'pages#upload_instructions'
+  get 'unsubscribe_confirmation', to: 'pages#unsubscribe_confirmation'
   get 'privacy', to: 'pages#privacy_policy'
 
   namespace :api, constraints: {format: :json} do
@@ -39,4 +40,7 @@ Rails.application.routes.draw do
     }
   resources :users, param: :username, path: '', only: [:show], as: :username
   post 'user_search', to: 'users#search'
+
+  get 'unsubscribe/:unsubscribe_token', to: 'users#unsubscribe', as: 'unsubscribe'
+
 end

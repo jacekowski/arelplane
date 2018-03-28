@@ -29,11 +29,12 @@ class User < ApplicationRecord
   before_create :add_subscription_preferences
 
   def add_subscription_preferences
-    build_subscription_preference(unsubscribe_hash: SecureRandom.hex)
+    build_subscription_preference(unsubscribe_token: SecureRandom.hex)
   end
 
   def follow_user(other_user)
     following << other_user
+    UserMailer.new_follower(self, other_user).deliver_later
   end
 
   def unfollow_user(other_user)

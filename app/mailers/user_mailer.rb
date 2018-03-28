@@ -10,13 +10,13 @@ class UserMailer < ApplicationMailer
    )
   end
 
-  def new_follower(follower, following)
+  def new_follower(follower, user)
     @follower = follower
-    @following = following
+    @user = user
     mail(
-      to: @following.email,
+      to: @user.email,
       reply_to: "no-reply@arelplane.com",
-      subject: "#{@follower.name liked your map!}"
+      subject: "#{@follower.name} liked your map!"
     )
   end
 end

@@ -81,7 +81,7 @@ ActiveRecord::Schema.define(version: 20180327215726) do
     t.bigint "user_id"
     t.boolean "new_follower_email", default: true
     t.boolean "no_emails", default: false
-    t.string "unsubscribe_hash"
+    t.string "unsubscribe_token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_subscription_preferences_on_user_id"

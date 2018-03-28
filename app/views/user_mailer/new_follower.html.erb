@@ -1,0 +1,8 @@
+<p>Hey <%= @user.name %></p>
+
+<p><%= link_to @follower.name, username_url(@follower.username) %> just liked your map on <%= link_to 'Arelplane!', root_url %></p>
+
+<br>
+<br>
+
+<p style="font-size: 8px !important;">If you no longer want to recieve notifications of new likes, <%= link_to 'unsubscribe here', unsubscribe_url(@user.subscription_preference.unsubscribe_token) %>. If you don't want any emails about anything, ever, <%= link_to 'click here', unsubscribe_url(@user.subscription_preference.unsubscribe_token, unsubscribe_all: "true") %> </p>

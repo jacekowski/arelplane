@@ -4,7 +4,7 @@ class CreateSubscriptionPreferences < ActiveRecord::Migration[5.1]
       t.references :user
       t.boolean :new_follower_email, default: true
       t.boolean :no_emails, default: false
-      t.string :unsubscribe_hash
+      t.string :unsubscribe_token
 
       t.timestamps
     end
