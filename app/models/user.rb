@@ -24,6 +24,14 @@ class User < ApplicationRecord
                                     dependent: :destroy
   has_many :following, through: :active_relationships, source: :following
 
+  has_one :subscription_preference
+
+  before_create :add_subscription_preferences
+
+  def add_subscription_preferences
+    # todo add method logic
+  end
+
   def follow_user(other_user)
     following << other_user
   end

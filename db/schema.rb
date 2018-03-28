@@ -79,8 +79,9 @@ ActiveRecord::Schema.define(version: 20180327215726) do
 
   create_table "subscription_preferences", force: :cascade do |t|
     t.bigint "user_id"
-    t.boolean "new_follower"
-    t.boolean "no_emails"
+    t.boolean "new_follower_email", default: true
+    t.boolean "no_emails", default: false
+    t.string "unsubscribe_hash"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_subscription_preferences_on_user_id"
