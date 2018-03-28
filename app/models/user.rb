@@ -29,7 +29,7 @@ class User < ApplicationRecord
   before_create :add_subscription_preferences
 
   def add_subscription_preferences
-    # todo add method logic
+    build_subscription_preference(unsubscribe_hash: SecureRandom.hex)
   end
 
   def follow_user(other_user)
