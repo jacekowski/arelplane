@@ -9,6 +9,7 @@
   #sticky-sidebar {
     background-color: $profileSidebarBackground;
     z-index: 0;
+    min-width: 18.75rem;
     .top-values {
       .value {
         font-size: 1.5rem;
@@ -186,6 +187,7 @@
 
 @media (max-width: 767px) {
   .user-map {
-    min-height: 60vh;
+    min-height: 75vh;
+    height: 75vh;
   }
 }
