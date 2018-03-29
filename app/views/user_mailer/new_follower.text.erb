@@ -1,0 +1,10 @@
+Hey <%= @following.name %>
+
+<%= @follower.name %> [<%= username_url(@follower.username) %>] just liked your map on <%= 'Arelplane!' %> [<%= root_url %>]
+
+Harry Bliss would be proud.
+
+[https://www.youtube.com/watch?v=ihee35QrWtk]
+
+If you no longer want to recieve notifications of new likes, unsubscribe here: <%= unsubscribe_url(@following.subscription_preference.unsubscribe_token) %>
+If you don't want any emails about anything, ever, you can do that here: <%= unsubscribe_url(@following.subscription_preference.unsubscribe_token, unsubscribe_all: "true") %>
