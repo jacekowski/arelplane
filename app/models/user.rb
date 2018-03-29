@@ -34,7 +34,10 @@ class User < ApplicationRecord
 
   def follow_user(other_user)
     following << other_user
-    UserMailer.new_follower(self, other_user).deliver_later
+    if other_user.subscription_preference.new_follower_email &&
+      !other_user.subscription_preference.no_emails
+      UserMailer.new_follower(self, other_user).deliver_later
+    end
   end
 
   def unfollow_user(other_user)
