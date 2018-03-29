@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: 
+  new_follower: 
+  no_emails: 
+
+two:
+  user: 
+  new_follower: 
+  no_emails: 

@@ -24,8 +24,20 @@ class User < ApplicationRecord
                                     dependent: :destroy
   has_many :following, through: :active_relationships, source: :following
 
-  def follow_user(other_user)
-    following << other_user
+  has_one :subscription_preference
+
+  before_create :add_subscription_preferences
+
+  def add_subscription_preferences
+    build_subscription_preference(unsubscribe_token: SecureRandom.hex)
+  end
+
+  def follow_user(followed_user)
+    following << followed_user
+    if followed_user.subscription_preference.new_follower_email &&
+      !followed_user.subscription_preference.no_emails
+      UserMailer.new_follower(self, followed_user).deliver_later
+    end
   end
 
   def unfollow_user(other_user)

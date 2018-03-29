@@ -35,6 +35,10 @@ a:hover {
   color: $darkLinkColor;
 }
 
+.full-page-container {
+  min-height: 85vh;
+}
+
 h6 {
   color: white;
   font-weight: $light;
