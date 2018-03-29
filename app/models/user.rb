@@ -32,11 +32,11 @@ class User < ApplicationRecord
     build_subscription_preference(unsubscribe_token: SecureRandom.hex)
   end
 
-  def follow_user(other_user)
-    following << other_user
-    if other_user.subscription_preference.new_follower_email &&
-      !other_user.subscription_preference.no_emails
-      UserMailer.new_follower(self, other_user).deliver_later
+  def follow_user(followed_user)
+    following << followed_user
+    if followed_user.subscription_preference.new_follower_email &&
+      !followed_user.subscription_preference.no_emails
+      UserMailer.new_follower(self, followed_user).deliver_later
     end
   end
 
