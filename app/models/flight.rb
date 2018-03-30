@@ -24,9 +24,11 @@ class Flight < ApplicationRecord
       add_or_increment_location(map_data, destination, :airport)
 
       line_feature[:geometry][:coordinates] << get_coordinates(origin)
+      line_feature[:properties][:name] += "#{origin.identifier} to: "
       add_or_increment_waypoint_data(flight, map_data, line_feature)
       if !flight.out_and_back?(origin, destination)
         line_feature[:geometry][:coordinates] << get_coordinates(destination)
+        line_feature[:properties][:name] += "#{destination.identifier}"
       end
       map_data[:features] << line_feature
     end
@@ -475,6 +477,7 @@ private
       type: :Feature,
       properties: {
         count: 0,
+        name: "",
         feature_type: :line,
         geodesic: true,
         geodesic_steps: 50,
