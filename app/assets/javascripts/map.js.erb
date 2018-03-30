@@ -3,16 +3,59 @@ $(document).ready(function(){
   var MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoiYXJlbGVuZ2xpc2giLCJhIjoiY2l6ZzNrNHZ3MDB1cDMzb3dqdmh3emhjbSJ9.1WoDWsWNnIg-Wq8LPf1j-A';
   var MAPBOX_STYLE_ID = 'cj68kq87a1gqk2srsnul2iwee';
   var MAPBOX_USERNAME = 'arelenglish';
-  var url = 'https://api.mapbox.com/styles/v1/' + MAPBOX_USERNAME + '/' + MAPBOX_STYLE_ID + '/tiles/256/{z}/{x}/{y}?access_token=' + MAPBOX_ACCESS_TOKEN;
+  var defaultMap = 'https://api.mapbox.com/styles/v1/' + MAPBOX_USERNAME + '/' + MAPBOX_STYLE_ID + '/tiles/256/{z}/{x}/{y}?access_token=' + MAPBOX_ACCESS_TOKEN;
+  var mapboxSatellite = 'https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v9' + '/tiles/256/{z}/{x}/{y}?access_token=' + MAPBOX_ACCESS_TOKEN;
+
+  var providerViewModels = [];
+  var terrainViewModels = [];
+  providerViewModels.push(new Cesium.ProviderViewModel({
+    name: 'Default',
+    iconUrl: Cesium.buildModuleUrl("<%= asset_path('map_theme.png') %>"),
+    tooltip: 'Arelplane default theme',
+    creationFunction: function() {
+      return new Cesium.UrlTemplateImageryProvider({
+        url: defaultMap
+      });
+    }
+  }));
+
+  providerViewModels.push(new Cesium.ProviderViewModel({
+    name: 'Satellite',
+    iconUrl: Cesium.buildModuleUrl('Widgets/Images/ImageryProviders/esriWorldImagery.png'),
+    creationFunction : function() {
+      return new Cesium.UrlTemplateImageryProvider({
+        url: mapboxSatellite
+      })
+    }
+  }));
+
+  providerViewModels.push(new Cesium.ProviderViewModel({
+    name : 'Street Map',
+    iconUrl : Cesium.buildModuleUrl('Widgets/Images/ImageryProviders/openStreetMap.png'),
+    creationFunction : function() {
+      return new Cesium.createOpenStreetMapImageryProvider({
+        url : 'https://a.tile.openstreetmap.org'
+      });
+    }
+  }));
+
+  providerViewModels.push(new Cesium.ProviderViewModel({
+    name: 'Earth at Night',
+    iconUrl : Cesium.buildModuleUrl('Widgets/Images/ImageryProviders/earthAtNight.png'),
+    creationFunction : function() {
+      return new Cesium.IonImageryProvider({ assetId: 3812 })
+    }
+  }));
 
   var viewer = new Cesium.Viewer('cesiumContainer', {
     timeline: false,
     animation: false,
     geocoder: false,
-    baseLayerPicker: false,
-    imageryProvider: new Cesium.UrlTemplateImageryProvider({
-      url: url
-    })
+    // baseLayerPicker: false,
+    vrButton: true,
+    selectionIndicator: false,
+    imageryProviderViewModels: providerViewModels,
+    terrainProviderViewModels : terrainViewModels
   });
 
   viewer.terrainProvider = Cesium.createWorldTerrain();
@@ -39,17 +82,28 @@ $(document).ready(function(){
     var top_airport_visit_count = data["max_count"];
     Cesium.GeoJsonDataSource.load(data, {
       stroke: Cesium.Color.fromBytes(0, 230, 240, 40),
-      markerColor: Cesium.Color.fromHsl(0, 0, 0, 0)
+      markerColor: Cesium.Color.fromHsl(0, 0, 0, 0.01),
     }).then(function(dataSource) {
       viewer.dataSources.add(dataSource);
       viewer.zoomTo(dataSource);
       var entities = dataSource.entities.values;
       for (var i = 0; i < entities.length; i++) {
-        var feature_type = entities[i].properties.feature_type._value;
+        var entity = entities[i];
+        var feature_type = entity.properties.feature_type._value;
         if (feature_type === "airport") {
-          setAirportIcon(entities[i], top_airport_visit_count);
+          setAirportIcon(entity, top_airport_visit_count);
+          entity.description = '\
+          <p>Number of visits: ' + entity.properties.count._value + '</p>\
+          <p>Identifier: ' + entity.properties.identifier._value + '</p>';
         } else if (feature_type === "waypoint") {
-          setWaypointIcon(entities[i], top_airport_visit_count);
+          setWaypointIcon(entity, top_airport_visit_count);
+          entity.name = entity.properties.identifier._value;
+          entity.description = '<p>Number of visits: ' + entity.properties.count._value + '</p>';
+        } else if (feature_type === "line") {
+          if (entity.name === undefined) {
+            entity.name = "Flight";
+          }
+          entity.description = "";
         }
       }
     })
@@ -60,9 +114,6 @@ $(document).ready(function(){
     billboards.add({
       position : entity.position.getValue(viewer.clock.currentTime),
       image : airportIcon,
-      horizontalOrigin : Cesium.HorizontalOrigin.CENTER,
-      verticalOrigin : Cesium.VerticalOrigin.CENTER,
-      eyeOffset : new Cesium.Cartesian3( 0, 0, -100 ),
       color : new Cesium.Color.fromHsl(0, 0, 1, setOpacity(top_airport_visit_count, entity))
     });
   }
@@ -71,9 +122,6 @@ $(document).ready(function(){
     billboards.add({
       position : entity.position.getValue(viewer.clock.currentTime),
       image : waypointIcon,
-      horizontalOrigin : Cesium.HorizontalOrigin.CENTER,
-      verticalOrigin : Cesium.VerticalOrigin.CENTER,
-      eyeOffset : new Cesium.Cartesian3( 0, 0, -100 ),
       color : new Cesium.Color.fromHsl(0, 0, 1, setOpacity(top_airport_visit_count, entity))
     });
   }
