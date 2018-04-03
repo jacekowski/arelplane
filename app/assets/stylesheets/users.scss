@@ -15,6 +15,12 @@
         font-size: 1.5rem;
         font-weight: $black;
         color: $primaryTextColor;
+        a {
+          font-size: 1.5rem;
+          font-weight: $black;
+          color: $primaryTextColor;
+          text-decoration: underline; 
+        }
       }
       .title {
         font-size: 1rem;

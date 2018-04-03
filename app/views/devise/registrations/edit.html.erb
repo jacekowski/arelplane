@@ -50,6 +50,16 @@
           <% end %>
           <br>
 
+          <%= f.label :home_base, 'Home Base (ICAO Identifier)', class: 'light-sub-text' %><br />
+          <% if @user.home_base %>
+            <small id="passwordHelpInline", class="text-info">
+              Currently set to <%= @user.home_base.identifier %>
+            </small><br>
+          <% end %>
+          <div class="input-group mb-2 mb-sm-0">
+            <%= f.collection_select :home_base_id, Location.order(:identifier).page, :id, :identifier, { include_blank: true }, class: 'identifier_lookup', id: 'departure_airport', style: 'width: 100%;' %>
+          </div><br />
+
           <%= f.label :current_password, class: 'light-sub-text' %><br>
           <small id="passwordHelpInline" class="text-muted">
             we need your current password to confirm your changes

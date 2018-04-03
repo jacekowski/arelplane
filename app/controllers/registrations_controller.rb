@@ -39,6 +39,7 @@ private
       :password,
       :password_confirmation,
       :current_password,
+      :home_base_id,
       rating_ids: []
     )
   end

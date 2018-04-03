@@ -14,6 +14,8 @@ class User < ApplicationRecord
   has_many :locations, through: :flights
   has_many :waypoints, through: :flights
 
+  belongs_to :home_base, class_name: 'Location', foreign_key: :home_base_id, optional: true 
+
   has_many :passive_relationships, foreign_key: :following_id,
                                 class_name: 'UserFollowing',
                                  dependent: :destroy
