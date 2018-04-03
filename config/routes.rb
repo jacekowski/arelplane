@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :aircrafts
   authenticated do
     root :to => 'users#home', as: :authenticated
   end

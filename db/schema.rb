@@ -10,10 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180327215726) do
+ActiveRecord::Schema.define(version: 20180402232358) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "aircrafts", force: :cascade do |t|
+    t.string "identifier"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "cache_data", force: :cascade do |t|
     t.json "map_data"
@@ -31,7 +37,7 @@ ActiveRecord::Schema.define(version: 20180327215726) do
 
   create_table "flights", force: :cascade do |t|
     t.string "flight_date"
-    t.string "aircraft_id"
+    t.string "aircraft_identifier"
     t.integer "from_id"
     t.integer "to_id"
     t.string "time_out"
@@ -42,6 +48,8 @@ ActiveRecord::Schema.define(version: 20180327215726) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
+    t.bigint "aircraft_id"
+    t.index ["aircraft_id"], name: "index_flights_on_aircraft_id"
   end
 
   create_table "locations", force: :cascade do |t|
@@ -77,6 +85,12 @@ ActiveRecord::Schema.define(version: 20180327215726) do
     t.string "associated_airport"
   end
 
+  create_table "ratings", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "subscription_preferences", force: :cascade do |t|
     t.bigint "user_id"
     t.boolean "new_follower_email", default: true
@@ -92,6 +106,15 @@ ActiveRecord::Schema.define(version: 20180327215726) do
     t.integer "following_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "user_ratings", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "rating_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["rating_id"], name: "index_user_ratings_on_rating_id"
+    t.index ["user_id"], name: "index_user_ratings_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -122,4 +145,7 @@ ActiveRecord::Schema.define(version: 20180327215726) do
     t.index ["username"], name: "index_users_on_username"
   end
 
+  add_foreign_key "flights", "aircrafts"
+  add_foreign_key "user_ratings", "ratings"
+  add_foreign_key "user_ratings", "users"
 end

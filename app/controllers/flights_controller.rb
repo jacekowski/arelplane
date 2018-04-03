@@ -126,6 +126,7 @@ private
   def flight_params
     params.require(:flight).permit(
       :flight_date,
+      :aircraft_identifier,
       :aircraft_id,
       :from_id,
       :to_id,

@@ -25,8 +25,10 @@ class User < ApplicationRecord
   has_many :following, through: :active_relationships, source: :following
 
   has_one :subscription_preference
-
   before_create :add_subscription_preferences
+
+  has_many :user_ratings
+  has_many :ratings, through: :user_ratings, dependent: :destroy
 
   def add_subscription_preferences
     build_subscription_preference(unsubscribe_token: SecureRandom.hex)
@@ -73,7 +75,7 @@ class User < ApplicationRecord
   end
 
   def top_aircraft
-    flights.group(:aircraft_id).order('count_id DESC').limit(1).count(:id).keys.first
+    Aircraft.find(flights.group(:aircraft_id).order('count_id DESC').limit(1).count(:id).keys.first)
   end
 
   def total_flight_hours
@@ -142,6 +144,10 @@ class User < ApplicationRecord
 
   def self.most_flights
     order("users.flights_count DESC").limit(10)
+  end
+
+  def most_recent_flight
+    flights.last
   end
 
   def recent_updates

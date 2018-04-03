@@ -10,6 +10,8 @@ class Flight < ApplicationRecord
   has_many :waypoints, foreign_key: "flight_id", class_name: "FlightWaypoint", dependent: :destroy, inverse_of: :flight
   accepts_nested_attributes_for :waypoints, reject_if: lambda { |a| a[:location_id].blank? }
 
+  belongs_to :aircraft
+
   def self.map_data(flights)
     map_data = feature_collection
     flights.all.each do |flight|
@@ -103,7 +105,7 @@ class Flight < ApplicationRecord
   def self.parse_foreflight(logbook_csv, user)
     CSV.foreach(logbook_csv, headers: [
       :flight_date,
-      :aircraft_id,
+      :aircraft_identifier,
       :from_id,
       :to_id,
       :route,
@@ -124,7 +126,7 @@ class Flight < ApplicationRecord
         f = Flight.find_or_create_by(
           user_id: user.id,
           flight_date: r[:flight_date],
-          aircraft_id: r[:aircraft_id],
+          aircraft_identifier: r[:aircraft_id],
           from_id: find_location_from(r[:from_id]),
           to_id: find_location_from(r[:to_id]),
           time_out: r[:time_out],
@@ -147,7 +149,7 @@ class Flight < ApplicationRecord
       f = Flight.new(
         user_id: user.id,
         flight_date: r["Date"],
-        aircraft_id: r["Aircraft ID"],
+        aircraft_identifier: r["Aircraft ID"],
         from_id: find_location_from(r["From"]),
         to_id: find_location_from(r["To"]),
         total_time: convert_time(r["Total Time"]),
@@ -166,7 +168,7 @@ class Flight < ApplicationRecord
       f = Flight.new(
         user_id: user.id,
         flight_date: r["mcc_DATE"],
-        aircraft_id: r["AC_REG"],
+        aircraft_identifier: r["AC_REG"],
         from_id: find_location_from(r["AF_DEP"]),
         to_id: find_location_from(r["AF_ARR"]),
         time_out: r["TIME_DEP"],
@@ -186,7 +188,7 @@ class Flight < ApplicationRecord
       f = Flight.find_or_initialize_by(
         user_id: user.id,
         flight_date: r["Date"],
-        aircraft_id: r["Aircraft Registration"],
+        aircraft_identifier: r["Aircraft Registration"],
         from_id: get_safelog_departure(row),
         to_id: get_safelog_arrival(row),
         time_out: r["Depart Time"],
@@ -209,7 +211,7 @@ class Flight < ApplicationRecord
       f = Flight.new(
         user_id: user.id,
         flight_date: r["Date"],
-        aircraft_id: r["Aircraft ID"],
+        aircraft_identifier: r["Aircraft ID"],
         from_id: find_location_from(route.first),
         to_id: find_location_from(route.last),
         pic: r["PIC"],
@@ -236,7 +238,7 @@ class Flight < ApplicationRecord
         f = Flight.new(
           user_id: user.id,
           flight_date: r["Date"],
-          aircraft_id: r["Tail Number"],
+          aircraft_identifier: r["Tail Number"],
           from_id: find_location_from(route.first),
           to_id: find_location_from(route.last),
           time_out: r["Engine Start"],
@@ -266,7 +268,7 @@ class Flight < ApplicationRecord
       f = Flight.new(
         user_id: user.id,
         flight_date: r["DATE"],
-        aircraft_id: r["AIRCRAFT IDENT"],
+        aircraft_identifier: r["AIRCRAFT IDENT"],
         from_id: find_location_from(route.first),
         to_id: find_location_from(route.last),
         pic: r["PILOT IN COMMAND"],
@@ -289,7 +291,7 @@ class Flight < ApplicationRecord
       f = Flight.new(
         user_id: user.id,
         flight_date: r["Date"],
-        aircraft_id: r["Aircraft ID"],
+        aircraft_identifier: r["Aircraft ID"],
         from_id: find_location_from(r["Departure"]),
         to_id: find_location_from(r["Destination"]),
         time_out: r["Time Out"],
@@ -311,7 +313,7 @@ class Flight < ApplicationRecord
       f = Flight.new(
         user_id: user.id,
         flight_date: r["date"],
-        aircraft_id: r["aircraft_registration"],
+        aircraft_identifier: r["aircraft_registration"],
         from_id: find_location_from(r["departure_airport"]),
         to_id: find_location_from(r["arrival_airport"]),
         time_out: r["departure_time"],
@@ -330,7 +332,7 @@ class Flight < ApplicationRecord
       f = Flight.new(
         user_id: user.id,
         flight_date: r["Date"],
-        aircraft_id: r["AircraftID"],
+        aircraft_identifier: r["AircraftID"],
         from_id: find_location_from(r["From"]),
         to_id: find_location_from(r["To"]),
         time_out: r["TimeOut"],
@@ -352,7 +354,7 @@ class Flight < ApplicationRecord
       f = Flight.new(
         user_id: user.id,
         flight_date: r["Depature_Date"],
-        aircraft_id: r["Registration"],
+        aircraft_identifier: r["Registration"],
         from_id: find_location_from(r["ICAO_Depature"]),
         to_id: find_location_from(r["ICAO_Destination"]),
         time_out: r["Off_Block"],

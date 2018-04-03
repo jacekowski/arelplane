@@ -58,6 +58,15 @@
   }
 }
 
+.edit-account {
+  .form-check-label {
+    color: $lightTextColor;
+    font-size: 1rem;
+    font-weight: $extraLight;
+    font-family: $baseFont;
+  }
+}
+
 #user-map {}
 
 .user-map {

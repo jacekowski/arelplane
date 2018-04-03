@@ -43,7 +43,7 @@
           <% if @user.top_aircraft.blank? %>
             🤷
           <% else %>
-            <%= @user.top_aircraft %>
+            <%= link_to @user.top_aircraft.identifier, aircraft_path(@user.top_aircraft) %>
           <% end %>
         </div>
         <div class='title'>
@@ -84,6 +84,23 @@
         <div class="title">
           Hours
         </div>
+      </div>
+    </div>
+    <hr class="ml-3 mr-3">
+    <div class="row ml-1 mr-2 mb-5">
+      <div class="col-12">
+        <p><b>Last Aircraft Flown</b></p>
+        <% aircraft = @user.most_recent_flight.aircraft_id %>
+        <%= link_to Aircraft.find(aircraft).identifier, aircraft_path(aircraft) %> (<%= @user.most_recent_flight.from.identifier %> - <%= @user.most_recent_flight.to.identifier %>)
+      </div>
+    </div>
+    <hr class="ml-3 mr-3">
+    <div class="row ml-1 mr-2 mb-5">
+      <div class="col-12">
+        <p><b>Ratings</b></p>
+        <% @user.ratings.each do |rating| %>
+          <%= rating.name %><br>
+        <% end %>
       </div>
     </div>
     <br>
