@@ -8,13 +8,14 @@ class User < ApplicationRecord
   validates :username, presence: true,
                      uniqueness: {case_sensitive: false},
                      length: { maximum: 100 }
+  validates :bio, length: { maximum: 250 }
 
   has_one  :cache_datum, dependent: :destroy
   has_many :flights, dependent: :destroy
   has_many :locations, through: :flights
   has_many :waypoints, through: :flights
 
-  belongs_to :home_base, class_name: 'Location', foreign_key: :home_base_id, optional: true 
+  belongs_to :home_base, class_name: 'Location', foreign_key: :home_base_id, optional: true
 
   has_many :passive_relationships, foreign_key: :following_id,
                                 class_name: 'UserFollowing',

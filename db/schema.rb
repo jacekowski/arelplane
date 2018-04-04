@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180403200109) do
+ActiveRecord::Schema.define(version: 20180404143151) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -139,6 +139,7 @@ ActiveRecord::Schema.define(version: 20180403200109) do
     t.integer "num_regions_cache"
     t.integer "flights_count", default: 0
     t.bigint "home_base_id"
+    t.text "bio"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["flights_count"], name: "index_users_on_flights_count"
     t.index ["home_base_id"], name: "index_users_on_home_base_id"

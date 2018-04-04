@@ -5,11 +5,22 @@
   background-color: $darkBackgroundColor;
   .joined-date {
     color: $lightSubTextColor;
+    font-size: 1rem;
+    font-weight: $regular;
   }
   #sticky-sidebar {
     background-color: $profileSidebarBackground;
     z-index: 0;
     min-width: 18.75rem;
+    max-width: 23.74rem;
+    .bio {
+      font-size: 1rem;
+      font-weight: $regular;
+      color: $primaryTextColor;
+    }
+    .home-base-icon {
+      vertical-align: middle;
+    }
     .top-values {
       .value {
         font-size: 1.5rem;
@@ -19,7 +30,7 @@
           font-size: 1.5rem;
           font-weight: $black;
           color: $primaryTextColor;
-          text-decoration: underline; 
+          text-decoration: underline;
         }
       }
       .title {
