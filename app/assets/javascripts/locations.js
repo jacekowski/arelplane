@@ -2,9 +2,12 @@ $(document).ready(function() {
   var pathname = window.location.pathname;
   if (pathname === "/flights/new") {
     loadData();
-  } else if (pathname.includes("/flights/" && "/edit") ) {
+  } else if (pathname.includes("/flights/") && pathname.includes("/edit")) {
     loadData();
     fetchExistingValues();
+  } else if (pathname.includes("/@") && pathname.includes("/edit")) {
+    loadData();
+
   }
 });
 
@@ -58,6 +61,67 @@ function formatLocationSelection (location) {
 
 function fetchExistingValues() {
   var departureSelect = $('#departure_airport');
+  var arrivalSelect = $('#arrival_airport');
+  $.ajax({
+      type: 'GET',
+      url: '/api/v1/flights/' + flightID()
+  }).then(function (data) {
+    var waypoints = data["waypoints"];
+    for (var i = 0; i < waypoints.length; i++) {
+      var waypointSelect = $('.waypoint-' + i)
+      $.ajax({
+        type: 'GET',
+        index: i,
+        url: '/api/v1/locations/' + waypoints[i].location_id
+      }).then(function (data) {
+        var waypointSelect = $('.waypoint-' + this.index);
+        // create the option and append to Select2
+        var option = new Option(data.identifier + " ("+ data.name + ")", data.id, true, true);
+        waypointSelect.append(option).trigger('change');
+        // manually trigger the `select2:select` event
+        waypointSelect.trigger({
+            type: 'select2:select',
+            params: {
+                data: data
+            }
+        });
+      });
+    };
+    $.ajax({
+      type: 'GET',
+      url: '/api/v1/locations/' + data.from_id
+    }).then(function (data){
+      // create the option and append to Select2
+      var option = new Option(data.identifier + " ("+ data.name + ")", data.id, true, true);
+      departureSelect.append(option).trigger('change');
+      // manually trigger the `select2:select` event
+      departureSelect.trigger({
+          type: 'select2:select',
+          params: {
+              data: data
+          }
+      });
+    });
+    $.ajax({
+      type: 'GET',
+      url: '/api/v1/locations/' + data.to_id
+    }).then(function (data){
+      // create the option and append to Select2
+      var option = new Option(data.identifier + " ("+ data.name + ")", data.id, true, true);
+      arrivalSelect.append(option).trigger('change');
+      // manually trigger the `select2:select` event
+      arrivalSelect.trigger({
+          type: 'select2:select',
+          params: {
+              data: data
+          }
+      });
+    });
+  });
+}
+
+function fetchHomeBase() {
+  var homeBase = $('#home_base');
   var arrivalSelect = $('#arrival_airport');
   $.ajax({
       type: 'GET',

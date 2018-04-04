@@ -30,6 +30,9 @@
           <%= f.label :bio, class: 'light-sub-text' %><br />
           <%= f.text_area :bio, class: 'form-control user-bio', maxlength: 240, placeholder: 'Max 240 characters' %><br />
 
+          <%= f.label :employer, class: 'light-sub-text' %><br />
+          <%= f.text_field :employer, class: 'form-control', maxlength: 50, placeholder: 'e.g. First Officer at Delta' %><br />
+
           <%= f.label :ratings, class: 'light-sub-text' %><br>
           <small id="passwordHelpInline", class="text-info">
             Add any ratings you've achieved
@@ -43,13 +46,8 @@
           <br>
 
           <%= f.label :home_base, 'Home Base (ICAO Identifier)', class: 'light-sub-text' %><br />
-          <% if @user.home_base %>
-            <small id="passwordHelpInline", class="text-info">
-              Currently set to <%= @user.home_base.identifier %>
-            </small><br>
-          <% end %>
           <div class="input-group mb-2 mb-sm-0">
-            <%= f.collection_select :home_base_id, Location.order(:identifier).page, :id, :identifier, { include_blank: true }, class: 'identifier_lookup', id: 'departure_airport', style: 'width: 100%;' %>
+            <%= f.collection_select :home_base_id, Location.order(:identifier).page, :id, :identifier, { include_blank: true }, class: 'identifier_lookup', id: 'home_base', style: 'width: 100%;' %>
           </div><br />
 
           <%= f.label :instagram, class: 'light-sub-text' %><br />

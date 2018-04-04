@@ -41,6 +41,7 @@ private
       :current_password,
       :home_base_id,
       :bio,
+      :employer,
       rating_ids: []
     )
   end

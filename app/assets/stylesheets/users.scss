@@ -18,8 +18,16 @@
       font-weight: $regular;
       color: $primaryTextColor;
     }
-    .home-base-icon {
-      vertical-align: middle;
+    .home-base {
+      .icon {
+        position: relative;
+        top: -0.2rem;
+      }
+      .text {
+        font-size: 1rem;
+        font-weight: $regular;
+        color: $primaryTextColor;
+      }
     }
     .top-values {
       .value {

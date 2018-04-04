@@ -14,10 +14,11 @@
     </div>
     <% if @user.home_base %>
       <div class="m-3 home-base">
-        <%= image_tag 'icons/home-base.png', height: '24', width: '20', class: 'home-base-icon' %>
-        <span>Based out of <%= @user.home_base.identifier %></span>
+        <%= image_tag 'icons/home-base.png', height: '24', width: '20', class: 'icon align-middle' %>
+        <span class="text align-bottom">Based out of <%= @user.home_base.identifier %></span>
       </div>
     <% end %>
+    
     <div class="sub-text pl-3 mt-2">
       <%= render 'users/profile/follow_form', user: @user %>
     </div>

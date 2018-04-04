@@ -18,11 +18,12 @@ Rails.application.routes.draw do
       resources :locations, only: :show
       get 'identifier_search', to: 'locations#search_by_identifier'
       get 'user_search', to: 'users#search_by_username'
+      resources :users, param: :username, only: :show
     end
   end
 
-  resources :users, only: [:show]
-  resources :flights, except: [:show]
+  resources :users, only: :show
+  resources :flights, except: :show
   post 'flight_search', to: 'flights#search'
   get 'flight_search', to: 'flights#search'
   resources :waypoints, only: :destroy
@@ -36,10 +37,11 @@ Rails.application.routes.draw do
     },
     path: '',
     path_names: {
+      edit: ':username/edit',
       sign_in: 'login',
       sign_out: 'logout'
     }
-  resources :users, param: :username, path: '', only: [:show], as: :username
+  resources :users, param: :username, path: '', only: :show, as: :username
   post 'user_search', to: 'users#search'
 
   get 'unsubscribe/:unsubscribe_token', to: 'users#unsubscribe', as: 'unsubscribe'

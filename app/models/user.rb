@@ -1,25 +1,30 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+  devise :database_authenticatable,
+         :registerable,
+         :recoverable,
+         :rememberable,
+         :trackable,
+         :validatable
 
-  validates :name, presence: true, on: :create
+  validates :name,     presence: true, on: :create
   validates :username, presence: true,
                      uniqueness: {case_sensitive: false},
-                     length: { maximum: 100 }
-  validates :bio, length: { maximum: 250 }
+                         length: { maximum: 100 }
+  validates :bio,        length: { maximum: 250 }
+  validates :employer,   length: { maximum: 50 }
 
   has_one  :cache_datum, dependent: :destroy
-  has_many :flights, dependent: :destroy
-  has_many :locations, through: :flights
-  has_many :waypoints, through: :flights
+  has_many :flights,     dependent: :destroy
+  has_many :locations,     through: :flights
+  has_many :waypoints,     through: :flights
 
   belongs_to :home_base, class_name: 'Location', foreign_key: :home_base_id, optional: true
 
   has_many :passive_relationships, foreign_key: :following_id,
-                                class_name: 'UserFollowing',
-                                 dependent: :destroy
+                                    class_name: 'UserFollowing',
+                                     dependent: :destroy
   has_many :followers, through: :passive_relationships, source: :follower
 
   has_many :active_relationships, foreign_key: :follower_id,
