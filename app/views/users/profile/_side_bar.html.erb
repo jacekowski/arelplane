@@ -3,7 +3,7 @@
     <div class='header-text pl-3 pt-4'>
       <%= @user.name %>
       <% if current_user == @user %>
-        <%= link_to image_tag('settings.png', height: '23', width: '23'), edit_user_registration_path, class: 'ml-2' %>
+        <%= link_to image_tag('settings.png', height: '23', width: '23'), edit_user_registration_path(@user.username), class: 'ml-2' %>
       <% end %>
     </div>
     <div class='sub-text joined-date pl-3'>
@@ -18,7 +18,7 @@
         <span class="text align-bottom">Based out of <%= @user.home_base.identifier %></span>
       </div>
     <% end %>
-    
+
     <div class="sub-text pl-3 mt-2">
       <%= render 'users/profile/follow_form', user: @user %>
     </div>

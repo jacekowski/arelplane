@@ -3,7 +3,7 @@
   <div class="card-body">
     <h4 class="card-title name">
       <%= link_to current_user.name, username_path(current_user.username) %>
-      <%= link_to image_tag('settings.png', height: '23', width: '23'), edit_user_registration_path, class: 'ml-2' %>
+      <%= link_to image_tag('settings.png', height: '23', width: '23'), edit_user_registration_path(@user.username), class: 'ml-2' %>
     </h4>
     <p class="subtitle">Joined <%= current_user.created_at.strftime('%B %e, %Y') %></p>
     <hr>
