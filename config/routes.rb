@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :aircrafts
   authenticated do
     root :to => 'users#home', as: :authenticated
   end
@@ -45,5 +44,7 @@ Rails.application.routes.draw do
   post 'user_search', to: 'users#search'
 
   get 'unsubscribe/:unsubscribe_token', to: 'users#unsubscribe', as: 'unsubscribe'
+
+  # resources :aircrafts
 
 end

@@ -83,7 +83,9 @@ class User < ApplicationRecord
   end
 
   def top_aircraft
-    Aircraft.find(flights.group(:aircraft_id).order('count_id DESC').limit(1).count(:id).keys.first)
+    if aircraft = flights.group(:aircraft_id).order('count_id DESC').limit(1).count(:id).keys.first
+      Aircraft.find(aircraft)
+    end
   end
 
   def total_flight_hours

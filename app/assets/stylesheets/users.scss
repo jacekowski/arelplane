@@ -29,6 +29,17 @@
         color: $primaryTextColor;
       }
     }
+    .employer {
+      .icon {
+        position: relative;
+        top: -0.2rem;
+      }
+      .text {
+        font-size: 1rem;
+        font-weight: $regular;
+        color: $primaryTextColor;
+      }
+    }
     .top-values {
       .value {
         font-size: 1.5rem;
@@ -78,6 +89,34 @@
         font-size: 0.875rem;
         font-weight: $light;
         color: $lightSubTextColor;
+      }
+    }
+    .ratings {
+      .heading {
+        font-size: 1rem;
+        font-weight: $extraBold;
+        color: $primaryTextColor;
+      }
+      .icon {}
+      .text {
+        font-size: 0.9rem;
+        font-weight: $light;
+        color: $primaryTextColor;
+      }
+    }
+    .last-flight {
+      .heading {
+        font-size: 1rem;
+        font-weight: $extraBold;
+        color: $primaryTextColor;
+      }
+      .text {
+        font-size: 0.9rem;
+        font-weight: $light;
+        color: $primaryTextColor;
+        .identifier {
+          font-weight: $black;
+        }
       }
     }
   }

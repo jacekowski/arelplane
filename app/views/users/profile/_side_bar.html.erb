@@ -14,13 +14,29 @@
     </div>
     <% if @user.home_base %>
       <div class="m-3 home-base">
-        <%= image_tag 'icons/home-base.png', height: '24', width: '20', class: 'icon align-middle' %>
+        <%= image_tag 'icons/home-base.png', height: '22', width: '21', class: 'icon' %>
         <span class="text align-bottom">Based out of <%= @user.home_base.identifier %></span>
       </div>
     <% end %>
-
+    <% if @user.employer %>
+    <div class="m-3 employer">
+      <%= image_tag 'icons/employer.png', height: '22', width: '23', class: 'icon' %>
+      <span class="text align-bottom"><%= @user.employer %></span>
+    </div>
+    <% end %>
     <div class="sub-text pl-3 mt-2">
-      <%= render 'users/profile/follow_form', user: @user %>
+      <div class="row align-items-end">
+        <div class="col-6">
+          <%= render 'users/profile/follow_form', user: @user %>
+        </div>
+        <div class="col-6">
+          <% if @user.instagram %>
+            <div class="float-right mr-3">
+              <%= link_to image_tag('icons/instagram.png', height: '23', width: '23'), "https://www.instagram.com/#{@user.instagram}", target: :blank %>
+            </div>
+          <% end %>
+        </div>
+      </div>
     </div>
     <hr class="ml-3 mr-3">
     <div class="row top-values ml-1 mr-2 text-nowrap text-center">
@@ -53,7 +69,7 @@
           <% if @user.top_aircraft.blank? %>
             🤷
           <% else %>
-            <%= link_to @user.top_aircraft.identifier, aircraft_path(@user.top_aircraft) %>
+            <%= @user.top_aircraft.identifier %>
           <% end %>
         </div>
         <div class='title'>
@@ -62,7 +78,7 @@
       </div>
     </div>
     <hr class="ml-3 mr-3">
-    <div class="row stats ml-1 mr-2 mb-5 text-center">
+    <div class="row stats ml-1 mr-2 text-center">
       <div class="col-3">
         <div class="number">
           <%= number_with_delimiter(@user.flights.count, delimiter: ',') || 'No Flights' %>
@@ -97,30 +113,37 @@
       </div>
     </div>
     <hr class="ml-3 mr-3">
-    <div class="row ml-1 mr-2 mb-5">
-      <div class="col-12">
-        <p><b>Last Aircraft Flown</b></p>
-        <% aircraft = @user.most_recent_flight.aircraft_id %>
-        <%= link_to Aircraft.find(aircraft).identifier, aircraft_path(aircraft) %> (<%= @user.most_recent_flight.from.identifier %> - <%= @user.most_recent_flight.to.identifier %>)
-      </div>
-    </div>
-    <hr class="ml-3 mr-3">
-    <div class="row ml-1 mr-2 mb-5">
-      <div class="col-12">
-        <p><b>Ratings</b></p>
-        <% @user.ratings.each do |rating| %>
-          <%= rating.name %><br>
+    <div class="row ml-1 mr-2">
+      <div class="col-12 ratings">
+        <p class="heading">RATINGS AND CERTIFICATIONS</p>
+        <% if @user.ratings.count == 0 %>
+          <div class="mt-2 mb-5">
+            <span class="text align-bottom">☹️ No ratings yet</span>
+            <br>
+          </div>
+        <% else %>
+          <% @user.ratings.each do |rating| %>
+            <div class="mt-2">
+              <%= image_tag'icons/check_in_circle.png', height: '22', width: '22', class: 'icon' %>
+              <span class="text align-bottom"><%= rating.name %></span><br>
+            </div>
+          <% end %>
         <% end %>
       </div>
     </div>
+    <% aircraft = @user.most_recent_flight.try(:aircraft_id) %>
+    <% if aircraft %>
+      <hr class="ml-3 mr-3">
+      <div class="row ml-1 mr-2 mb-5">
+        <div class="col-12 last-flight">
+          <p class="heading">MOST RECENT FLIGHT</p>
+          <span class="text"><span class="identifier"><%= Aircraft.find(aircraft).identifier.upcase %></span> (<%= @user.most_recent_flight.from.identifier %> - <%= @user.most_recent_flight.to.identifier %>)</span>
+        </div>
+      </div>
+    <% end %>
     <br>
   </div>
 </div>
-<% if @user.instagram %>
-  <div class="pl-3">
-    <%= link_to image_tag('icons/instagram.png', height: '23', width: '23'), "https://www.instagram.com/#{@user.instagram}", target: :blank %>
-  </div>
-<% end %>
 <div class="row pl-3 mt-3 recent-updates">
   <div class="col-11">
     <p class="title">
