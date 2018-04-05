@@ -12,7 +12,7 @@ namespace :flight do
   task add_aircraft_id: :environment do
     Flight.all.each do |flight|
       identifier = flight.aircraft_identifier
-      if !flight.aircraft_id
+      if !flight.aircraft_id && identifier.present?
         flight.update_attributes(aircraft_id: Aircraft.find_by(identifier: identifier).try(:id))
         puts "Updating #{flight.id} with #{identifier}"
       end
