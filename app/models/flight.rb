@@ -393,9 +393,9 @@ class Flight < ApplicationRecord
       [destination.latitude, destination.longitude]
     )
     if distance.nan?
-      self.distance = 0
+      self.update_attributes(distance: 0)
     else
-      self.distance = distance
+      self.update_attributes(distance: distance)
     end
   end
 
