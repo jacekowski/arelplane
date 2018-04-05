@@ -3,14 +3,40 @@
     <div class='header-text pl-3 pt-4'>
       <%= @user.name %>
       <% if current_user == @user %>
-        <%= link_to image_tag('settings.png', height: '23', width: '23'), edit_user_registration_path, class: 'ml-2' %>
+        <%= link_to image_tag('settings.png', height: '23', width: '23'), edit_user_registration_path(@user.username), class: 'ml-2' %>
       <% end %>
     </div>
     <div class='sub-text joined-date pl-3'>
-      Joined <%= @user.created_at.strftime('%B %e, %Y') %>
+      Total Distance: <%= number_with_delimiter(@user.total_distance) %> NM
     </div>
+    <div class="m-3 bio">
+      <%= simple_format(@user.bio) %>
+    </div>
+    <% if @user.home_base %>
+      <div class="m-3 home-base">
+        <%= image_tag 'icons/home-base.png', height: '22', width: '21', class: 'icon' %>
+        <span class="text align-bottom">Based out of <%= @user.home_base.identifier %></span>
+      </div>
+    <% end %>
+    <% if @user.employer %>
+    <div class="m-3 employer">
+      <%= image_tag 'icons/employer.png', height: '22', width: '23', class: 'icon' %>
+      <span class="text align-bottom"><%= @user.employer %></span>
+    </div>
+    <% end %>
     <div class="sub-text pl-3 mt-2">
-      <%= render 'users/profile/follow_form', user: @user %>
+      <div class="row align-items-end">
+        <div class="col-6">
+          <%= render 'users/profile/follow_form', user: @user %>
+        </div>
+        <div class="col-6">
+          <% if @user.instagram %>
+            <div class="float-right mr-3">
+              <%= link_to image_tag('icons/instagram.png', height: '23', width: '23'), "https://www.instagram.com/#{@user.instagram}", target: :blank %>
+            </div>
+          <% end %>
+        </div>
+      </div>
     </div>
     <hr class="ml-3 mr-3">
     <div class="row top-values ml-1 mr-2 text-nowrap text-center">
@@ -43,7 +69,7 @@
           <% if @user.top_aircraft.blank? %>
             🤷
           <% else %>
-            <%= @user.top_aircraft %>
+            <%= @user.top_aircraft.identifier %>
           <% end %>
         </div>
         <div class='title'>
@@ -52,7 +78,7 @@
       </div>
     </div>
     <hr class="ml-3 mr-3">
-    <div class="row stats ml-1 mr-2 mb-5 text-center">
+    <div class="row stats ml-1 mr-2 text-center">
       <div class="col-3">
         <div class="number">
           <%= number_with_delimiter(@user.flights.count, delimiter: ',') || 'No Flights' %>
@@ -86,14 +112,33 @@
         </div>
       </div>
     </div>
+    <hr class="ml-3 mr-3">
+    <div class="row ml-1 mr-2">
+      <div class="col-12 ratings">
+        <p class="heading">RATINGS AND CERTIFICATIONS</p>
+        <% if @user.ratings.count == 0 %>
+          <div class="mt-2 mb-5">
+            <span class="text align-bottom">
+              ☹️ No ratings yet
+              <% if @user == current_user %>
+                (<%= link_to( 'add yours', edit_user_registration_path(@user.username)) %>)
+              <% end %>
+            </span>
+            <br>
+          </div>
+        <% else %>
+          <% @user.ratings.each do |rating| %>
+            <div class="mt-2">
+              <%= image_tag'icons/check_in_circle.png', height: '22', width: '22', class: 'icon' %>
+              <span class="text align-bottom"><%= rating.name %></span><br>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
     <br>
   </div>
 </div>
-<% if @user.instagram %>
-  <div class="pl-3">
-    <%= link_to image_tag('icons/instagram.png', height: '23', width: '23'), "https://www.instagram.com/#{@user.instagram}", target: :blank %>
-  </div>
-<% end %>
 <div class="row pl-3 mt-3 recent-updates">
   <div class="col-11">
     <p class="title">

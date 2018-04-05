@@ -5,16 +5,57 @@
   background-color: $darkBackgroundColor;
   .joined-date {
     color: $lightSubTextColor;
+    font-size: 1rem;
+    font-weight: $regular;
   }
   #sticky-sidebar {
     background-color: $profileSidebarBackground;
     z-index: 0;
     min-width: 18.75rem;
+    max-width: 23.74rem;
+    .bio {
+      font-size: 1rem;
+      font-weight: $regular;
+      color: $primaryTextColor;
+    }
+    .home-base {
+      .icon {
+        position: relative;
+        top: -0.2rem;
+      }
+      .text {
+        font-size: 1rem;
+        font-weight: $regular;
+        color: $primaryTextColor;
+      }
+    }
+    .employer {
+      .icon {
+        position: relative;
+        top: -0.2rem;
+      }
+      .text {
+        font-size: 1rem;
+        font-weight: $regular;
+        color: $primaryTextColor;
+      }
+    }
+    .distance {
+      color: $lightSubTextColor;
+      font-size: 1rem;
+      font-weight: $regular;
+    }
     .top-values {
       .value {
         font-size: 1.5rem;
         font-weight: $black;
         color: $primaryTextColor;
+        a {
+          font-size: 1.5rem;
+          font-weight: $black;
+          color: $primaryTextColor;
+          text-decoration: underline;
+        }
       }
       .title {
         font-size: 1rem;
@@ -55,6 +96,43 @@
         color: $lightSubTextColor;
       }
     }
+    .ratings {
+      .heading {
+        font-size: 1rem;
+        font-weight: $extraBold;
+        color: $primaryTextColor;
+      }
+      .icon {}
+      .text {
+        font-size: 0.9rem;
+        font-weight: $light;
+        color: $primaryTextColor;
+      }
+    }
+    .last-flight {
+      .heading {
+        font-size: 1rem;
+        font-weight: $extraBold;
+        color: $primaryTextColor;
+      }
+      .text {
+        font-size: 0.9rem;
+        font-weight: $light;
+        color: $primaryTextColor;
+        .identifier {
+          font-weight: $black;
+        }
+      }
+    }
+  }
+}
+
+.edit-account {
+  .form-check-label {
+    color: $lightTextColor;
+    font-size: 1rem;
+    font-weight: $extraLight;
+    font-family: $baseFont;
   }
 }
 

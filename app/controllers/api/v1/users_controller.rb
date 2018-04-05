@@ -1,4 +1,5 @@
 class Api::V1::UsersController < ApiController
+  before_action :set_user, only: :show
 
   def search_by_username
     query = User.where("username like :q", q: "%#{params[:q]}%")
@@ -8,5 +9,13 @@ class Api::V1::UsersController < ApiController
       format.json { render json: {total: query.count, users: @users.map { |user| {id: user.id, text: user.username} }} }
     end
   end
+
+  def show
+  end
+
+  private
+    def set_user
+      @user = User.find_by(username: params[:username])
+    end
 
 end

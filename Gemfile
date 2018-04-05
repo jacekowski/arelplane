@@ -36,6 +36,9 @@ end
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+# For geolocation stuff
+gem 'geocoder'
+
 # suggest as you type and pagination
 gem 'select2-rails'
 gem 'kaminari'

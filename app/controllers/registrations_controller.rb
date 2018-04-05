@@ -38,7 +38,11 @@ private
       :instagram,
       :password,
       :password_confirmation,
-      :current_password
+      :current_password,
+      :home_base_id,
+      :bio,
+      :employer,
+      rating_ids: []
     )
   end
 

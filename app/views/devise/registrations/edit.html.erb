@@ -1,5 +1,5 @@
 <%= title "Arelplane | Edit Account" %>
-<div class='container-fluid'>
+<div class='container-fluid edit-account'>
   <div class='row'>
     <div class='col-1 col-md-4'></div>
     <div class='col-10 col-md-4'>
@@ -15,7 +15,9 @@
           <%= f.label :username, class: 'light-sub-text' %><br />
           <% if @user.username.blank? %>
             <div class="input-group mb-2 mb-sm-0">
-              <div class="input-group-addon">@</div>
+              <div class="input-group-prepend">
+                <div class="input-group-text">@</div>
+              </div>
               <%= f.text_field :username, class: 'form-control' %>
             </div><br />
           <% else %>
@@ -25,12 +27,37 @@
             <%= f.text_field :username, class: 'form-control' %><br />
           <% end %>
 
+          <%= f.label :bio, class: 'light-sub-text' %><br />
+          <%= f.text_area :bio, class: 'form-control user-bio', maxlength: 240, placeholder: 'Max 240 characters' %><br />
+
+          <%= f.label :employer, class: 'light-sub-text' %><br />
+          <%= f.text_field :employer, class: 'form-control', maxlength: 50, placeholder: 'e.g. First Officer at Delta' %><br />
+
+          <%= f.label :ratings, class: 'light-sub-text' %><br>
+          <small id="passwordHelpInline", class="text-info">
+            Add any ratings you've achieved
+          </small><br>
+          <%= f.collection_check_boxes(:rating_ids, Rating.all, :id, :name) do |b| %>
+            <div class="form-check">
+              <%= b.check_box(class: 'form-check-input') %>
+              <%= b.label(class: 'form-check-label') %>
+            </div>
+          <% end %>
+          <br>
+
+          <%= f.label :home_base, 'Home Base (ICAO Identifier)', class: 'light-sub-text' %><br />
+          <div class="input-group mb-2 mb-sm-0">
+            <%= f.collection_select :home_base_id, Location.order(:identifier).page, :id, :identifier, { include_blank: true }, class: 'identifier_lookup', id: 'home_base', style: 'width: 100%;' %>
+          </div><br />
+
           <%= f.label :instagram, class: 'light-sub-text' %><br />
           <small id="passwordHelpInline" class="text-info">
             Add a link to your instagram account on your profile
           </small>
           <div class="input-group mb-2 mb-sm-0">
-            <div class="input-group-addon">@</div>
+            <div class="input-group-prepend">
+              <div class="input-group-text">@</div>
+            </div>
             <%= f.text_field :instagram, class: 'form-control' %>
           </div><br />
 

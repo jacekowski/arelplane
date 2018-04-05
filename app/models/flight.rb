@@ -10,6 +10,10 @@ class Flight < ApplicationRecord
   has_many :waypoints, foreign_key: "flight_id", class_name: "FlightWaypoint", dependent: :destroy, inverse_of: :flight
   accepts_nested_attributes_for :waypoints, reject_if: lambda { |a| a[:location_id].blank? }
 
+  belongs_to :aircraft, optional: true
+
+  before_save :add_distance
+
   def self.map_data(flights)
     map_data = feature_collection
     flights.all.each do |flight|
@@ -103,7 +107,7 @@ class Flight < ApplicationRecord
   def self.parse_foreflight(logbook_csv, user)
     CSV.foreach(logbook_csv, headers: [
       :flight_date,
-      :aircraft_id,
+      :aircraft_identifier,
       :from_id,
       :to_id,
       :route,
@@ -121,10 +125,11 @@ class Flight < ApplicationRecord
       ]) do |row|
         r = row.to_hash
         next unless date_format_one =~ r[:flight_date] || date_format_five =~ r[:flight_date]
-        f = Flight.find_or_create_by(
+        f = Flight.find_or_initialize_by(
           user_id: user.id,
           flight_date: r[:flight_date],
-          aircraft_id: r[:aircraft_id],
+          aircraft_identifier: r[:aircraft_identifier],
+          aircraft_id: find_aircraft_id(r[:aircraft_identifier]),
           from_id: find_location_from(r[:from_id]),
           to_id: find_location_from(r[:to_id]),
           time_out: r[:time_out],
@@ -141,32 +146,31 @@ class Flight < ApplicationRecord
 
   def self.parse_logtenpro(logbook_csv, user)
     file = logbook_csv.read.gsub(/[^\.0-9A-Za-z\s,;@_()&\\-]/, '')
-    user.flights.destroy_all
     CSV.parse(file, {col_sep: "\t", headers: true}) do |row|
       r = row.to_hash
-      f = Flight.new(
+      f = Flight.find_or_create_by(
         user_id: user.id,
         flight_date: r["Date"],
-        aircraft_id: r["Aircraft ID"],
+        aircraft_identifier: r["Aircraft ID"],
+        aircraft_id: find_aircraft_id(r["Aircraft ID"]),
         from_id: find_location_from(r["From"]),
         to_id: find_location_from(r["To"]),
         total_time: convert_time(r["Total Time"]),
         pic: convert_time(r["PIC"]),
       )
-      f.save
     end
   end
 
   def self.parse_mccpilotlog(logbook_csv, user)
     file = logbook_csv.read.gsub(/[^\.0-9A-Za-z\s,;:@"\/_()&\\-]/, '')
     delimiter = sniff(logbook_csv)
-    user.flights.destroy_all
     CSV.parse(file, {col_sep: delimiter, headers: true}) do |row|
       r = row.to_hash
-      f = Flight.new(
+      f = Flight.find_or_create_by(
         user_id: user.id,
         flight_date: r["mcc_DATE"],
-        aircraft_id: r["AC_REG"],
+        aircraft_identifier: r["AC_REG"],
+        aircraft_id: find_aircraft_id(r["AC_REG"]),
         from_id: find_location_from(r["AF_DEP"]),
         to_id: find_location_from(r["AF_ARR"]),
         time_out: r["TIME_DEP"],
@@ -174,19 +178,18 @@ class Flight < ApplicationRecord
         total_time: r["TIME_TOTAL"].to_f/60,
         pic: r["TIME_TOTAL"].to_f/60
       )
-      f.save
     end
   end
 
   def self.parse_safelog(logbook_csv, user)
     file = logbook_csv.read.gsub(/[^\.0-9A-Za-z\s,;:@"\/_()&\\-]/, '')
-    user.flights.destroy_all
     CSV.parse(file, headers: true, skip_blanks: true) do |row|
       r = row.to_hash
       f = Flight.find_or_initialize_by(
         user_id: user.id,
         flight_date: r["Date"],
-        aircraft_id: r["Aircraft Registration"],
+        aircraft_identifier: r["Aircraft Registration"],
+        aircraft_id: find_aircraft_id(r["Aircraft Registration"]),
         from_id: get_safelog_departure(row),
         to_id: get_safelog_arrival(row),
         time_out: r["Depart Time"],
@@ -202,14 +205,14 @@ class Flight < ApplicationRecord
 
   def self.parse_zululog(logbook_csv, user)
     file = logbook_csv.read.gsub(/[^\.0-9A-Za-z\s,;:@"\/_()&\\-]/, '')
-    user.flights.destroy_all
     CSV.parse(file, headers: true, skip_blanks: true) do |row|
       r = row.to_hash
       route = r["Route"].scan(/[\w']+/)
-      f = Flight.new(
+      f = Flight.find_or_initialize_by(
         user_id: user.id,
         flight_date: r["Date"],
-        aircraft_id: r["Aircraft ID"],
+        aircraft_identifier: r["Aircraft ID"],
+        aircraft_id: find_aircraft_id(r["Aircraft ID"]),
         from_id: find_location_from(route.first),
         to_id: find_location_from(route.last),
         pic: r["PIC"],
@@ -228,15 +231,15 @@ class Flight < ApplicationRecord
   def self.parse_myflightbook(logbook_csv, user)
     file = File.read(logbook_csv).gsub(/[^\.0-9A-Za-z\s,"\/\\-]/, '')
     delimiter = sniff(logbook_csv)
-    user.flights.destroy_all
     CSV.parse(file, {col_sep: delimiter, headers: true} ) do |row|
       r = row.to_hash
       if raw_route = r["Route"]
         route = raw_route.scan(/[\w']+/)
-        f = Flight.new(
+        f = Flight.find_or_initialize_by(
           user_id: user.id,
           flight_date: r["Date"],
-          aircraft_id: r["Tail Number"],
+          aircraft_identifier: r["Tail Number"],
+          aircraft_id: find_aircraft_id(r["Tail Number"]),
           from_id: find_location_from(route.first),
           to_id: find_location_from(route.last),
           time_out: r["Engine Start"],
@@ -257,16 +260,16 @@ class Flight < ApplicationRecord
 
   def self.parse_logbookpro(logbook_csv, user)
     file = File.read(logbook_csv).gsub(/[\"\r]/," ")
-    user.flights.destroy_all
     CSV.parse(file, headers: true, skip_blanks: true) do |row|
       r = row.to_hash
       if !route = r["ROUTE OF FLIGHT"].try(:scan, /[\w']+/)
         next
       end
-      f = Flight.new(
+      f = Flight.find_or_initialize_by(
         user_id: user.id,
         flight_date: r["DATE"],
-        aircraft_id: r["AIRCRAFT IDENT"],
+        aircraft_identifier: r["AIRCRAFT IDENT"],
+        aircraft_id: find_aircraft_id(r["AIRCRAFT IDENT"]),
         from_id: find_location_from(route.first),
         to_id: find_location_from(route.last),
         pic: r["PILOT IN COMMAND"],
@@ -283,13 +286,13 @@ class Flight < ApplicationRecord
   end
 
   def self.parse_garmin_pilot(logbook_csv, user)
-    user.flights.destroy_all
     CSV.parse(logbook_csv, headers: true, skip_blanks: true) do |row|
       r = row.to_hash
-      f = Flight.new(
+      f = Flight.find_or_initialize_by(
         user_id: user.id,
         flight_date: r["Date"],
-        aircraft_id: r["Aircraft ID"],
+        aircraft_identifier: r["Aircraft ID"],
+        aircraft_id: find_aircraft_id(r["Aircraft ID"]),
         from_id: find_location_from(r["Departure"]),
         to_id: find_location_from(r["Destination"]),
         time_out: r["Time Out"],
@@ -304,14 +307,14 @@ class Flight < ApplicationRecord
   end
 
   def self.parse_fly_logio(logbook_csv, user)
-    user.flights.destroy_all
     delimiter = sniff(logbook_csv)
     CSV.parse(logbook_csv, col_sep: delimiter, headers: true, skip_blanks: true) do |row|
       r = row.to_hash
-      f = Flight.new(
+      f = Flight.find_or_create_by(
         user_id: user.id,
         flight_date: r["date"],
-        aircraft_id: r["aircraft_registration"],
+        aircraft_identifier: r["aircraft_registration"],
+        aircraft_id: find_aircraft_id(r["aircraft_registration"]),
         from_id: find_location_from(r["departure_airport"]),
         to_id: find_location_from(r["arrival_airport"]),
         time_out: r["departure_time"],
@@ -319,18 +322,17 @@ class Flight < ApplicationRecord
         pic: convert_time(r["pic"]),
         total_time: convert_time(r["total_time"])
       )
-      f.save
     end
   end
 
   def self.parse_pilot_pro(logbook_csv, user)
-    user.flights.destroy_all
     CSV.parse(logbook_csv, headers: true, skip_blanks: true) do |row|
       r = row.to_hash
-      f = Flight.new(
+      f = Flight.find_or_initialize_by(
         user_id: user.id,
         flight_date: r["Date"],
-        aircraft_id: r["AircraftID"],
+        aircraft_identifier: r["AircraftID"],
+        aircraft_id: find_aircraft_id(r["AircraftID"]),
         from_id: find_location_from(r["From"]),
         to_id: find_location_from(r["To"]),
         time_out: r["TimeOut"],
@@ -346,13 +348,13 @@ class Flight < ApplicationRecord
   end
 
   def self.parse_aviation_pilot_logbook(logbook_csv, user)
-    user.flights.destroy_all
     CSV.parse(logbook_csv, headers: true, skip_blanks: true, col_sep: ";") do |row|
       r = row.to_hash
-      f = Flight.new(
+      f = Flight.find_or_create_by(
         user_id: user.id,
         flight_date: r["Depature_Date"],
-        aircraft_id: r["Registration"],
+        aircraft_identifier: r["Registration"],
+        aircraft_id: find_aircraft_id(r["Registration"]),
         from_id: find_location_from(r["ICAO_Depature"]),
         to_id: find_location_from(r["ICAO_Destination"]),
         time_out: r["Off_Block"],
@@ -360,7 +362,6 @@ class Flight < ApplicationRecord
         pic: convert_time(r["Block_Time"]),
         total_time: convert_time(r["Block_Time"])
       )
-      f.save
     end
   end
 
@@ -373,6 +374,28 @@ class Flight < ApplicationRecord
       route.each do |waypoint|
         waypoints.create(location_id: Flight.find_location_from(waypoint))
       end
+    end
+  end
+
+  def add_distance
+    distance = 0
+    origin = self.from
+    destination = self.to
+    self.waypoints.each do |waypoint|
+      distance += Geocoder::Calculations.distance_between(
+        [origin.latitude,origin.longitude],
+        [waypoint.location.latitude, waypoint.location.longitude]
+      )
+      origin = waypoint.location
+    end
+    distance += Geocoder::Calculations.distance_between(
+      [origin.latitude, origin.longitude],
+      [destination.latitude, destination.longitude]
+    )
+    if distance.nan?
+      self.distance = 0
+    else
+      self.distance = distance
     end
   end
 
@@ -450,6 +473,10 @@ private
     else
       Location.find_by(identifier: "XXXX").id
     end
+  end
+
+  def self.find_aircraft_id(identifier)
+    Aircraft.find_by(identifier: identifier).try(:id)
   end
 
   def self.feature_collection

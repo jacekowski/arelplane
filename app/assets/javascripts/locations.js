@@ -2,9 +2,12 @@ $(document).ready(function() {
   var pathname = window.location.pathname;
   if (pathname === "/flights/new") {
     loadData();
-  } else if (pathname.includes("/flights/" && "/edit") ) {
+  } else if (pathname.includes("/flights/") && pathname.includes("/edit")) {
     loadData();
     fetchExistingValues();
+  } else if (pathname.includes("/@") && pathname.includes("/edit")) {
+    loadData();
+    fetchHomeBase();
   }
 });
 
@@ -113,6 +116,31 @@ function fetchExistingValues() {
               data: data
           }
       });
+    });
+  });
+}
+
+function username() {
+  var pathname = window.location.pathname;
+  var match = pathname.split("/")[1];
+  return match;
+};
+
+function fetchHomeBase() {
+  var homeBase = $('#home_base');
+  $.ajax({
+      type: 'GET',
+      url: '/api/v1/users/' + username()
+  }).then(function (data) {
+    // create the option and append to Select2
+    var option = new Option(data.home_base.identifier + " ("+ data.home_base.name + ")", data.home_base.id, true, true);
+    homeBase.append(option).trigger('change');
+    // manually trigger the `select2:select` event
+    homeBase.trigger({
+        type: 'select2:select',
+        params: {
+            data: data
+        }
     });
   });
 }
