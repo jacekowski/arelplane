@@ -156,10 +156,6 @@ class User < ApplicationRecord
     order("users.flights_count DESC").limit(10)
   end
 
-  def most_recent_flight
-    flights.last
-  end
-
   def recent_updates
     flights.order('created_at::date DESC').group('created_at::date').limit(5).count
   end

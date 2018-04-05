@@ -131,16 +131,6 @@
         <% end %>
       </div>
     </div>
-    <% aircraft = @user.most_recent_flight.try(:aircraft_id) %>
-    <% if aircraft %>
-      <hr class="ml-3 mr-3">
-      <div class="row ml-1 mr-2 mb-5">
-        <div class="col-12 last-flight">
-          <p class="heading">MOST RECENT FLIGHT</p>
-          <span class="text"><span class="identifier"><%= Aircraft.find(aircraft).identifier.upcase %></span> (<%= @user.most_recent_flight.from.identifier %> - <%= @user.most_recent_flight.to.identifier %>)</span>
-        </div>
-      </div>
-    <% end %>
     <br>
   </div>
 </div>
