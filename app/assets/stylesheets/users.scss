@@ -40,6 +40,11 @@
         color: $primaryTextColor;
       }
     }
+    .distance {
+      color: $lightSubTextColor;
+      font-size: 1rem;
+      font-weight: $regular;
+    }
     .top-values {
       .value {
         font-size: 1.5rem;

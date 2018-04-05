@@ -157,6 +157,7 @@ class Flight < ApplicationRecord
         total_time: convert_time(r["Total Time"]),
         pic: convert_time(r["PIC"]),
       )
+      f.add_distance
     end
   end
 
@@ -177,6 +178,7 @@ class Flight < ApplicationRecord
         total_time: r["TIME_TOTAL"].to_f/60,
         pic: r["TIME_TOTAL"].to_f/60
       )
+      f.add_distance
     end
   end
 
@@ -198,6 +200,7 @@ class Flight < ApplicationRecord
       )
       if f.save
         f.add_waypoints(r, "Mission Via", "Mission Departure", "Mission Arrival")
+        f.add_distance
       end
     end
   end
@@ -223,6 +226,7 @@ class Flight < ApplicationRecord
         route.each do |waypoint|
           f.waypoints.create(location_id: find_location_from(waypoint))
         end
+        f.add_distance
       end
     end
   end
@@ -252,6 +256,7 @@ class Flight < ApplicationRecord
           route.each do |waypoint|
             f.waypoints.create(location_id: find_location_from(waypoint))
           end
+          f.add_distance
         end
       end
     end
@@ -280,6 +285,7 @@ class Flight < ApplicationRecord
         route.each do |waypoint|
           f.waypoints.create(location_id: find_location_from(waypoint))
         end
+        f.add_distance
       end
     end
   end
@@ -301,6 +307,7 @@ class Flight < ApplicationRecord
       )
       if f.save
         f.add_waypoints(r, "Route", "Departure", "Destination")
+        f.add_distance
       end
     end
   end
@@ -321,6 +328,7 @@ class Flight < ApplicationRecord
         pic: convert_time(r["pic"]),
         total_time: convert_time(r["total_time"])
       )
+      f.add_distance
     end
   end
 
@@ -342,6 +350,7 @@ class Flight < ApplicationRecord
       )
       if f.save
         f.add_waypoints(r, "Route", "From", "To")
+        f.add_distance
       end
     end
   end
@@ -361,6 +370,7 @@ class Flight < ApplicationRecord
         pic: convert_time(r["Block_Time"]),
         total_time: convert_time(r["Block_Time"])
       )
+      f.add_distance
     end
   end
 
@@ -373,6 +383,26 @@ class Flight < ApplicationRecord
       route.each do |waypoint|
         waypoints.create(location_id: Flight.find_location_from(waypoint))
       end
+    end
+  end
+
+  def add_distance
+    if self.distance == 0 || self.distance.blank?
+      distance = 0
+      origin = self.from
+      destination = self.to
+      self.waypoints.each do |waypoint|
+        distance += Geocoder::Calculations.distance_between(
+          [origin.latitude,origin.longitude],
+          [waypoint.location.latitude, waypoint.location.longitude]
+        )
+        origin = waypoint.location
+      end
+      distance += Geocoder::Calculations.distance_between(
+        [origin.latitude, origin.longitude],
+        [destination.latitude, destination.longitude]
+      )
+      self.update_attributes(distance: distance)
     end
   end
 
@@ -455,23 +485,6 @@ private
   def self.find_aircraft_id(identifier)
     Aircraft.find_by(identifier: identifier).id
   end
-
-  # finish in the morning
-  # def add_distance
-  #   distance = 0
-  #   if self.distance == 0 || self.distance.blank?
-  #     origin = self.from
-  #     flight.waypoints.each do |waypoint|
-  #       distance += Geocoder::Calculations.distance_between(
-  #         [origin.latitude,origin.longitude],
-  #         [waypoint.location.latitude, longitude]
-  #       )
-  #       origin = waypoint
-  #     end
-  #     destination = self.to
-  #     distance +=
-  #   end
-  # end
 
   def self.feature_collection
     {
