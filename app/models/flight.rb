@@ -138,6 +138,7 @@ class Flight < ApplicationRecord
         )
         if f.save
           f.add_waypoints(r, :route, :from_id, :to_id)
+          f.add_distance
         end
       end
   end
@@ -454,6 +455,23 @@ private
   def self.find_aircraft_id(identifier)
     Aircraft.find_by(identifier: identifier).id
   end
+
+  # finish in the morning
+  # def add_distance
+  #   distance = 0
+  #   if self.distance == 0 || self.distance.blank?
+  #     origin = self.from
+  #     flight.waypoints.each do |waypoint|
+  #       distance += Geocoder::Calculations.distance_between(
+  #         [origin.latitude,origin.longitude],
+  #         [waypoint.location.latitude, longitude]
+  #       )
+  #       origin = waypoint
+  #     end
+  #     destination = self.to
+  #     distance +=
+  #   end
+  # end
 
   def self.feature_collection
     {
