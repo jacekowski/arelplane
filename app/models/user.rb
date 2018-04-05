@@ -157,7 +157,7 @@ class User < ApplicationRecord
   end
 
   def total_distance
-    flights.pluck(:distance).sum.round(1)
+    flights.pluck(:distance).compact.sum.round(1)
   end
 
   def recent_updates
