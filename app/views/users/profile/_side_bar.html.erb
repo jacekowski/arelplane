@@ -30,7 +30,7 @@
           <%= render 'users/profile/follow_form', user: @user %>
         </div>
         <div class="col-6">
-          <% if @user.instagram %>
+          <% if @user.instagram.present? %>
             <div class="float-right mr-3">
               <%= link_to image_tag('icons/instagram.png', height: '23', width: '23'), "https://www.instagram.com/#{@user.instagram}", target: :blank %>
             </div>
