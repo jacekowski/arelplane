@@ -66,6 +66,7 @@ class FlightsController < ApplicationController
         redirect_back
       else
         @flight = current_user.flights.new(flight_params)
+        set_aircraft_id(flight_params["aircraft_identifier"])
         if @flight.save
           redirect_to new_flight_path, notice: 'Flight was successfully created.'
         else
@@ -82,6 +83,7 @@ class FlightsController < ApplicationController
 
   def update
     if current_user.id == @flight.user_id
+      set_aircraft_id(flight_params["aircraft_identifier"])
       if @flight.update(flight_params)
         redirect_to flights_path, notice: 'Flight was successfully updated.'
       else
@@ -109,6 +111,10 @@ class FlightsController < ApplicationController
 private
   def set_flight
     @flight = Flight.find(params[:id])
+  end
+
+  def set_aircraft_id(new_identifier)
+    @flight.aircraft_id = Aircraft.find_or_create_by(identifier: new_identifier.try(:upcase)).id
   end
 
   def update_cache

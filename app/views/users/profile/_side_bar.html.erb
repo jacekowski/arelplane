@@ -18,7 +18,7 @@
         <span class="text align-bottom">Based out of <%= @user.home_base.identifier %></span>
       </div>
     <% end %>
-    <% if @user.employer %>
+    <% if @user.employer.present? %>
     <div class="m-3 employer">
       <%= image_tag 'icons/employer.png', height: '22', width: '23', class: 'icon' %>
       <span class="text align-bottom"><%= @user.employer %></span>
@@ -69,7 +69,7 @@
           <% if @user.top_aircraft.blank? %>
             🤷
           <% else %>
-            <%= @user.top_aircraft.identifier %>
+            <%= @user.top_aircraft.identifier.try(:upcase) %>
           <% end %>
         </div>
         <div class='title'>
@@ -128,7 +128,7 @@
           </div>
         <% else %>
           <% @user.ratings.each do |rating| %>
-            <div class="mt-2">
+            <div class="mb-2">
               <%= image_tag'icons/check_in_circle.png', height: '22', width: '22', class: 'icon' %>
               <span class="text align-bottom"><%= rating.name %></span><br>
             </div>
@@ -136,7 +136,7 @@
         <% end %>
       </div>
     </div>
-    <br>
+    <br><br>
   </div>
 </div>
 <div class="row pl-3 mt-3 recent-updates">

@@ -4,6 +4,6 @@ class Aircraft < ApplicationRecord
     length: { maximum: 10 },
     on: :create
 
-  has_many :fights
+  has_many :flights
 
 end

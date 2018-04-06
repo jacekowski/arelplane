@@ -12,7 +12,11 @@ class Flight < ApplicationRecord
 
   belongs_to :aircraft, optional: true
 
-  # before_save :add_distance
+  before_save :add_distance
+
+  def aircraft_identifier=(val)
+    write_attribute :aircraft_identifier, val.upcase
+  end
 
   def self.map_data(flights)
     map_data = feature_collection
@@ -393,9 +397,9 @@ class Flight < ApplicationRecord
       [destination.latitude, destination.longitude]
     )
     if distance.nan?
-      self.update_attributes(distance: 0)
+      self.distance = 0
     else
-      self.update_attributes(distance: distance)
+      self.distance = distance
     end
   end
 
