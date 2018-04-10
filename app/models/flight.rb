@@ -149,7 +149,7 @@ class Flight < ApplicationRecord
   end
 
   def self.parse_logtenpro(logbook_csv, user)
-    file = logbook_csv.read.gsub(/[^\.0-9A-Za-z\s,;@_()&\\-]/, '')
+    file = logbook_csv.read.gsub(/[^\.0-9A-Za-z\s,;@_()&:\\-]/, '')
     CSV.parse(file, {col_sep: "\t", headers: true}) do |row|
       r = row.to_hash
       f = Flight.find_or_create_by(
