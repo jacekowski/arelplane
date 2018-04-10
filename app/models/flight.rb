@@ -480,7 +480,7 @@ private
   end
 
   def self.find_aircraft_id(identifier)
-    Aircraft.find_by(identifier: identifier).try(:id)
+    Aircraft.find_or_create_by(identifier: identifier).try(:id)
   end
 
   def self.feature_collection
