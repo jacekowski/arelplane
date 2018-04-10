@@ -15,7 +15,7 @@ class Flight < ApplicationRecord
   before_save :add_distance
 
   def aircraft_identifier=(val)
-    write_attribute :aircraft_identifier, val.upcase
+    write_attribute :aircraft_identifier, val.try(:upcase)
   end
 
   def self.map_data(flights)
