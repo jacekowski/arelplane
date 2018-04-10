@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180404183859) do
+ActiveRecord::Schema.define(version: 20180410165840) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(version: 20180404183859) do
     t.integer "to_id"
     t.string "time_out"
     t.string "time_in"
-    t.float "total_time"
+    t.decimal "total_time", precision: 10, scale: 2
     t.float "pic"
     t.float "distance"
     t.datetime "created_at", null: false

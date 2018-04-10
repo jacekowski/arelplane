@@ -445,7 +445,7 @@ private
     if time && time.include?(":")
       hours, minutes = time.split(":")
       result = hours.to_f + (minutes.to_f/60)
-      result.round(1)
+      result
     else
       time.to_f
     end
