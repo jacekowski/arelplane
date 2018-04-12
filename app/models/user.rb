@@ -38,6 +38,8 @@ class User < ApplicationRecord
   has_many :user_ratings
   has_many :ratings, through: :user_ratings, dependent: :destroy
 
+  has_many :feed_posts, dependent: :destroy
+
   def add_subscription_preferences
     build_subscription_preference(unsubscribe_token: SecureRandom.hex)
   end

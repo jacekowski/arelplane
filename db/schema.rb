@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180410165840) do
+ActiveRecord::Schema.define(version: 20180412010947) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,14 @@ ActiveRecord::Schema.define(version: 20180410165840) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
+  end
+
+  create_table "feed_posts", force: :cascade do |t|
+    t.bigint "user_id"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_feed_posts_on_user_id"
   end
 
   create_table "flight_waypoints", force: :cascade do |t|
@@ -49,7 +57,9 @@ ActiveRecord::Schema.define(version: 20180410165840) do
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.bigint "aircraft_id"
+    t.bigint "feed_post_id"
     t.index ["aircraft_id"], name: "index_flights_on_aircraft_id"
+    t.index ["feed_post_id"], name: "index_flights_on_feed_post_id"
   end
 
   create_table "locations", force: :cascade do |t|
@@ -89,6 +99,8 @@ ActiveRecord::Schema.define(version: 20180410165840) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "feed_post_id"
+    t.index ["feed_post_id"], name: "index_ratings_on_feed_post_id"
   end
 
   create_table "subscription_preferences", force: :cascade do |t|
@@ -149,7 +161,10 @@ ActiveRecord::Schema.define(version: 20180410165840) do
     t.index ["username"], name: "index_users_on_username"
   end
 
+  add_foreign_key "feed_posts", "users"
   add_foreign_key "flights", "aircrafts"
+  add_foreign_key "flights", "feed_posts"
+  add_foreign_key "ratings", "feed_posts"
   add_foreign_key "user_ratings", "ratings"
   add_foreign_key "user_ratings", "users"
 end
