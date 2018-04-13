@@ -101,7 +101,7 @@ function loadUserData() {
   $(".user_lookup").select2({
     theme: "bootstrap",
     ajax: {
-      url: '/api/v1/user_search',
+      url: '/api/v1/users/search',
       data: function (params) {
         return {
           q: params.term,

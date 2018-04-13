@@ -1,7 +1,7 @@
 class Api::V1::UsersController < ApiController
   before_action :set_user, only: :show
 
-  def search_by_username
+  def search
     query = User.where("username like :q", q: "%#{params[:q]}%")
     @users = query.order('username').page(params[:page])
 

@@ -108,6 +108,10 @@ class FlightsController < ApplicationController
     end
   end
 
+  def destroy_multiple
+    byebug
+  end
+
 private
   def set_flight
     @flight = Flight.find(params[:id])
