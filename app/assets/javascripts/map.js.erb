@@ -93,6 +93,8 @@ $(document).ready(function(){
         if (feature_type === "airport") {
           if (Cesium.defined(entity.billboard)) {
             entity.billboard.image = airportIcon;
+            entity.billboard.horizontalOrigin = Cesium.HorizontalOrigin.CENTER;
+            entity.billboard.verticalOrigin = Cesium.VerticalOrigin.CENTER;
           }
           // setAirportIcon(entity, top_airport_visit_count);
           entity.description = '\
