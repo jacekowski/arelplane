@@ -11,20 +11,31 @@ Rails.application.routes.draw do
   namespace :api, constraints: {format: :json} do
     namespace :v1 do
       resources :users, only: [] do
+        collection do
+          get 'search', to: 'users#search'
+        end
         resources :flights, only: :index
       end
       resources :flights, only: [:index, :show]
-      resources :locations, only: :show
-      get 'identifier_search', to: 'locations#search_by_identifier'
-      get 'user_search', to: 'users#search_by_username'
+      resources :locations, only: :show do
+        collection do
+          get 'search', to: 'locations#search'
+        end
+      end
       resources :users, param: :username, only: :show
     end
   end
 
   resources :users, only: :show
-  resources :flights, except: :show
-  post 'flight_search', to: 'flights#search'
-  get 'flight_search', to: 'flights#search'
+
+  resources :flights, except: :show do
+    collection do
+      delete 'destroy_multiple'
+      post 'search', to: 'flights#search'
+      get 'search', to: 'flights#search'
+    end
+  end
+
   resources :waypoints, only: :destroy
   resources :user_followings, only: [:create, :destroy]
 
@@ -41,7 +52,7 @@ Rails.application.routes.draw do
       sign_out: 'logout'
     }
   resources :users, param: :username, path: '', only: :show, as: :username
-  post 'user_search', to: 'users#search'
+  post 'users/search', to: 'users#search', as: 'user_search'
 
   get 'unsubscribe/:unsubscribe_token', to: 'users#unsubscribe', as: 'unsubscribe'
 

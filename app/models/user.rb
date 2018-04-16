@@ -132,7 +132,7 @@ class User < ApplicationRecord
 
   def flight_search(identifier)
     locations = Location.where(
-      Location.arel_table[:identifier].lower.matches("%#{identifier.downcase}%")
+      Location.arel_table[:identifier].lower.matches("%#{identifier.try(:downcase)}%")
     ).pluck(:id)
     flight_results   = self.flights.where(from_id: locations).or(self.flights.where(to_id: locations))
     waypoint_results = Flight.find(self.waypoints.where(location_id: locations).pluck(:flight_id))
