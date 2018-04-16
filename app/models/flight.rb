@@ -398,9 +398,9 @@ class Flight < ApplicationRecord
       [destination.latitude, destination.longitude]
     )
     if distance.nan?
-      self.distance = 0
+      self.distance = 0 unless destroyed?
     else
-      self.distance = distance
+      self.distance = distance unless destroyed?
     end
   end
 

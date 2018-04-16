@@ -82,7 +82,7 @@ $(document).ready(function(){
     var top_airport_visit_count = data["max_count"];
     Cesium.GeoJsonDataSource.load(data, {
       stroke: Cesium.Color.fromBytes(0, 230, 240, 40),
-      markerColor: Cesium.Color.fromHsl(0, 0, 0, 0.01),
+      markerColor: Cesium.Color.fromHsl(0, 0, 0, 0.01)
     }).then(function(dataSource) {
       viewer.dataSources.add(dataSource);
       viewer.zoomTo(dataSource);

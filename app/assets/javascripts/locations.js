@@ -15,7 +15,7 @@ function loadData() {
   $(".identifier_lookup").select2({
     theme: "bootstrap",
     ajax: {
-      url: '/api/v1/identifier_search',
+      url: '/api/v1/locations/search',
       data: function (params) {
         return {
           q: params.term,
