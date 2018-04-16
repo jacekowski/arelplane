@@ -109,7 +109,13 @@ class FlightsController < ApplicationController
   end
 
   def destroy_multiple
-    byebug
+    if params[:flights] == 'all'
+      current_user.flights.destroy_all
+      redirect_to flights_url, notice: 'All your flights have been deleted.'
+    elsif params[:flights] == 'broken'
+      Flight.flights_with_missing_identifiers_for(current_user).each(&:destroy)
+      redirect_to flights_url, notice: 'All flights with missing identifiers have been deleted.'
+    end
   end
 
 private

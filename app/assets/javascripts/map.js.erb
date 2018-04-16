@@ -82,7 +82,7 @@ $(document).ready(function(){
     var top_airport_visit_count = data["max_count"];
     Cesium.GeoJsonDataSource.load(data, {
       stroke: Cesium.Color.fromBytes(0, 230, 240, 40),
-      markerColor: Cesium.Color.fromHsl(0, 0, 0, 1),
+      markerColor: Cesium.Color.fromHsl(0, 0, 0, 0.01)
     }).then(function(dataSource) {
       viewer.dataSources.add(dataSource);
       viewer.zoomTo(dataSource);
@@ -91,12 +91,7 @@ $(document).ready(function(){
         var entity = entities[i];
         var feature_type = entity.properties.feature_type._value;
         if (feature_type === "airport") {
-          if (Cesium.defined(entity.billboard)) {
-            entity.billboard.image = airportIcon;
-            entity.billboard.horizontalOrigin = Cesium.HorizontalOrigin.CENTER;
-            entity.billboard.verticalOrigin = Cesium.VerticalOrigin.CENTER;
-          }
-          // setAirportIcon(entity, top_airport_visit_count);
+          setAirportIcon(entity, top_airport_visit_count);
           entity.description = '\
           <p>Number of visits: ' + entity.properties.count._value + '</p>\
           <p>Identifier: ' + entity.properties.identifier._value + '</p>';
