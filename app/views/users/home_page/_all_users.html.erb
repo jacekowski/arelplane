@@ -1,16 +1,15 @@
-<% @feed.each do |user| %>
-  <% if user == current_user then next end %>
+<% @feed.each do |post| %>
   <div class="card mb-4 feed_card">
     <%#= image_tag 'demo-img.png', class: 'card-img-top', alt: 'Map image'%>
     <div class="card-body">
-      <span class="date"><%= time_ago_in_words(user.datetime_of_last_flight) %> ago</span>
+      <span class="date"><%= time_ago_in_words(post.created_at) %> ago</span>
       <div class="row">
         <div class="col-lg-8 col-12">
-          <h4 class="card-title name"><%= link_to user.name, username_path(user.username) %> <span class="flight-count">added <%= pluralize(number_with_delimiter(user.lastest_upload.count), "new flight") %> to their Map.</span></h4>
+          <h4 class="card-title name"><%= link_to post.user.name, username_path(post.user.username) %> <span class="flight-count">added <%= pluralize(number_with_delimiter(post.flights.count), "new flight") %> to their Map.</span></h4>
         </div>
         <div class="col-lg-4 col-12">
           <div class="float-lg-right">
-            <%= render 'users/profile/follow_form', user: user %>
+            <%= render 'users/profile/follow_form', user: post.user %>
           </div>
         </div>
       </div>
@@ -19,7 +18,7 @@
         <div class="col-lg-2 col-3 stats">
           <div class="row value">
             <div class="col-12">
-              <%= number_with_delimiter(user.flights.count) %>
+              <%= number_with_delimiter(post.flights.count) %>
             </div>
           </div>
           <div class="row heading">
@@ -31,7 +30,7 @@
         <div class="col-lg-2 col-3 stats">
           <div class="row value">
             <div class="col-12">
-              <%= number_with_delimiter(user.num_airports) %>
+              <%= number_with_delimiter(post.num_airports) %>
             </div>
           </div>
           <div class="row heading">
@@ -43,7 +42,7 @@
         <div class="col-lg-2 col-3 stats">
           <div class="row value">
             <div class="col-12">
-              <%= number_with_delimiter(user.total_flight_hours) %>
+              <%= number_with_delimiter(post.total_flight_hours) %>
             </div>
           </div>
           <div class="row heading">
@@ -55,7 +54,7 @@
         <div class="col-lg-2 col-3 stats">
           <div class="row value">
             <div class="col-12">
-              <%= number_with_delimiter(user.num_regions) %>
+              <%= number_with_delimiter(post.num_regions) %>
             </div>
           </div>
           <div class="row heading">
@@ -67,7 +66,7 @@
       </div>
     </div>
     <ul class="list-group list-group-flush">
-      <%= link_to username_path(user.username) do %>
+      <%= link_to username_path(post.user.username) do %>
         <li class="list-group-item link_section">
           <span>
             View their Map
