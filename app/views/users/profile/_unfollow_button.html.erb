@@ -1,7 +1,7 @@
 <%= form_for(current_user.active_relationships.find_by(following_id: user.id), html: {method: :delete}, remote: true) do |f| %>
   <div class="btn-group">
     <%= button_tag( class: "btn following-button following-button-text") do %>
-      <%= image_tag "icons/heart_icon_solid.png", height: '17', width: '19', class: 'mb-1 like-icon' %><span> Liked</span>
+      <%= image_tag "icons/heart_icon_solid.png", height: '17', width: '19', class: 'mb-1 like-icon' %><span> Following</span>
     <% end %>
     <span class="btn following-button following-count"><%= user.followers.count %></span>
   </div>

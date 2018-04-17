@@ -6,11 +6,11 @@ function updateButton() {
   $("button.following-button-text").hover(
     function () {
       $(this).find('img').attr('src', "<%= asset_path('icons/broken_heart_icon.png') %>")
-      $(this).find('span').text(" Unlike")
+      $(this).find('span').text(" Unfollow")
     },
     function () {
       $(this).find('img').attr('src', "<%= asset_path('icons/heart_icon_solid.png') %>")
-      $(this).find('span').text(" Liked")
+      $(this).find('span').text(" Following")
     }
   );
 }
