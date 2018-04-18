@@ -4,10 +4,12 @@ class FeedPost < ApplicationRecord
   belongs_to :user
   has_many :flights
   has_many :waypoints, through: :flights
+  has_many :locations, through: :flights, source: :origin
+  has_many :locations, through: :flights, source: :destination
   has_many :ratings
 
   def airports
-    flights.pluck(:from_id, :to_id).flatten
+    flights.pluck(:origin_id, :destination_id).flatten
   end
 
   def num_airports

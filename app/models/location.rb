@@ -1,6 +1,6 @@
 class Location < ApplicationRecord
-  has_many :flights, class_name: 'Flight', foreign_key: 'from_id'
-  has_many :flights, class_name: 'Flight', foreign_key: 'to_id'
+  has_many :flights, class_name: 'Flight', foreign_key: 'origin_id'
+  has_many :flights, class_name: 'Flight', foreign_key: 'destination_id'
   has_many :users, foreign_key: 'home_base'
 
   has_many :flight_waypoints

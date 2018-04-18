@@ -65,7 +65,7 @@ class User < ApplicationRecord
   end
 
   def airports
-    flights.pluck(:from_id, :to_id).flatten
+    flights.pluck(:origin_id, :destination_id).flatten
   end
 
   def top_location
@@ -108,7 +108,7 @@ class User < ApplicationRecord
   end
 
   def save_num_airports
-    airports = flights.pluck(:from_id, :to_id)
+    airports = flights.pluck(:origin_id, :destination_id)
     waypoints.each do |wp|
       if wp.location.location_type.try(:include?, "airport")
         airports << wp.location.id
@@ -136,7 +136,7 @@ class User < ApplicationRecord
     locations = Location.where(
       Location.arel_table[:identifier].lower.matches("%#{identifier.try(:downcase)}%")
     ).pluck(:id)
-    flight_results   = self.flights.where(from_id: locations).or(self.flights.where(to_id: locations))
+    flight_results   = self.flights.where(origin_id: locations).or(self.flights.where(destination_id: locations))
     waypoint_results = Flight.find(self.waypoints.where(location_id: locations).pluck(:flight_id))
     search_results = flight_results + waypoint_results
     Kaminari.paginate_array(search_results.uniq.sort_by(&:flight_date).reverse)

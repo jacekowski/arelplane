@@ -89,7 +89,7 @@ function fetchExistingValues() {
     };
     $.ajax({
       type: 'GET',
-      url: '/api/v1/locations/' + data.from_id
+      url: '/api/v1/locations/' + data.origin_id
     }).then(function (data){
       // create the option and append to Select2
       var option = new Option(data.identifier + " ("+ data.name + ")", data.id, true, true);
@@ -104,7 +104,7 @@ function fetchExistingValues() {
     });
     $.ajax({
       type: 'GET',
-      url: '/api/v1/locations/' + data.to_id
+      url: '/api/v1/locations/' + data.destination_id
     }).then(function (data){
       // create the option and append to Select2
       var option = new Option(data.identifier + " ("+ data.name + ")", data.id, true, true);

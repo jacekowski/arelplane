@@ -68,31 +68,37 @@
       margin-left: 0.5rem;
     }
     .feed_card {
-      .date {
-        font-size: 1.125rem;
-        font-weight: $regular;
-        color: $lightSubTextColor;
-      }
       .updated {
         font-size: 1rem;
         font-weight: $regular;
         color: $lightSubTextColor;
       }
       .name a {
-        font-size: 1.5rem;
+        font-size: 1.125rem;
         font-weight: $black;
         color: $primaryTextColor;
       }
       .flight-count {
+        font-size: 1.125rem;
         font-weight: $regular;
       }
-      .stats {
-        .value {
+      .date {
+        font-size: 1rem;
+        font-weight: $regular;
+        color: $lightSubTextColor;
+      }
+      .description {
+        font-size: 1.5rem;
+        font-weight: $regular;
+        color: $primaryTextColor;
+      }
+      .airports {
+        .identifier {
           font-size: 1.5rem;
           font-weight: $black;
           color: $primaryTextColor;
         }
-        .heading {
+        .region {
           font-size: 1rem;
           font-weight: $regular;
           color: $lightSubTextColor;

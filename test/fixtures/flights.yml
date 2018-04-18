@@ -3,8 +3,8 @@
 one:
   flight_date: 2017-07-31 10:38:37
   aircraft_id: MyString
-  from_id: 1
-  to_id: 1
+  origin_id: 1
+  destination_id: 1
   time_out: MyString
   time_in: MyString
   total_time: 1.5
@@ -14,8 +14,8 @@ one:
 two:
   flight_date: 2017-07-31 10:38:37
   aircraft_id: MyString
-  from_id: 1
-  to_id: 1
+  origin_id: 1
+  destination_id: 1
   time_out: MyString
   time_in: MyString
   total_time: 1.5

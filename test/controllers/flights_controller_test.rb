@@ -17,7 +17,7 @@ class FlightsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create flight" do
     assert_difference('Flight.count') do
-      post flights_url, params: { flight: { aircraft_id: @flight.aircraft_id, distance: @flight.distance, flight_date: @flight.flight_date, from_id: @flight.from_id, pic: @flight.pic, time_in: @flight.time_in, time_out: @flight.time_out, to_id: @flight.to_id, total_time: @flight.total_time } }
+      post flights_url, params: { flight: { aircraft_id: @flight.aircraft_id, distance: @flight.distance, flight_date: @flight.flight_date, origin_id: @flight.origin_id, pic: @flight.pic, time_in: @flight.time_in, time_out: @flight.time_out, destination_id: @flight.destination_id, total_time: @flight.total_time } }
     end
 
     assert_redirected_to flight_url(Flight.last)
@@ -34,7 +34,7 @@ class FlightsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update flight" do
-    patch flight_url(@flight), params: { flight: { aircraft_id: @flight.aircraft_id, distance: @flight.distance, flight_date: @flight.flight_date, from_id: @flight.from_id, pic: @flight.pic, time_in: @flight.time_in, time_out: @flight.time_out, to_id: @flight.to_id, total_time: @flight.total_time } }
+    patch flight_url(@flight), params: { flight: { aircraft_id: @flight.aircraft_id, distance: @flight.distance, flight_date: @flight.flight_date, origin_id: @flight.origin_id, pic: @flight.pic, time_in: @flight.time_in, time_out: @flight.time_out, destination_id: @flight.destination_id, total_time: @flight.total_time } }
     assert_redirected_to flight_url(@flight)
   end
 

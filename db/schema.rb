@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180412010947) do
+ActiveRecord::Schema.define(version: 20180418151126) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,8 +46,8 @@ ActiveRecord::Schema.define(version: 20180412010947) do
   create_table "flights", force: :cascade do |t|
     t.string "flight_date"
     t.string "aircraft_identifier"
-    t.integer "from_id"
-    t.integer "to_id"
+    t.bigint "origin_id"
+    t.bigint "destination_id"
     t.string "time_out"
     t.string "time_in"
     t.decimal "total_time", precision: 10, scale: 2
@@ -59,7 +59,9 @@ ActiveRecord::Schema.define(version: 20180412010947) do
     t.bigint "aircraft_id"
     t.bigint "feed_post_id"
     t.index ["aircraft_id"], name: "index_flights_on_aircraft_id"
+    t.index ["destination_id"], name: "index_flights_on_destination_id"
     t.index ["feed_post_id"], name: "index_flights_on_feed_post_id"
+    t.index ["origin_id"], name: "index_flights_on_origin_id"
   end
 
   create_table "locations", force: :cascade do |t|
