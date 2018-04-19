@@ -20,17 +20,17 @@
       <hr>
       <div class="row airports">
         <div class="col-12">
-          <% post.flights.each do |flight| %>
-            <%#= flight.identifier %>
+          <% post.locations.each do |location| %>
+            <%= location.identifier %>
           <% end %>
         </div>
       </div>
     </div>
     <ul class="list-group list-group-flush">
       <li class="list-group-item link_section">
-        <span>
-          Like
-        </span>
+        <div id="post_likes_<%= post.id %>", class="likes">
+          <%= render 'feed_posts/likes', post: post %>
+        </div>
         <span class="float-right">
           Comment
         </span>

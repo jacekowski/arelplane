@@ -39,6 +39,7 @@ class User < ApplicationRecord
   has_many :ratings, through: :user_ratings, dependent: :destroy
 
   has_many :feed_posts, dependent: :destroy
+  has_many :post_likes, dependent: :destroy
 
   def add_subscription_preferences
     build_subscription_preference(unsubscribe_token: SecureRandom.hex)
@@ -164,5 +165,15 @@ class User < ApplicationRecord
 
   def recent_updates
     flights.order('created_at::date DESC').group('created_at::date').limit(5).count
+  end
+
+  def likes?(feed_post)
+    feed_post.likes.where(user_id: self.id).any?
+  end
+
+  # for gravatars
+  def avatar_url
+    hash = Digest::MD5.hexdigest(email)
+    "http://www.gravatar.com/avatar/#{hash}"
   end
 end

@@ -4,7 +4,7 @@ class Flight < ApplicationRecord
   belongs_to :origin, class_name: 'Location', foreign_key: 'origin_id'
   belongs_to :destination, class_name: 'Location', foreign_key: 'destination_id'
   belongs_to :user, counter_cache: true
-  belongs_to :feed_post, optional: true
+  belongs_to :post, optional: true
 
   validates :flight_date, presence: true
 

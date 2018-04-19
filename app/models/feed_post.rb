@@ -4,9 +4,17 @@ class FeedPost < ApplicationRecord
   belongs_to :user
   has_many :flights
   has_many :waypoints, through: :flights
-  has_many :locations, through: :flights, source: :origin
-  has_many :locations, through: :flights, source: :destination
+  has_many :destinations, through: :flights, source: :destination
+  has_many :origins, through: :flights, source: :origin
   has_many :ratings
+
+  has_many :likes, foreign_key: 'feed_post_id', class_name: "PostLike", dependent: :destroy
+  has_many :post_comments, dependent: :destroy
+  has_many :comments, as: :commentable
+
+  def locations
+    (origins + destinations).uniq
+  end
 
   def airports
     flights.pluck(:origin_id, :destination_id).flatten

@@ -56,6 +56,11 @@ Rails.application.routes.draw do
 
   get 'unsubscribe/:unsubscribe_token', to: 'users#unsubscribe', as: 'unsubscribe'
 
+  resources :feed_posts, only: :create do
+    resource :post_like, only: [:create, :destroy]
+  end
+
+
   # resources :aircrafts
 
 end
