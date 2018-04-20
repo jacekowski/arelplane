@@ -1,4 +1,4 @@
-class LikesController < ApplicationController
+class Stories::LikesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_story
 

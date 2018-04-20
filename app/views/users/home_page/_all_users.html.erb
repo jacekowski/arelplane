@@ -1,26 +1,26 @@
-<% @feed.each do |post| %>
+<% @feed.each do |story| %>
   <div class="card mb-4 feed_card">
     <div class="card-body">
       <div class="row">
         <div class="col-lg-8 col-12">
-          <h4 class="card-title name"><%= link_to post.user.name, username_path(post.user.username) %> <span class="flight-count">added <%= pluralize(number_with_delimiter(post.flights.count), "new flight") %> to their Map.</span></h4>
+          <h4 class="card-title name"><%= link_to story.user.name, username_path(story.user.username) %> <span class="flight-count">added <%= pluralize(number_with_delimiter(story.flights.count), "new flight") %> to their Map.</span></h4>
         </div>
         <div class="col-lg-4 col-12">
           <div class="float-lg-right">
-            <%= render 'users/profile/follow_form', user: post.user %>
+            <%= render 'users/profile/follow_form', user: story.user %>
           </div>
         </div>
       </div>
-      <span class="date"><%= time_ago_in_words(post.created_at) %> ago</span>
+      <span class="date"><%= time_ago_in_words(story.created_at) %> ago</span>
       <div class="row mt-3">
         <div class="col-12">
-          <div class="description"><%= post.description %></div>
+          <div class="description"><%= story.description %></div>
         </div>
       </div>
       <hr>
       <div class="row airports">
         <div class="col-12">
-          <% post.locations.each do |location| %>
+          <% story.locations.each do |location| %>
             <%= location.identifier %>
           <% end %>
         </div>
@@ -28,12 +28,18 @@
     </div>
     <ul class="list-group list-group-flush">
       <li class="list-group-item link_section">
-        <div id="likes_<%= post.id %>", class="likes">
-          <%= render 'stories/likes', post: post %>
+        <div id="likes_<%= story.id %>", class="likes">
+          <%= render 'stories/likes', story: story %>
         </div>
         <div class="comments">
           <p>Comments:</p>
-          <% post.comments.each do |comment| %>
+          <%= form_for [story, Comment.new] do |f| %>
+            <div class="form-group">
+              <%= f.text_area :body, class: 'form-control', placeholder: "Add a comment" %>
+              <%= f.submit class: 'btn btn-primary' %>
+            </div>
+          <% end %>
+          <% story.comments.each do |comment| %>
             <div class="card bg-light p-2">
               <%= comment.body %>
             </div>
