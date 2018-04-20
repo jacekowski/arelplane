@@ -31,9 +31,14 @@
         <div id="post_likes_<%= post.id %>", class="likes">
           <%= render 'feed_posts/likes', post: post %>
         </div>
-        <span class="float-right">
-          Comment
-        </span>
+        <div class="comments">
+          <p>Comments:</p>
+          <% post.comments.each do |comment| %>
+            <div class="card bg-light p-2">
+              <%= comment.body %>
+            </div>
+          <% end %>
+        </div>
       </li>
     </ul>
   </div>
