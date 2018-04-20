@@ -28,8 +28,8 @@
     </div>
     <ul class="list-group list-group-flush">
       <li class="list-group-item link_section">
-        <div id="post_likes_<%= post.id %>", class="likes">
-          <%= render 'feed_posts/likes', post: post %>
+        <div id="likes_<%= post.id %>", class="likes">
+          <%= render 'stories/likes', post: post %>
         </div>
         <div class="comments">
           <p>Comments:</p>

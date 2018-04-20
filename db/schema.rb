@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180419222940) do
+ActiveRecord::Schema.define(version: 20180420030724) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,14 +39,6 @@ ActiveRecord::Schema.define(version: 20180419222940) do
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
-  create_table "feed_posts", force: :cascade do |t|
-    t.bigint "user_id"
-    t.text "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_feed_posts_on_user_id"
-  end
-
   create_table "flight_waypoints", force: :cascade do |t|
     t.integer "location_id"
     t.integer "flight_id"
@@ -68,11 +60,21 @@ ActiveRecord::Schema.define(version: 20180419222940) do
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.bigint "aircraft_id"
-    t.bigint "feed_post_id"
+    t.bigint "story_id"
     t.index ["aircraft_id"], name: "index_flights_on_aircraft_id"
     t.index ["destination_id"], name: "index_flights_on_destination_id"
-    t.index ["feed_post_id"], name: "index_flights_on_feed_post_id"
     t.index ["origin_id"], name: "index_flights_on_origin_id"
+    t.index ["story_id"], name: "index_flights_on_story_id"
+  end
+
+  create_table "likes", force: :cascade do |t|
+    t.string "likeable_type"
+    t.bigint "likeable_id"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable_type_and_likeable_id"
+    t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
   create_table "locations", force: :cascade do |t|
@@ -108,21 +110,20 @@ ActiveRecord::Schema.define(version: 20180419222940) do
     t.string "associated_airport"
   end
 
-  create_table "post_likes", force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "feed_post_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["feed_post_id"], name: "index_post_likes_on_feed_post_id"
-    t.index ["user_id"], name: "index_post_likes_on_user_id"
-  end
-
   create_table "ratings", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "feed_post_id"
-    t.index ["feed_post_id"], name: "index_ratings_on_feed_post_id"
+    t.bigint "story_id"
+    t.index ["story_id"], name: "index_ratings_on_story_id"
+  end
+
+  create_table "stories", force: :cascade do |t|
+    t.bigint "user_id"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_stories_on_user_id"
   end
 
   create_table "subscription_preferences", force: :cascade do |t|
@@ -184,12 +185,11 @@ ActiveRecord::Schema.define(version: 20180419222940) do
   end
 
   add_foreign_key "comments", "users"
-  add_foreign_key "feed_posts", "users"
   add_foreign_key "flights", "aircrafts"
-  add_foreign_key "flights", "feed_posts"
-  add_foreign_key "post_likes", "feed_posts"
-  add_foreign_key "post_likes", "users"
-  add_foreign_key "ratings", "feed_posts"
+  add_foreign_key "flights", "stories"
+  add_foreign_key "likes", "users"
+  add_foreign_key "ratings", "stories"
+  add_foreign_key "stories", "users"
   add_foreign_key "user_ratings", "ratings"
   add_foreign_key "user_ratings", "users"
 end

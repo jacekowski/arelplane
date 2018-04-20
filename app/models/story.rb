@@ -1,4 +1,4 @@
-class FeedPost < ApplicationRecord
+class Story < ApplicationRecord
   default_scope { order(created_at: :desc) }
 
   belongs_to :user
@@ -8,9 +8,9 @@ class FeedPost < ApplicationRecord
   has_many :origins, through: :flights, source: :origin
   has_many :ratings
 
-  has_many :likes, foreign_key: 'feed_post_id', class_name: "PostLike", dependent: :destroy
   has_many :post_comments, dependent: :destroy
   has_many :comments, as: :commentable
+  has_many :likes, as: :likeable, dependent: :destroy
 
   def locations
     (origins + destinations).uniq

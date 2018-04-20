@@ -38,8 +38,7 @@ class User < ApplicationRecord
   has_many :user_ratings
   has_many :ratings, through: :user_ratings, dependent: :destroy
 
-  has_many :feed_posts, dependent: :destroy
-  has_many :post_likes, dependent: :destroy
+  has_many :stories, dependent: :destroy
 
   def add_subscription_preferences
     build_subscription_preference(unsubscribe_token: SecureRandom.hex)
@@ -167,8 +166,8 @@ class User < ApplicationRecord
     flights.order('created_at::date DESC').group('created_at::date').limit(5).count
   end
 
-  def likes?(feed_post)
-    feed_post.likes.where(user_id: self.id).any?
+  def likes?(story)
+    story.likes.where(user_id: self.id).any?
   end
 
   # for gravatars

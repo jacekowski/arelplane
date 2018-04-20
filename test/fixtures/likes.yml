@@ -1,9 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  likeable_type: MyString
+  likeable: one
   user: one
-  feed_post: one
 
 two:
+  likeable_type: MyString
+  likeable: two
   user: two
-  feed_post: two
