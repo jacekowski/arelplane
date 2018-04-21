@@ -1,1 +1,1 @@
-$(".comments").append("<%=j render 'stories/comment', comment: @comment %>");
+$("#comments_<%= @commentable.id %>").append("<%=j render 'stories/comment', comment: @comment %>");

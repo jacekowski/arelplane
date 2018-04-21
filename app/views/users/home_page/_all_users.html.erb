@@ -33,13 +33,13 @@
         </div>
         <div>
           <p>Comments:</p>
-          <%= form_with model: [story, Comment.new], id: 'new_comment' do |f| %>
+          <%= form_with model: [story, Comment.new], class: "new_comment" do |f| %>
             <div class="form-group">
-              <%= f.text_area :body, class: 'form-control', id: 'comment_text', placeholder: "Add a comment" %>
+              <%= f.text_area :body, class: 'form-control comment_text', placeholder: "Add a comment" %>
               <%= f.submit class: 'btn btn-primary'%>
             </div>
           <% end %>
-          <div class="comments">
+          <div id="comments_<%= story.id %>">
             <% story.comments.each do |comment| %>
               <%= render 'stories/comment', comment: comment %>
             <% end %>
