@@ -31,19 +31,19 @@
         <div id="likes_<%= story.id %>", class="likes">
           <%= render 'stories/likes', story: story %>
         </div>
-        <div class="comments">
+        <div>
           <p>Comments:</p>
-          <%= form_for [story, Comment.new] do |f| %>
+          <%= form_with model: [story, Comment.new], id: 'new_comment' do |f| %>
             <div class="form-group">
-              <%= f.text_area :body, class: 'form-control', placeholder: "Add a comment" %>
-              <%= f.submit class: 'btn btn-primary' %>
+              <%= f.text_area :body, class: 'form-control', id: 'comment_text', placeholder: "Add a comment" %>
+              <%= f.submit class: 'btn btn-primary'%>
             </div>
           <% end %>
-          <% story.comments.each do |comment| %>
-            <div class="card bg-light p-2">
-              <%= comment.body %>
-            </div>
-          <% end %>
+          <div class="comments">
+            <% story.comments.each do |comment| %>
+              <%= render 'stories/comment', comment: comment %>
+            <% end %>
+          </div>
         </div>
       </li>
     </ul>
