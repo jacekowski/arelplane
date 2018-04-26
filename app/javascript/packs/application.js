@@ -7,7 +7,4 @@
 // To reference this file, add <%= javascript_pack_tag 'application' %> to the appropriate
 // layout file, like app/views/layouts/application.html.erb
 
-import 'leaflet/dist/leaflet';
-import 'leaflet-fullscreen/dist/Leaflet.fullscreen';
-import 'leaflet/dist/leaflet.css';
-import 'leaflet-fullscreen/dist/leaflet.fullscreen.css';
+import "../src/application.css"

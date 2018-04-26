@@ -9,8 +9,6 @@
     "@rails/webpacker": "^3.0.1",
     "caniuse-lite": "^1.0.30000739",
     "jquery": "^3.2.1",
-    "leaflet": "^1.2.0",
-    "leaflet-fullscreen": "^1.0.2",
     "webpack": "^3.6.0"
   },
   "devDependencies": {
