@@ -1,5 +1,6 @@
 <% @feed.each do |story| %>
   <div class="card mb-4 feed_card">
+    <%= image_tag(story.map_image_url, class: 'card-img-top', alt: 'Story map') unless story.map_image_url.blank? %>
     <div class="card-body">
       <div class="row">
         <div class="col-lg-8 col-12">
