@@ -1,10 +1,9 @@
 <% @feed.each do |story| %>
   <div class="card mb-4 feed_card">
-    <%= image_tag(story.map_image_url, class: 'card-img-top', alt: 'Story map') unless story.map_image_url.blank? %>
     <div class="card-body">
       <div class="row">
         <div class="col-lg-8 col-12">
-          <h4 class="card-title name"><%= link_to story.user.name, username_path(story.user.username) %> <span class="flight-count">added <%= pluralize(number_with_delimiter(story.flights.count), "new flight") %> to their Map.</span></h4>
+          <h4 class="card-title name"><%= link_to story.user.name, username_path(story.user.username) %> <span class="flight-count">added a new trip with <%= pluralize(number_with_delimiter(story.flights.count), "flight") %>.</span></h4>
         </div>
         <div class="col-lg-4 col-12">
           <div class="float-lg-right">
@@ -18,7 +17,6 @@
           <div class="description"><%= story.description %></div>
         </div>
       </div>
-      <hr>
       <div class="row airports">
         <div class="col-12">
           <% story.locations.each do |location| %>
@@ -26,28 +24,24 @@
           <% end %>
         </div>
       </div>
+      <div class="row">
+        <div class="col-12">
+          <%= image_tag(story.map_image_url, class: 'card-img-top', alt: 'Story map') unless story.map_image_url.blank? %>
+        </div>
+      </div>
     </div>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item link_section">
-        <div id="likes_<%= story.id %>", class="likes">
-          <%= render 'stories/likes', story: story %>
+    <!-- rewrite _likes.html.erb to look like mockup -->
+    <!-- update create.js.erb and destroy.js.erb to also update count on left hand side -->
+    <div class="card-body comments">
+      <div class="row">
+        <div class="count col" id="like_count_<%= story.id %>">
+          <%= render 'stories/like_count', story: story %>
         </div>
-        <div>
-          <p>Comments:</p>
-          <%= form_with model: [story, Comment.new], class: "new_comment" do |f| %>
-            <div class="form-group">
-              <%= f.text_area :body, class: 'form-control comment_text', placeholder: "Add a comment" %>
-              <%= f.submit class: 'btn btn-primary'%>
-            </div>
-          <% end %>
-          <div id="comments_<%= story.id %>">
-            <% story.comments.each do |comment| %>
-              <%= render 'stories/comment', comment: comment %>
-            <% end %>
-          </div>
+        <div class="actions col" id="like_button_<%= story.id %>">
+          <%= render 'stories/like_button', story: story %>
         </div>
-      </li>
-    </ul>
+      </div>
+    </div>
   </div>
 <% end %>
 

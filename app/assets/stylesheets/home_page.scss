@@ -109,6 +109,16 @@
         font-weight: $regular;
         color: $linkColor;
       }
+      .comments {
+        .count {}
+        .actions {
+          a {
+            font-size: 1.125rem;
+            font-weight: $semiBold;
+            color: $darkTextColor;
+          }
+        }
+      }
     }
   }
 }

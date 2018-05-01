@@ -1,0 +1,2 @@
+<% story ||= @story %>
+<%= pluralize(number_with_delimiter(story.likes.count), "like") %> | <%= pluralize(number_with_delimiter(story.comments.count), "comment") %>

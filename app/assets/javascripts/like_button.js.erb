@@ -1,0 +1,16 @@
+$(document).ready(function() {
+    likeButton();
+});
+
+function likeButton() {
+  $("a.story_liked").hover(
+    function () {
+      $(this).find('img').attr('src', "<%= asset_path('icons/broken_heart_icon.png') %>")
+      $(this).find('span').text("Unlike")
+    },
+    function () {
+      $(this).find('img').attr('src', "<%= asset_path('icons/heart_icon_solid.png') %>")
+      $(this).find('span').text("Liked")
+    }
+  );
+}

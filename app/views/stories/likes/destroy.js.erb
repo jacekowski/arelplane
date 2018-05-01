@@ -1,1 +1,2 @@
-$("#likes_<%= @story.id %>").html("<%=j render 'stories/likes', post: @story %>");
+$("#like_button_<%= @story.id %>").html("<%=j render 'stories/like_button', post: @story %>");
+$("#like_count_<%= @story.id %>").html("<%=j render 'stories/like_count', post: @story %>");
