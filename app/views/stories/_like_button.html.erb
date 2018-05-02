@@ -1,4 +1,3 @@
-<% story ||= @story %>
 <% if user_signed_in? && current_user.likes?(story) %>
   <%= link_to story_like_path(story), method: :delete, remote: true, class: 'story_liked' do %>
     <%= image_tag('icons/heart_icon_solid.png', width: 19, height: 17) %><span> Liked</span>

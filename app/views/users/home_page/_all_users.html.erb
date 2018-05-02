@@ -32,12 +32,14 @@
     </div>
     <div class="card-body social_actions">
       <div class="row">
-        <div class="count col" id="like_count_<%= story.id %>">
+        <div class="count col pt-2" id="like_count_<%= story.id %>">
           <%= render 'stories/like_count', story: story %>
         </div>
-        <div class="actions col" id="like_button_<%= story.id %>">
+        <div class="actions col">
           <div class="float-right">
-            <%= render 'stories/like_button', story: story %>
+            <span id="like_button_<%= story.id %>">
+              <%= render 'stories/like_button', story: story %>
+            </span>
             <span class="ml-4">
               <%= render 'stories/comment_button' %>
             </span>
