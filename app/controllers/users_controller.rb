@@ -18,6 +18,10 @@ class UsersController < ApplicationController
     @feed = Story.all.page(params[:page]).per(5)
     @followers = current_user.followers
     @following = current_user.following
+
+    @story = current_user.stories.new
+    @flight = @story.flights.build
+    @flight.waypoints.build
   end
 
   def unsubscribe

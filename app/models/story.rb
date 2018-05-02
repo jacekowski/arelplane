@@ -3,7 +3,11 @@ class Story < ApplicationRecord
 
   belongs_to :user
   has_many :flights
+  accepts_nested_attributes_for :flights
+
   has_many :waypoints, through: :flights
+  accepts_nested_attributes_for :waypoints, reject_if: lambda { |a| a[:location_id].blank? }
+
   has_many :destinations, through: :flights, source: :destination
   has_many :origins, through: :flights, source: :origin
   has_many :ratings

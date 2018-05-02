@@ -1,0 +1,23 @@
+<%= form_with model: @story, class: 'new_story' do |form| %>
+  <div class="form-group">
+    <%= form.text_area :description, class: 'form-control', placeholder: 'Say something about your flight' %>
+    <%= form.submit 'Add flight', class: 'btn btn-primary mt-2 float-right'%>
+    <%= form.fields_for :flights do |flight_fields| %>
+      <%= flight_fields.label :flight_date, 'Flight Date, e.g. dd/mm/yyyy', class: 'light-sub-text' %><br />
+      <%= flight_fields.text_field :flight_date, id: :flight_flight_date, class: 'form-control' %><br />
+      <%= flight_fields.label :aircraft_identifier, 'Aircraft Identifier, e.g. N17AV', class: 'light-sub-text' %><br />
+      <%= flight_fields.text_field :aircraft_identifier, id: :flight_aircraft_id, class: 'form-control', value: flight_fields.object.aircraft_identifier.try(:upcase) %>
+      <%= flight_fields.label :origin_airport, 'Departure Airport (ICAO)', class: 'light-sub-text' %><br />
+      <%= flight_fields.collection_select :origin_id, Location.order(:identifier).page, :id, :identifier, { include_blank: true}, class: 'identifier_lookup', id: 'departure_airport', style: 'width: 100%;' %>
+      <%= flight_fields.label :destination_airport, 'Arrival Airport (ICAO)', class: 'light-sub-text' %><br />
+      <%= flight_fields.collection_select :destination_id, Location.order(:identifier).page, :id, :identifier, { include_blank: true}, class: 'identifier_lookup', id: 'arrival_airport', style: 'width: 100%;' %>
+      <%= label :waypoint, "Waypoints", class: 'light-sub-text' %><br />
+      <%= flight_fields.fields_for :waypoints do |waypoint_fields| %>
+        <div class="waypoint_fields mb-2">
+          <%= render 'flights/waypoint_fields', f: waypoint_fields %>
+        </div>
+      <% end %>
+      <a href="#" id="add_waypoint_select">Add waypoint</a>
+    <% end %>
+  </div>
+<% end %>
