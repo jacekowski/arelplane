@@ -1,0 +1,19 @@
+<div class="card-footer comments">
+  <div class="row">
+    <div class="col-12">
+      <div>
+        <div id="comments_<%= story.id %>">
+          <% story.comments.each do |comment| %>
+            <%= render 'stories/comment', comment: comment %>
+          <% end %>
+        </div>
+        <%= form_with model: [story, Comment.new], class: "new_comment" do |f| %>
+          <div class="form-group">
+            <%= f.text_area :body, class: 'form-control comment_text', placeholder: "Add a comment" %>
+            <%= f.submit 'comment', class: 'btn btn-primary mt-2 float-right'%>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
