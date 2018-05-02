@@ -127,6 +127,11 @@
         .username:hover {
           text-decoration: underline;
         }
+        .timestamp {
+          font-size: 0.8rem;
+          font-weight: $regular;
+          color: $lightSubTextColor;
+        }
       }
     }
   }
