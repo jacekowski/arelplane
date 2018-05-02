@@ -1,1 +1,8 @@
-<%= pluralize(number_with_delimiter(story.likes.count), "like") %> | <%= pluralize(number_with_delimiter(story.comments.count), "comment") %>
+<div class="row">
+  <div class="col-md-3">
+    <%= pluralize(number_with_delimiter(story.likes.count), "like") %>
+  </div>
+  <div class="col">
+    <%= pluralize(number_with_delimiter(story.comments.count), "comment") %>
+  </div>
+</div>
