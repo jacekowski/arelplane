@@ -17,16 +17,16 @@
           <div class="description"><%= story.description %></div>
         </div>
       </div>
-      <div class="row airports">
-        <div class="col-12">
-          <% story.locations.each do |location| %>
-            <%= location.identifier %>
-          <% end %>
-        </div>
-      </div>
       <div class="row">
         <div class="col-12">
           <%= image_tag(story.map_image_url, class: 'card-img-top', alt: 'Story map') unless story.map_image_url.blank? %>
+        </div>
+      </div>
+      <div class="row airports mt-3">
+        <div class="col-12">
+          <span class="identifier">
+            | <%= story.locations.map { |location| location.identifier }.join(" → ") %> |
+          </span>
         </div>
       </div>
     </div>
@@ -36,13 +36,19 @@
           <%= render 'stories/like_count', story: story %>
         </div>
         <div class="actions col">
-          <div class="float-right">
-            <span id="like_button_<%= story.id %>">
-              <%= render 'stories/like_button', story: story %>
-            </span>
-            <span class="ml-4">
-              <%= render 'stories/comment_button' %>
-            </span>
+          <div class="row">
+            <div class="col">
+              <div class="float-right">
+                <div id="like_button_<%= story.id %>">
+                  <%= render 'stories/like_button', story: story %>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-5">
+              <div class="float-right">
+                <%= render 'stories/comment_button' %>
+              </div>
+            </div>
           </div>
         </div>
       </div>

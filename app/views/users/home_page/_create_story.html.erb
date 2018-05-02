@@ -1,0 +1,6 @@
+<%= form_with model: Story.new, class: 'new_story' do |form| %>
+  <div class="form-group">
+    <%= form.text_area :description, class: 'form-control', placeholder: 'Say something about your flight' %>
+    <%= form.submit 'Add flight', class: 'btn btn-primary mt-2 float-right'%>
+  </div>
+<% end %>

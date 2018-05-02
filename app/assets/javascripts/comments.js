@@ -6,7 +6,7 @@ $(document).ready(function() {
   });
 
   $('.comments').hide();
-  $('button.comment_button').click(function() {
-    $(this).closest('.social_actions').nextAll(".comments").fadeToggle();
+  $('a.comment_button').click(function() {
+    $(this).closest('.social_actions').nextAll(".comments").slideToggle();
   });
 });
