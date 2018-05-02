@@ -32,13 +32,37 @@
     </div>
     <!-- rewrite _likes.html.erb to look like mockup -->
     <!-- update create.js.erb and destroy.js.erb to also update count on left hand side -->
-    <div class="card-body comments">
+    <div class="card-body social_actions">
       <div class="row">
         <div class="count col" id="like_count_<%= story.id %>">
           <%= render 'stories/like_count', story: story %>
         </div>
         <div class="actions col" id="like_button_<%= story.id %>">
-          <%= render 'stories/like_button', story: story %>
+          <div class="float-right">
+            <%= render 'stories/like_button', story: story %>
+            <span class="ml-4">
+              <%= render 'stories/comment_button' %>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer comments">
+      <div class="row">
+        <div class="col-12">
+          <div>
+            <div id="comments_<%= story.id %>">
+              <% story.comments.each do |comment| %>
+                <%= render 'stories/comment', comment: comment %>
+              <% end %>
+            </div>
+            <%= form_with model: [story, Comment.new], class: "new_comment" do |f| %>
+              <div class="form-group">
+                <%= f.text_area :body, class: 'form-control comment_text', placeholder: "Add a comment" %>
+                <%= f.submit class: 'btn btn-primary'%>
+              </div>
+            <% end %>
+          </div>
         </div>
       </div>
     </div>

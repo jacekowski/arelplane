@@ -109,14 +109,23 @@
         font-weight: $regular;
         color: $linkColor;
       }
-      .comments {
+      .social_actions {
         .count {}
         .actions {
           a {
             font-size: 1.125rem;
-            font-weight: $semiBold;
+            font-weight: $regular;
             color: $darkTextColor;
           }
+        }
+      }
+      .comments {
+        .username {
+          color: $darkTextColor;
+          font-weight: $semiBold;
+        }
+        .username:hover {
+          text-decoration: underline;
         }
       }
     }
