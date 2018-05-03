@@ -16,6 +16,14 @@ class Story < ApplicationRecord
   has_many :comments, as: :commentable
   has_many :likes, as: :likeable, dependent: :destroy
 
+  validate :presence_of_description_if_no_attachments
+
+  def presence_of_description_if_no_attachments
+    if flights.blank? && ratings.blank? && description.blank?
+      errors.add(:description, 'required if no new flights or ratings are added')
+    end
+  end
+
   def reject_flight(attributes)
     attributes['origin_id'].blank? &&
     attributes['destination_id'].blank?
