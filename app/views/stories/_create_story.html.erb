@@ -1,7 +1,17 @@
-<%= form_with model: @story, class: 'new_story' do |form| %>
+<%= form_with model: @story, local: true, class: 'new_story' do |form| %>
+  <% if @story.errors.any? %>
+    <% @story.errors.full_messages.each do |message| %>
+      <div class="alert alert-danger" role="alert">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <%= message %>
+      </div>
+    <% end %>
+  <% end %>
+  
   <div class="form-group">
     <%= form.text_area :description, class: 'form-control', placeholder: 'Say something about your flight' %>
-    <%= form.submit 'Add flight', class: 'btn btn-primary mt-2 float-right'%>
     <%= form.fields_for :flights do |flight_fields| %>
       <%= flight_fields.label :flight_date, 'Flight Date, e.g. dd/mm/yyyy', class: 'light-sub-text' %><br />
       <%= flight_fields.text_field :flight_date, id: :flight_flight_date, class: 'form-control' %><br />
@@ -19,5 +29,6 @@
       <% end %>
       <a href="#" id="add_waypoint_select">Add waypoint</a>
     <% end %>
+    <%= form.submit 'Add flight', class: 'btn btn-primary mt-2 float-right'%>
   </div>
 <% end %>

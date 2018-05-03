@@ -2,12 +2,11 @@ class Story < ApplicationRecord
   default_scope { order(created_at: :desc) }
 
   belongs_to :user
-  has_many :flights
-  accepts_nested_attributes_for :flights
+  has_many :flights, inverse_of: :story
+
+  accepts_nested_attributes_for :flights, reject_if: :reject_flight
 
   has_many :waypoints, through: :flights
-  accepts_nested_attributes_for :waypoints, reject_if: lambda { |a| a[:location_id].blank? }
-
   has_many :destinations, through: :flights, source: :destination
   has_many :origins, through: :flights, source: :origin
   has_many :ratings
@@ -15,6 +14,11 @@ class Story < ApplicationRecord
   has_many :post_comments, dependent: :destroy
   has_many :comments, as: :commentable
   has_many :likes, as: :likeable, dependent: :destroy
+
+  def reject_flight(attributes)
+    attributes['origin_id'].blank? ||
+    attributes['destination_id'].blank?
+  end
 
   def locations
     (origins + destinations).uniq

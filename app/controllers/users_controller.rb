@@ -20,8 +20,8 @@ class UsersController < ApplicationController
     @following = current_user.following
 
     @story = current_user.stories.new
-    @flight = @story.flights.build
-    @flight.waypoints.build
+    flight = @story.flights.build
+    flight.waypoints.build
   end
 
   def unsubscribe

@@ -2,11 +2,11 @@ class StoriesController < ApplicationController
 
   def create
     @story = current_user.stories.new(story_params)
+    @story.flights.each {|flight| flight.user_id = current_user.id}
     if @story.save
       redirect_to root_path, notice: 'Story was successfully created.'
     else
-      byebug
-      render root_path
+      redirect_to root_path, flash: { error: @story.errors }
     end
   end
 
