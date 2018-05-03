@@ -1,4 +1,4 @@
-<%= form_with model: @story, local: true, class: 'new_story' do |form| %>
+<%= form_with model: @story, local: true, class: 'new_story' do |f| %>
   <% if alert %>
     <% alert.each do |message| %>
       <div class="alert alert-danger" role="alert">
@@ -10,25 +10,89 @@
     <% end %>
   <% end %>
 
-  <div class="form-group">
-    <%= form.text_area :description, class: 'form-control', placeholder: 'Say something about your flight' %>
-    <%= form.fields_for :flights do |flight_fields| %>
-      <%= flight_fields.label :flight_date, 'Flight Date, e.g. dd/mm/yyyy', class: 'light-sub-text' %><br />
-      <%= flight_fields.text_field :flight_date, id: :flight_flight_date, class: 'form-control' %><br />
-      <%= flight_fields.label :aircraft_identifier, 'Aircraft Identifier, e.g. N17AV', class: 'light-sub-text' %><br />
-      <%= flight_fields.text_field :aircraft_identifier, id: :flight_aircraft_id, class: 'form-control', value: flight_fields.object.aircraft_identifier.try(:upcase) %>
-      <%= flight_fields.label :origin_airport, 'Departure Airport (ICAO)', class: 'light-sub-text' %><br />
-      <%= flight_fields.collection_select :origin_id, Location.order(:identifier).page, :id, :identifier, { include_blank: true}, class: 'identifier_lookup', id: 'departure_airport', style: 'width: 100%;' %>
-      <%= flight_fields.label :destination_airport, 'Arrival Airport (ICAO)', class: 'light-sub-text' %><br />
-      <%= flight_fields.collection_select :destination_id, Location.order(:identifier).page, :id, :identifier, { include_blank: true}, class: 'identifier_lookup', id: 'arrival_airport', style: 'width: 100%;' %>
-      <%= label :waypoint, "Waypoints", class: 'light-sub-text' %><br />
-      <%= flight_fields.fields_for :waypoints do |waypoint_fields| %>
-        <div class="waypoint_fields mb-2">
-          <%= render 'flights/waypoint_fields', f: waypoint_fields %>
+  <%= f.text_area :description, class: 'form-control', placeholder: 'Say something about your flight' %>
+  <%= f.fields_for :flights do |form| %>
+    <div class="form">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12 col-lg-6">
+              <div class="mb-3">
+                <%= form.label :flight_date, 'Flight Date, e.g. dd/mm/yyyy', class: 'light-sub-text' %><br />
+                <%= form.text_field :flight_date, id: :flight_flight_date, class: 'form-control' %><br />
+              </div>
+            </div>
+            <div class="col-12 col-lg-6">
+              <div class="mb-3">
+                <%= form.label :aircraft_identifier, 'Aircraft Identifier, e.g. N17AV', class: 'light-sub-text' %><br />
+                <%= form.text_field :aircraft_identifier, id: :flight_aircraft_id, class: 'form-control', value: form.object.aircraft_identifier.try(:upcase) %>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-lg-4">
+              <div class="mb-3">
+                <%= form.label :origin_airport, 'Departure Airport (ICAO)', class: 'light-sub-text' %><br />
+                <%= form.collection_select :origin_id, Location.order(:identifier).page, :id, :identifier, { include_blank: true}, class: 'identifier_lookup', id: 'departure_airport', style: 'width: 100%;' %>
+              </div>
+            </div>
+            <div class="col-12 col-lg-4">
+              <div class="mb-3">
+                <%= form.label :destination_airport, 'Arrival Airport (ICAO)', class: 'light-sub-text' %><br />
+                <%= form.collection_select :destination_id, Location.order(:identifier).page, :id, :identifier, { include_blank: true}, class: 'identifier_lookup', id: 'arrival_airport', style: 'width: 100%;' %>
+              </div>
+            </div>
+            <div class="col-12 col-lg-4">
+              <div class="mb-3">
+                <%= label :waypoint, "Waypoints", class: 'light-sub-text' %><br />
+                <%= form.fields_for :waypoints do |waypoint_fields| %>
+                  <div class="waypoint_fields mb-2">
+                    <%= render 'flights/waypoint_fields', f: waypoint_fields %>
+                  </div>
+                <% end %>
+                <a href="#" id="add_waypoint_select">Add waypoint</a>
+              </div>
+            </div>
+          </div>
         </div>
-      <% end %>
-      <a href="#" id="add_waypoint_select">Add waypoint</a>
-    <% end %>
-    <%= form.submit 'Add flight', class: 'btn btn-primary mt-2 float-right'%>
-  </div>
+      </div>
+      <div class="card mt-2">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12 col-lg-3">
+              <div class="mb-3">
+                <%= form.label :time_out, 'Time Out', class: 'light-sub-text' %><br />
+                <%= form.text_field :time_out, id: :flight_time_out, class: 'form-control' %>
+              </div>
+            </div>
+            <div class="col-12 col-lg-3">
+              <div class="mb-3">
+                <%= form.label :time_in, 'Time In', class: 'light-sub-text' %><br />
+                <%= form.text_field :time_in, id: :flight_time_in, class: 'form-control' %>
+              </div>
+            </div>
+            <div class="col-12 col-lg-3">
+              <div class="mb-3">
+                <%= form.label :total_time, 'Total Time (hours)', class: 'light-sub-text' %><br />
+                <%= form.number_field :total_time, id: :flight_total_time, class: 'form-control', step: 0.1, value: form.object.total_time.try(:round, 1) %>
+              </div>
+            </div>
+            <div class="col-12 col-lg-3">
+              <div class="mb-3">
+                <%= form.label :pic, 'PIC (hours)', class: 'light-sub-text' %><br />
+                <%= form.number_field :pic, id: :flight_pic, class: 'form-control', step: 0.1, value: form.object.pic.try(:round, 1) %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-lg-3">
+          <div class="actions">
+            <%= form.submit class: 'btn btn-primary mt-2' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
 <% end %>

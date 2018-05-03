@@ -25,8 +25,7 @@ private
         :total_time,
         :pic,
         waypoints_attributes: [
-          :location_id,
-          :id
+          :location_id
         ]
       ]
     )
