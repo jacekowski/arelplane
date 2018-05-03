@@ -11,6 +11,7 @@
   <% end %>
 
   <%= form.text_area :description, class: 'form-control', placeholder: 'Say something about your flight' %>
+  <%= render 'stories/select_attachment' %>
   <%= render 'stories/forms/add_flight', form: form  %>
   <%= render 'stories/forms/add_ratings', form: form %>
   <div class="row">

@@ -1,7 +1,9 @@
-<%= form.label :ratings, class: 'light-sub-text' %><br>
-<%= form.collection_check_boxes(:rating_ids, Rating.all, :id, :name) do |b| %>
-  <div class="form-check">
-    <%= b.check_box(class: 'form-check-input') %>
-    <%= b.label(class: 'form-check-label') %>
-  </div>
-<% end %>
+<div class="story_ratings">
+  <%= form.label :ratings, class: 'light-sub-text' %><br>
+  <%= form.collection_check_boxes(:rating_ids, Rating.all, :id, :name) do |b| %>
+    <div class="form-check">
+      <%= b.check_box(class: 'form-check-input') %>
+      <%= b.label(class: 'form-check-label') %>
+    </div>
+  <% end %>
+</div>
