@@ -1,7 +1,7 @@
 $(document).ready(function() {
   setTimeout(function(){
-    $('#flash').fadeOut();
-  }, 2000);
+    $('#flash, .alert-success').fadeOut();
+  }, 5000);
 
   // Google Analytics
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

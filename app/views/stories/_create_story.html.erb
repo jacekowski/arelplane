@@ -1,6 +1,6 @@
 <%= form_with model: @story, local: true, class: 'new_story' do |form| %>
-  <% if @story.errors.any? %>
-    <% @story.errors.full_messages.each do |message| %>
+  <% if alert %>
+    <% alert.each do |message| %>
       <div class="alert alert-danger" role="alert">
         <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span>
           <span class="sr-only">Close</span>
@@ -9,7 +9,7 @@
       </div>
     <% end %>
   <% end %>
-  
+
   <div class="form-group">
     <%= form.text_area :description, class: 'form-control', placeholder: 'Say something about your flight' %>
     <%= form.fields_for :flights do |flight_fields| %>

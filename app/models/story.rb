@@ -11,12 +11,11 @@ class Story < ApplicationRecord
   has_many :origins, through: :flights, source: :origin
   has_many :ratings
 
-  has_many :post_comments, dependent: :destroy
   has_many :comments, as: :commentable
   has_many :likes, as: :likeable, dependent: :destroy
 
   def reject_flight(attributes)
-    attributes['origin_id'].blank? ||
+    attributes['origin_id'].blank? &&
     attributes['destination_id'].blank?
   end
 

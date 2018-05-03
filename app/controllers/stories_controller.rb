@@ -6,7 +6,7 @@ class StoriesController < ApplicationController
     if @story.save
       redirect_to root_path, notice: 'Story was successfully created.'
     else
-      redirect_to root_path, flash: { error: @story.errors }
+      redirect_to root_path, alert: @story.errors.full_messages
     end
   end
 

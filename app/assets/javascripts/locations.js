@@ -1,11 +1,11 @@
 $(document).ready(function() {
-  var pathname = window.location.pathname;
-  if (pathname === "/flights/new") {
+  var pageTitle = $(document).find("title").text();
+  if (pageTitle.includes("New Flight") || pageTitle.includes("Home")) {
     loadData();
-  } else if (pathname.includes("/flights/") && pathname.includes("/edit")) {
+  } else if (pageTitle.includes("Edit Flight")) {
     loadData();
     fetchExistingValues();
-  } else if (pathname.includes("/@") && pathname.includes("/edit")) {
+  } else if (pageTitle.includes("Edit Account")) {
     loadData();
     fetchHomeBase();
   }
