@@ -10,7 +10,8 @@ class Story < ApplicationRecord
 
   has_many :destinations, through: :flights, source: :destination
   has_many :origins, through: :flights, source: :origin
-  has_many :ratings
+  has_many :user_ratings
+  has_many :ratings, through: :user_ratings, dependent: :destroy
 
   has_many :comments, as: :commentable
   has_many :likes, as: :likeable, dependent: :destroy

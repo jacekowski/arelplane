@@ -1,0 +1,77 @@
+<%= form.fields_for :flights do |flight_fields| %>
+  <div class="form">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 col-lg-6">
+            <div class="mb-3">
+              <%= flight_fields.label :flight_date, 'Flight Date, e.g. dd/mm/yyyy', class: 'light-sub-text' %><br />
+              <%= flight_fields.text_field :flight_date, id: :flight_flight_date, class: 'form-control' %><br />
+            </div>
+          </div>
+          <div class="col-12 col-lg-6">
+            <div class="mb-3">
+              <%= flight_fields.label :aircraft_identifier, 'Aircraft Identifier, e.g. N17AV', class: 'light-sub-text' %><br />
+              <%= flight_fields.text_field :aircraft_identifier, id: :flight_aircraft_id, class: 'form-control', value: flight_fields.object.aircraft_identifier.try(:upcase) %>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-lg-4">
+            <div class="mb-3">
+              <%= flight_fields.label :origin_airport, 'Departure Airport (ICAO)', class: 'light-sub-text' %><br />
+              <%= flight_fields.collection_select :origin_id, Location.order(:identifier).page, :id, :identifier, { include_blank: true}, class: 'identifier_lookup', id: 'departure_airport', style: 'width: 100%;' %>
+            </div>
+          </div>
+          <div class="col-12 col-lg-4">
+            <div class="mb-3">
+              <%= flight_fields.label :destination_airport, 'Arrival Airport (ICAO)', class: 'light-sub-text' %><br />
+              <%= flight_fields.collection_select :destination_id, Location.order(:identifier).page, :id, :identifier, { include_blank: true}, class: 'identifier_lookup', id: 'arrival_airport', style: 'width: 100%;' %>
+            </div>
+          </div>
+          <div class="col-12 col-lg-4">
+            <div class="mb-3">
+              <%= label :waypoint, "Waypoints", class: 'light-sub-text' %><br />
+              <%= flight_fields.fields_for :waypoints do |waypoint_fields| %>
+                <div class="waypoint_fields mb-2">
+                  <%= render 'flights/waypoint_fields', f: waypoint_fields %>
+                </div>
+              <% end %>
+              <a href="#" id="add_waypoint_select">Add waypoint</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card mt-2">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 col-lg-3">
+            <div class="mb-3">
+              <%= flight_fields.label :time_out, 'Time Out', class: 'light-sub-text' %><br />
+              <%= flight_fields.text_field :time_out, id: :flight_time_out, class: 'form-control' %>
+            </div>
+          </div>
+          <div class="col-12 col-lg-3">
+            <div class="mb-3">
+              <%= flight_fields.label :time_in, 'Time In', class: 'light-sub-text' %><br />
+              <%= flight_fields.text_field :time_in, id: :flight_time_in, class: 'form-control' %>
+            </div>
+          </div>
+          <div class="col-12 col-lg-3">
+            <div class="mb-3">
+              <%= flight_fields.label :total_time, 'Total Time (hours)', class: 'light-sub-text' %><br />
+              <%= flight_fields.number_field :total_time, id: :flight_total_time, class: 'form-control', step: 0.1, value: flight_fields.object.total_time.try(:round, 1) %>
+            </div>
+          </div>
+          <div class="col-12 col-lg-3">
+            <div class="mb-3">
+              <%= flight_fields.label :pic, 'PIC (hours)', class: 'light-sub-text' %><br />
+              <%= flight_fields.number_field :pic, id: :flight_pic, class: 'form-control', step: 0.1, value: flight_fields.object.pic.try(:round, 1) %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -3,6 +3,7 @@ class StoriesController < ApplicationController
   def create
     @story = current_user.stories.new(story_params)
     @story.flights.each {|flight| flight.user_id = current_user.id}
+    @story.user_ratings.each {|user_rating| user_rating.user_id = current_user.id}
     if @story.save
       redirect_to root_path, notice: 'Story was successfully created.'
     else
@@ -27,7 +28,8 @@ private
         waypoints_attributes: [
           :location_id
         ]
-      ]
+      ],
+      rating_ids: []
     )
   end
 
