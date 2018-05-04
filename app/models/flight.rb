@@ -16,6 +16,12 @@ class Flight < ApplicationRecord
 
   before_save :add_distance
 
+  before_save :testing
+
+  def testing
+    byebug
+  end
+
   def aircraft_identifier=(val)
     write_attribute :aircraft_identifier, val.try(:upcase)
   end
@@ -24,7 +30,7 @@ class Flight < ApplicationRecord
     map_data = feature_collection
     flights.all.each do |flight|
       origin = flight.origin
-      destination = flight.to
+      destination = flight.destination
       if origin.latitude == nil || destination.latitude == nil
         next
       end
