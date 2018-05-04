@@ -81,7 +81,7 @@
                       <% flight.waypoints.each do |waypoint| %>
                           <p class="ml-4">
                             <%= Location.find(waypoint.location_id).name_and_identifier %>
-                            <%= link_to 'Delete', waypoint_path(waypoint), method: :delete, data: { confirm: 'Are you sure?' }, remote: true, class: "ml-2 delete_waypoint" %>
+                            <%= link_to 'Delete', waypoint_path(waypoint), method: :delete, data: { confirm: 'Are you sure? You can not un-delete this waypoint.' }, remote: true, class: "ml-2 delete_waypoint" %>
                           </p>
                       <% end %>
                     <% end %>
@@ -93,8 +93,8 @@
                   <td><%= flight.time_in %></td>
                   <td><%= flight.total_time.try(:round, 1) %></td>
                   <td><%= flight.pic.try(:round, 1) %></td>
-                  <td><%= flight.distance.try(:round, 1).try(:round, 1) %></td>
-                  <td><%= link_to 'Delete', flight, method: :delete, data: { confirm: 'Are you sure?' }, remote: true, class: 'delete_flight' %></td>
+                  <td><%= number_with_delimiter(flight.distance.try(:round, 1)) %></td>
+                  <td><%= link_to 'Delete', flight, method: :delete, data: { confirm: 'Are you sure? You can not un-delete this flight'}, remote: true, class: 'delete_flight' %></td>
                   <td><%= link_to 'Edit', edit_flight_path(flight) %></td>
                 </tr>
               <% end %>
@@ -130,7 +130,7 @@
                   <% flight.waypoints.each do |waypoint| %>
                       <p class="ml-4">
                         <%= Location.find(waypoint.location_id).name_and_identifier %>
-                        <%= link_to 'Delete', waypoint_path(waypoint), method: :delete, data: { confirm: 'Are you sure?' }, remote: true, class: "ml-2 delete_waypoint" %>
+                        <%= link_to 'Delete', waypoint_path(waypoint), method: :delete, data: { confirm: 'Are you sure? You can not un-delete this waypoint.' }, remote: true, class: "ml-2 delete_waypoint" %>
                       </p>
                   <% end %>
                 <% end %>
@@ -142,8 +142,8 @@
               <td><%= flight.time_in %></td>
               <td><%= flight.total_time.try(:round, 1) %></td>
               <td><%= flight.pic.try(:round, 1) %></td>
-              <td><%= flight.distance.try(:round, 1) %></td>
-              <td><%= link_to 'Delete', flight, method: :delete, data: { confirm: 'Are you sure?' }, remote: true, class: 'delete_flight' %></td>
+              <td><%= number_with_delimiter(flight.distance.try(:round, 1)) %></td>
+              <td><%= link_to 'Delete', flight, method: :delete, data: { confirm: 'Are you sure? You can not un-delete this flight' }, remote: true, class: 'delete_flight' %></td>
               <td><%= link_to 'Edit', edit_flight_path(flight) %></td>
             </tr>
           <% end %>

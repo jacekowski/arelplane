@@ -6,20 +6,23 @@ class Flight < ApplicationRecord
   belongs_to :user, counter_cache: true
   belongs_to :post, optional: true
   belongs_to :story, dependent: :destroy, optional: true
-
-  validates :flight_date, presence: true
+  belongs_to :aircraft, optional: true
 
   has_many :waypoints, foreign_key: "flight_id", class_name: "FlightWaypoint", dependent: :destroy, inverse_of: :flight
   accepts_nested_attributes_for :waypoints, reject_if: lambda { |a| a[:location_id].blank? }
 
-  belongs_to :aircraft, optional: true
+  validates :flight_date, presence: true
 
   before_save :add_distance
+  after_commit :update_map_cache
 
-  before_save :testing
-
-  def testing
-    byebug
+  def update_map_cache
+    user = self.user
+    CacheUserMapJob.perform_later(user)
+    # GenerateHomepageMapJob.perform_later
+    user.save_total_flight_hours
+    user.save_num_airports
+    user.save_num_regions
   end
 
   def aircraft_identifier=(val)
