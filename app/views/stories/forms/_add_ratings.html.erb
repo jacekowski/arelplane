@@ -1,8 +1,12 @@
 <div class="story_ratings">
   <%= form.label :ratings, class: 'light-sub-text' %><br>
-  <%= form.collection_check_boxes(:rating_ids, Rating.all, :id, :name) do |b| %>
+  <%= form.collection_radio_buttons(:rating_ids, Rating.all, :id, :name) do |b| %>
     <div class="form-check">
-      <%= b.check_box(class: 'form-check-input') %>
+      <% if current_user.ratings.pluck(:name).include?(b.text) %>
+        <%= b.radio_button(class: 'form-check-input', disabled: true) %>
+      <% else %>
+        <%= b.radio_button(class: 'form-check-input', disabled: false) %>
+      <% end %>
       <%= b.label(class: 'form-check-label') %>
     </div>
   <% end %>

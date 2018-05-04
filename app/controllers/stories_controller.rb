@@ -15,6 +15,7 @@ private
   def story_params
     params.require(:story).permit(
       :description,
+      :rating_ids,
       flights_attributes: [
         :flight_date,
         :aircraft_identifier,
@@ -28,8 +29,7 @@ private
         waypoints_attributes: [
           :location_id
         ]
-      ],
-      rating_ids: []
+      ]
     )
   end
 
