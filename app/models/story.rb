@@ -18,6 +18,8 @@ class Story < ApplicationRecord
 
   validate :presence_of_description_if_no_attachments
 
+  after_create :fetch_image
+
   def presence_of_description_if_no_attachments
     if flights.blank? && ratings.blank? && description.blank?
       errors.add(:description, 'required if no new flights or ratings are added')
@@ -27,6 +29,10 @@ class Story < ApplicationRecord
   def reject_flight(attributes)
     attributes['origin_id'].blank? &&
     attributes['destination_id'].blank?
+  end
+
+  def fetch_image
+    CreateStoryImageJob.perform_later(self)
   end
 
   def locations

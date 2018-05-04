@@ -39,6 +39,9 @@ end
 # For geolocation stuff
 gem 'geocoder'
 
+# For raw api calls
+gem 'rest-client'
+
 # suggest as you type and pagination
 gem 'select2-rails'
 gem 'kaminari'

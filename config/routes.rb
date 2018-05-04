@@ -17,6 +17,9 @@ Rails.application.routes.draw do
         resources :flights, only: :index
       end
       resources :flights, only: [:index, :show]
+      resources :stories, only: [] do
+        resources :flights, only: :index
+      end
       resources :locations, only: :show do
         collection do
           get 'search', to: 'locations#search'
