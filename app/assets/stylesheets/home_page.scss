@@ -129,6 +129,7 @@
         color: $linkColor;
       }
       .social_actions {
+        white-space: nowrap;
         .count {}
         .actions {
           a {
