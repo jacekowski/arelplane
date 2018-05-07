@@ -5,7 +5,7 @@ class StoriesController < ApplicationController
     @story.flights.each {|flight| flight.user_id = current_user.id}
     @story.user_ratings.each {|user_rating| user_rating.user_id = current_user.id}
     if @story.save
-      redirect_to root_path, notice: 'Story was successfully created.'
+      redirect_to root_path, notice: 'Post was successfully created.'
     else
       redirect_to root_path, alert: @story.errors.full_messages
     end

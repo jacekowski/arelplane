@@ -10,14 +10,16 @@
     <% end %>
   <% end %>
 
-  <%= form.text_area :description, class: 'form-control', placeholder: 'Say something about your flight' %>
-  <%= render 'stories/select_attachment' %>
-  <%= render 'stories/forms/add_flight', form: form  %>
-  <%= render 'stories/forms/add_ratings', form: form %>
-  <div class="row">
-    <div class="col-12 col-lg-3">
-      <div class="actions">
-        <%= form.submit class: 'btn btn-primary mt-2' %>
+  <div class="create-story mb-4">
+    <%= form.text_area :description, class: 'form-control story-input-description', rows: 4, placeholder: 'Say something ...' %>
+    <%= render 'stories/select_attachment' %>
+    <%= render 'stories/forms/add_flight', form: form  %>
+    <%= render 'stories/forms/add_ratings', form: form %>
+    <div class="row">
+      <div class="col-12">
+        <div class="actions">
+          <%= form.submit 'Submit', class: 'btn btn-primary mt-2 float-right' %>
+        </div>
       </div>
     </div>
   </div>

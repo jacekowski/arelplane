@@ -32,13 +32,14 @@ class Story < ApplicationRecord
   end
 
   def fetch_image
-    if self.flights
+    if self.flights.any?
       CreateStoryImageJob.perform_now(self)
     end
   end
 
   def locations
-    (origins + destinations).uniq
+    waypoint_locations = waypoints.map {|w| w.location }
+    origins + waypoint_locations + destinations
   end
 
   def airports

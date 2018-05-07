@@ -11,12 +11,12 @@
       <div class="col-4 stats">
         <div class="row value">
           <div class="col-12 text-nowrap">
-            <%= number_with_delimiter(current_user.flights.count) %>
+            <%= number_to_human(current_user.total_distance, precision: 2) %> NM
           </div>
         </div>
         <div class="row heading">
           <div class="col-12">
-            Flights
+            Distance
           </div>
         </div>
       </div>

@@ -7,7 +7,7 @@
       <% end %>
     </div>
     <div class='sub-text joined-date pl-3'>
-      Total Distance: <%= number_with_delimiter(@user.total_distance) %> NM
+      Joined <%= @user.created_at.strftime('%B %e, %Y') %>
     </div>
     <div class="m-3 bio">
       <%= simple_format(@user.bio) %>
@@ -81,10 +81,10 @@
     <div class="row stats ml-1 mr-2 text-center">
       <div class="col-3">
         <div class="number">
-          <%= number_with_delimiter(@user.flights.count, delimiter: ',') || 'No Flights' %>
+          <%= number_to_human(current_user.total_distance, precision: 2) || 'No Flights' %>
         </div>
         <div class="title">
-          Flights
+          Distance
         </div>
       </div>
       <div class="col-3">

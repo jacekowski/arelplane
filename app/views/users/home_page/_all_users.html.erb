@@ -1,9 +1,9 @@
 <% @feed.each do |story| %>
-  <div class="card mb-4 feed_card">
+  <div class="card mb-4 feed_card" id="story_<%= story.id %>">
     <div class="card-body">
       <div class="row">
         <div class="col-lg-8 col-12">
-          <h4 class="card-title name"><%= link_to story.user.name, username_path(story.user.username) %> <span class="flight-count">added a new trip with <%= pluralize(number_with_delimiter(story.flights.count), "flight") %>.</span></h4>
+          <h4 class="card-title name"><%= link_to story.user.name, username_path(story.user.username) %> <span class="flight-count">added a new trip to their map</span></h4>
         </div>
         <div class="col-lg-4 col-12">
           <div class="float-lg-right">
@@ -17,18 +17,34 @@
           <div class="description"><%= story.description %></div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-12">
-          <%= image_tag(story.map_image_url, class: 'card-img-top', alt: 'Story map') unless story.map_image_url.blank? %>
+      <% if story.flights.any? %>
+        <div class="row">
+          <div class="col-12">
+            <%= image_tag(story.map_image_url, class: 'card-img-top', alt: 'Story map', onerror: "this.error=null;this.src='#{image_path('placeholderMap.png')}'") unless story.map_image_url.blank? %>
+          </div>
         </div>
-      </div>
-      <div class="row airports mt-3">
-        <div class="col-12">
-          <span class="identifier">
-            | <%= story.locations.map { |location| location.identifier }.join(" → ") %> |
-          </span>
+        <div class="row airports mt-3">
+          <div class="col-12">
+            <span class="identifier">
+              <%= story.locations.map { |location| location.identifier }.join(" → ") %>
+            </span>
+          </div>
         </div>
-      </div>
+      <% end %>
+      <% if story.ratings.any? %>
+        <div class="row">
+          <div class="col-12 text-center">
+            <%= image_tag('icons/rating_award.png', width: 75, height: 75) %>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-12 text-center">
+            <p class="rating_name">
+              <%= story.ratings.first.name %>
+            </p>
+          </div>
+        </div>
+      <% end %>
     </div>
     <div class="card-body social_actions">
       <div class="row">

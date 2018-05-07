@@ -55,6 +55,25 @@
   }
   #main_feed {
     min-height: 100vh;
+    .story-input-description {
+      background-color: $feedBackground;
+    }
+    .create-story {
+      padding: 1rem;
+      background-color: white;
+    }
+    .story_ratings {
+      .form-check-label.active {
+        color: $softText;
+        font-weight: $regular;
+        font-size: 1.125rem;
+      }
+      .form-check-label.inactive {
+        color: $disabledText;
+        font-weight: $extraLight;
+        font-size: 1.125rem;
+      }
+    }
     .nav-item.nav-link.active {
       font-weight: $extraBold;
     }
@@ -132,6 +151,11 @@
           font-weight: $regular;
           color: $lightSubTextColor;
         }
+      }
+      .rating_name {
+        font-size: 1.125rem;
+        font-weight: $semiBold;
+        color: $darkTextColor;
       }
     }
   }

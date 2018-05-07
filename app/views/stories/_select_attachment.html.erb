@@ -1,6 +1,2 @@
-<%= link_to '#', remote: true, class: "add_flight_button" do %>
-  <%= image_tag('icons/comment_icon.png', width: 19, height: 17) %><span> Add Flight</span>
-<% end %>
-<%= link_to '#', remote: true, class: "add_ratings_button" do %>
-  <%= image_tag('icons/comment_icon.png', width: 19, height: 17) %><span> Add Ratings</span>
-<% end %>
+<%= link_to "Add Flight", '#', remote: true, class: "btn btn-outline-dark add_flight_button mt-3 mb-2 mr-2" %>
+<%= link_to "Add Ratings", '#', remote: true, class: "btn btn-outline-dark add_ratings_button mt-3 mb-2" %>
