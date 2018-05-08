@@ -2,7 +2,7 @@ class Story < ApplicationRecord
   default_scope { order(created_at: :desc) }
 
   belongs_to :user
-  has_many :flights
+  has_many :flights, dependent: :nullify
   accepts_nested_attributes_for :flights, reject_if: :reject_flight
 
   has_many :waypoints, through: :flights
