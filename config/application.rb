@@ -13,7 +13,7 @@ module LogbookViz
 
     config.middleware.insert_before 0, Rack::Cors do
       allow do
-        origins 'arelplane-map-snap.herokuapp.com', 'localhost:8080'
+        origins 'arelplane-map-snap.herokuapp.com'
         resource '*', headers: :any, methods: :get
       end
     end
