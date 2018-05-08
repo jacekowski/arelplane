@@ -14,7 +14,11 @@
       <span class="date"><%= time_ago_in_words(story.created_at) %> ago</span>
       <div class="row mt-3">
         <div class="col-12 mb-4">
-          <div class="description"><%= story.description %></div>
+          <div class="description">
+            <p class="card-text p-3">
+              <%= story.description %>
+            </p>
+          </div>
         </div>
       </div>
       <% if story.flights.any? %>

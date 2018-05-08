@@ -32,41 +32,53 @@ class FlightsController < ApplicationController
     begin
       if file = params["foreflight"]
         Flight.parse_foreflight(file.tempfile, current_user)
+        cache_map_data
         redirect_back
       elsif file = params["logtenpro"]
         Flight.parse_logtenpro(file.tempfile, current_user)
+        cache_map_data
         redirect_back
       elsif file = params["mccpilotlog"]
         Flight.parse_mccpilotlog(file.tempfile, current_user)
+        cache_map_data
         redirect_back
       elsif file = params["safelog"]
         Flight.parse_safelog(file.tempfile, current_user)
+        cache_map_data
         redirect_back
       elsif file = params["zululog"]
         Flight.parse_zululog(file.tempfile, current_user)
+        cache_map_data
         redirect_back
       elsif file = params["myflightbook"]
         Flight.parse_myflightbook(file.tempfile, current_user)
+        cache_map_data
         redirect_back
       elsif file = params["logbookpro"]
         Flight.parse_logbookpro(file.tempfile, current_user)
+        cache_map_data
         redirect_back
       elsif file = params["garminpilot"]
         Flight.parse_garmin_pilot(file.tempfile, current_user)
+        cache_map_data
         redirect_back
       elsif file = params["flylogio"]
         Flight.parse_fly_logio(file.tempfile, current_user)
+        cache_map_data
         redirect_back
       elsif file = params["pilotpro"]
         Flight.parse_pilot_pro(file.tempfile, current_user)
+        cache_map_data
         redirect_back
       elsif file = params["aviationpilotlogbook"]
         Flight.parse_aviation_pilot_logbook(file.tempfile, current_user)
+        cache_map_data
         redirect_back
       else
         @flight = current_user.flights.new(flight_params)
         set_aircraft_id(flight_params["aircraft_identifier"])
         if @flight.save
+          cache_map_data
           redirect_to new_flight_path, notice: 'Flight was successfully created.'
         else
           render :new
@@ -84,6 +96,7 @@ class FlightsController < ApplicationController
     if current_user.id == @flight.user_id
       set_aircraft_id(flight_params["aircraft_identifier"])
       if @flight.update(flight_params)
+        cache_map_data
         redirect_to flights_path, notice: 'Flight was successfully updated.'
       else
         render :edit
@@ -97,6 +110,7 @@ class FlightsController < ApplicationController
   def destroy
     if current_user.id = @flight.user_id
       @flight.destroy
+      cache_map_data
       respond_to do |format|
         format.html { redirect_to flights_url, notice: 'Flight was successfully destroyed.' }
         format.js   { render layout: false }
@@ -115,6 +129,7 @@ class FlightsController < ApplicationController
       Flight.flights_with_missing_identifiers_for(current_user).each(&:destroy)
       redirect_to flights_url, notice: 'All flights with missing identifiers have been deleted.'
     end
+    cache_map_data
   end
 
 private
@@ -128,6 +143,14 @@ private
 
   def redirect_back
     redirect_to user_path(current_user.id)
+  end
+
+  def cache_map_data
+    CacheUserMapJob.perform_later(current_user)
+    # GenerateHomepageMapJob.perform_later
+    current_user.save_total_flight_hours
+    current_user.save_num_airports
+    current_user.save_num_regions
   end
 
   def flight_params

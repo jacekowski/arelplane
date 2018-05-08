@@ -5,7 +5,7 @@ class Flight < ApplicationRecord
   belongs_to :destination, class_name: 'Location', foreign_key: 'destination_id'
   belongs_to :user, counter_cache: true
   belongs_to :post, optional: true
-  belongs_to :story, dependent: :destroy, optional: true
+  # belongs_to :story, dependent: :destroy, optional: true
   belongs_to :aircraft, optional: true
 
   has_many :waypoints, foreign_key: "flight_id", class_name: "FlightWaypoint", dependent: :destroy, inverse_of: :flight
@@ -14,16 +14,6 @@ class Flight < ApplicationRecord
   validates :flight_date, presence: true
 
   before_save :add_distance
-  after_commit :update_map_cache
-
-  def update_map_cache
-    user = self.user
-    CacheUserMapJob.perform_later(user)
-    # GenerateHomepageMapJob.perform_later
-    user.save_total_flight_hours
-    user.save_num_airports
-    user.save_num_regions
-  end
 
   def aircraft_identifier=(val)
     write_attribute :aircraft_identifier, val.try(:upcase)
@@ -120,6 +110,7 @@ class Flight < ApplicationRecord
   end
 
   def self.parse_foreflight(logbook_csv, user)
+    # story = create_story(user)
     CSV.foreach(logbook_csv, headers: [
       :flight_date,
       :aircraft_identifier,
@@ -156,7 +147,10 @@ class Flight < ApplicationRecord
         if f.save
           f.add_waypoints(r, :route, :origin_id, :destination_id)
         end
+        add_to_story(story, f)
       end
+      # story.description = "#{user.username} uploaded #{story.flights.count} flights from ForeFlight"
+      # story.save
   end
 
   def self.parse_logtenpro(logbook_csv, user)
@@ -378,6 +372,15 @@ class Flight < ApplicationRecord
         total_time: convert_time(r["Block_Time"])
       )
     end
+  end
+
+  def self.add_to_story(story, flight)
+    story.flights << flight
+    story
+  end
+
+  def self.create_story(user, description=nil)
+    user.stories.new(description: description)
   end
 
   def add_waypoints(logbook_row, waypoint_column, origin_column, destination_column)
