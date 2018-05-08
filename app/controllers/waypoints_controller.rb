@@ -13,14 +13,6 @@ class WaypointsController < ApplicationController
   end
 
 private
-  def cache_map_data
-    CacheUserMapJob.perform_later(current_user)
-    # GenerateHomepageMapJob.perform_later
-    current_user.save_total_flight_hours
-    current_user.save_num_airports
-    current_user.save_num_regions
-  end
-
   def set_waypoint
     @waypoint = FlightWaypoint.find(params[:id])
   end

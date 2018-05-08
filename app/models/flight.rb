@@ -4,8 +4,7 @@ class Flight < ApplicationRecord
   belongs_to :origin, class_name: 'Location', foreign_key: 'origin_id'
   belongs_to :destination, class_name: 'Location', foreign_key: 'destination_id'
   belongs_to :user, counter_cache: true
-  belongs_to :post, optional: true
-  # belongs_to :story, dependent: :destroy, optional: true
+  belongs_to :story, optional: true, dependent: :destroy
   belongs_to :aircraft, optional: true
 
   has_many :waypoints, foreign_key: "flight_id", class_name: "FlightWaypoint", dependent: :destroy, inverse_of: :flight
@@ -110,7 +109,7 @@ class Flight < ApplicationRecord
   end
 
   def self.parse_foreflight(logbook_csv, user)
-    # story = create_story(user)
+    story = create_story(user)
     CSV.foreach(logbook_csv, headers: [
       :flight_date,
       :aircraft_identifier,
@@ -149,11 +148,12 @@ class Flight < ApplicationRecord
         end
         add_to_story(story, f)
       end
-      # story.description = "#{user.username} uploaded #{story.flights.count} flights from ForeFlight"
-      # story.save
+      story.description = "Uploaded #{story.flights.size} flights from ForeFlight"
+      story.save
   end
 
   def self.parse_logtenpro(logbook_csv, user)
+    story = create_story(user)
     file = logbook_csv.read.gsub(/[^\.0-9A-Za-z\s,;@_()&:\\-]/, '')
     CSV.parse(file, {col_sep: "\t", headers: true}) do |row|
       r = row.to_hash
@@ -167,10 +167,14 @@ class Flight < ApplicationRecord
         total_time: convert_time(r["Total Time"]),
         pic: convert_time(r["PIC"]),
       )
+      add_to_story(story, f)
     end
+    story.description = "Uploaded #{story.flights.size} flights from LogTen Pro"
+    story.save
   end
 
   def self.parse_mccpilotlog(logbook_csv, user)
+    story = create_story(user)
     file = logbook_csv.read.gsub(/[^\.0-9A-Za-z\s,;:@"\/_()&\\-]/, '')
     delimiter = sniff(logbook_csv)
     CSV.parse(file, {col_sep: delimiter, headers: true}) do |row|
@@ -187,10 +191,14 @@ class Flight < ApplicationRecord
         total_time: r["TIME_TOTAL"].to_f/60,
         pic: r["TIME_TOTAL"].to_f/60
       )
+      add_to_story(story, f)
     end
+    story.description = "Uploaded #{story.flights.size} flights from mccPILOTLOG"
+    story.save
   end
 
   def self.parse_safelog(logbook_csv, user)
+    story = create_story(user)
     file = logbook_csv.read.gsub(/[^\.0-9A-Za-z\s,;:@"\/_()&\\-]/, '')
     CSV.parse(file, headers: true, skip_blanks: true) do |row|
       r = row.to_hash
@@ -209,10 +217,14 @@ class Flight < ApplicationRecord
       if f.save
         f.add_waypoints(r, "Mission Via", "Mission Departure", "Mission Arrival")
       end
+      add_to_story(story, f)
     end
+    story.description = "Uploaded #{story.flights.size} flights from Safelog"
+    story.save
   end
 
   def self.parse_zululog(logbook_csv, user)
+    story = create_story(user)
     file = logbook_csv.read.gsub(/[^\.0-9A-Za-z\s,;:@"\/_()&\\-]/, '')
     CSV.parse(file, headers: true, skip_blanks: true) do |row|
       r = row.to_hash
@@ -234,10 +246,14 @@ class Flight < ApplicationRecord
           f.waypoints.create(location_id: find_location_from(waypoint))
         end
       end
+      add_to_story(story, f)
     end
+    story.description = "Uploaded #{story.flights.size} flights from ZuluLog"
+    story.save
   end
 
   def self.parse_myflightbook(logbook_csv, user)
+    story = create_story(user)
     file = File.read(logbook_csv).gsub(/[^\.0-9A-Za-z\s,"\/\\-]/, '')
     delimiter = sniff(logbook_csv)
     CSV.parse(file, {col_sep: delimiter, headers: true} ) do |row|
@@ -264,10 +280,14 @@ class Flight < ApplicationRecord
           end
         end
       end
+      add_to_story(story, f)
     end
+    story.description = "Uploaded #{story.flights.size} flights from MyFlightbook"
+    story.save
   end
 
   def self.parse_logbookpro(logbook_csv, user)
+    story = create_story(user)
     file = File.read(logbook_csv).gsub(/[\"\r]/," ")
     CSV.parse(file, headers: true, skip_blanks: true) do |row|
       r = row.to_hash
@@ -291,10 +311,14 @@ class Flight < ApplicationRecord
           f.waypoints.create(location_id: find_location_from(waypoint))
         end
       end
+      add_to_story(story, f)
     end
+    story.description = "Uploaded #{story.flights.size} flights from Logbook Pro"
+    story.save
   end
 
   def self.parse_garmin_pilot(logbook_csv, user)
+    story = create_story(user)
     CSV.parse(logbook_csv, headers: true, skip_blanks: true) do |row|
       r = row.to_hash
       f = Flight.find_or_initialize_by(
@@ -312,10 +336,14 @@ class Flight < ApplicationRecord
       if f.save
         f.add_waypoints(r, "Route", "Departure", "Destination")
       end
+      add_to_story(story, f)
     end
+    story.description = "Uploaded #{story.flights.size} flights from Garmin Pilot"
+    story.save
   end
 
   def self.parse_fly_logio(logbook_csv, user)
+    story = create_story(user)
     delimiter = sniff(logbook_csv)
     CSV.parse(logbook_csv, col_sep: delimiter, headers: true, skip_blanks: true) do |row|
       r = row.to_hash
@@ -331,10 +359,14 @@ class Flight < ApplicationRecord
         pic: convert_time(r["pic"]),
         total_time: convert_time(r["total_time"])
       )
+      add_to_story(story, f)
     end
+    story.description = "Uploaded #{story.flights.size} flights from FlyLogio"
+    story.save
   end
 
   def self.parse_pilot_pro(logbook_csv, user)
+    story = create_story(user)
     CSV.parse(logbook_csv, headers: true, skip_blanks: true) do |row|
       r = row.to_hash
       f = Flight.find_or_initialize_by(
@@ -353,10 +385,14 @@ class Flight < ApplicationRecord
       if f.save
         f.add_waypoints(r, "Route", "From", "To")
       end
+      add_to_story(story, f)
     end
+    story.description = "Uploaded #{story.flights.size} flights from PilotPro"
+    story.save
   end
 
   def self.parse_aviation_pilot_logbook(logbook_csv, user)
+    story = create_story(user)
     CSV.parse(logbook_csv, headers: true, skip_blanks: true, col_sep: ";") do |row|
       r = row.to_hash
       f = Flight.find_or_create_by(
@@ -371,7 +407,10 @@ class Flight < ApplicationRecord
         pic: convert_time(r["Block_Time"]),
         total_time: convert_time(r["Block_Time"])
       )
+      add_to_story(story, f)
     end
+    story.description = "Uploaded #{story.flights.size} flights from Aviation Pilot Logbook"
+    story.save
   end
 
   def self.add_to_story(story, flight)

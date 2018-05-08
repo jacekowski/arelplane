@@ -27,18 +27,20 @@
             <%= image_tag(story.map_image_url, class: 'card-img-top', alt: 'Story map', onerror: "this.error=null;this.src='#{image_path('placeholderMap.png')}'") unless story.map_image_url.blank? %>
           </div>
         </div>
-        <div class="row airports mt-3">
-          <div class="col-12">
-            <span class="identifier">
-              <%= story.locations.map { |location| location.identifier }.join(" → ") %>
-            </span>
+        <% if story.flights.count == 1 %>
+          <div class="row airports mt-3">
+            <div class="col-12">
+              <span class="identifier">
+                <%= story.locations.map { |location| location.identifier }.join(" → ") %>
+              </span>
+            </div>
           </div>
-        </div>
+        <% end %>
       <% end %>
       <% if story.ratings.any? %>
         <div class="row">
           <div class="col-12 text-center">
-            <%= image_tag('icons/rating_award.png', width: 75, height: 75) %>
+            <%= image_tag('icons/rating_award.png', width: 177, height: 75) %>
           </div>
         </div>
         <div class="row mt-3">

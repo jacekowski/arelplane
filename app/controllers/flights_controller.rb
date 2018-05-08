@@ -123,7 +123,7 @@ class FlightsController < ApplicationController
 
   def destroy_multiple
     if params[:flights] == 'all'
-      current_user.flights.destroy_all
+      current_user.flights.each(&:destroy)
       redirect_to flights_url, notice: 'All your flights have been deleted.'
     elsif params[:flights] == 'broken'
       Flight.flights_with_missing_identifiers_for(current_user).each(&:destroy)
@@ -143,14 +143,6 @@ private
 
   def redirect_back
     redirect_to user_path(current_user.id)
-  end
-
-  def cache_map_data
-    CacheUserMapJob.perform_later(current_user)
-    # GenerateHomepageMapJob.perform_later
-    current_user.save_total_flight_hours
-    current_user.save_num_airports
-    current_user.save_num_regions
   end
 
   def flight_params
