@@ -17,6 +17,9 @@ Rails.application.routes.draw do
         resources :flights, only: :index
       end
       resources :flights, only: [:index, :show]
+      resources :stories, only: [] do
+        resources :flights, only: :index
+      end
       resources :locations, only: :show do
         collection do
           get 'search', to: 'locations#search'
@@ -55,6 +58,11 @@ Rails.application.routes.draw do
   post 'users/search', to: 'users#search', as: 'user_search'
 
   get 'unsubscribe/:unsubscribe_token', to: 'users#unsubscribe', as: 'unsubscribe'
+
+  resources :stories, only: :create do
+    resource :like, only: [:create, :destroy], module: :stories
+    resources :comments, only: [:create, :destroy], module: :stories
+  end
 
   # resources :aircrafts
 

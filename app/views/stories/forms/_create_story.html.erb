@@ -1,0 +1,26 @@
+<%= form_with model: @story, local: true, class: 'new_story' do |form| %>
+  <% if alert %>
+    <% alert.each do |message| %>
+      <div class="alert alert-danger" role="alert">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <%= message %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <div class="create-story mb-4">
+    <%= form.text_area :description, class: 'form-control story-input-description', rows: 4, placeholder: 'Say something ...' %>
+    <%= render 'stories/select_attachment' %>
+    <%= render 'stories/forms/add_flight', form: form  %>
+    <%= render 'stories/forms/add_ratings', form: form %>
+    <div class="row">
+      <div class="col-12">
+        <div class="actions">
+          <%= form.submit 'Submit', class: 'btn btn-primary mt-2 float-right' %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

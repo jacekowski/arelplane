@@ -2,7 +2,6 @@ require 'csv'
 
 class FlightsController < ApplicationController
   before_action :set_flight, only: [:edit, :update, :destroy]
-  after_action :update_cache, only: [:create, :update, :destroy]
   before_action :authenticate_user!
 
   def index
@@ -127,14 +126,6 @@ private
     @flight.aircraft_id = Aircraft.find_or_create_by(identifier: new_identifier.try(:upcase)).id
   end
 
-  def update_cache
-    CacheUserMapJob.perform_later(current_user)
-    # GenerateHomepageMapJob.perform_later
-    current_user.save_total_flight_hours
-    current_user.save_num_airports
-    current_user.save_num_regions
-  end
-
   def redirect_back
     redirect_to user_path(current_user.id)
   end
@@ -144,8 +135,8 @@ private
       :flight_date,
       :aircraft_identifier,
       :aircraft_id,
-      :from_id,
-      :to_id,
+      :origin_id,
+      :destination_id,
       :time_out,
       :time_in,
       :total_time,

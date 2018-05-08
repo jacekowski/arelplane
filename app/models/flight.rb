@@ -1,18 +1,29 @@
 class Flight < ApplicationRecord
   paginates_per 50
 
-  belongs_to :from, class_name: 'Location', foreign_key: 'from_id'
-  belongs_to :to, class_name: 'Location', foreign_key: 'to_id'
+  belongs_to :origin, class_name: 'Location', foreign_key: 'origin_id'
+  belongs_to :destination, class_name: 'Location', foreign_key: 'destination_id'
   belongs_to :user, counter_cache: true
-
-  validates :flight_date, presence: true
+  belongs_to :post, optional: true
+  belongs_to :story, dependent: :destroy, optional: true
+  belongs_to :aircraft, optional: true
 
   has_many :waypoints, foreign_key: "flight_id", class_name: "FlightWaypoint", dependent: :destroy, inverse_of: :flight
   accepts_nested_attributes_for :waypoints, reject_if: lambda { |a| a[:location_id].blank? }
 
-  belongs_to :aircraft, optional: true
+  validates :flight_date, presence: true
 
   before_save :add_distance
+  after_commit :update_map_cache
+
+  def update_map_cache
+    user = self.user
+    CacheUserMapJob.perform_later(user)
+    # GenerateHomepageMapJob.perform_later
+    user.save_total_flight_hours
+    user.save_num_airports
+    user.save_num_regions
+  end
 
   def aircraft_identifier=(val)
     write_attribute :aircraft_identifier, val.try(:upcase)
@@ -21,8 +32,8 @@ class Flight < ApplicationRecord
   def self.map_data(flights)
     map_data = feature_collection
     flights.all.each do |flight|
-      origin = flight.from
-      destination = flight.to
+      origin = flight.origin
+      destination = flight.destination
       if origin.latitude == nil || destination.latitude == nil
         next
       end
@@ -112,8 +123,8 @@ class Flight < ApplicationRecord
     CSV.foreach(logbook_csv, headers: [
       :flight_date,
       :aircraft_identifier,
-      :from_id,
-      :to_id,
+      :origin_id,
+      :destination_id,
       :route,
       :time_out,
       :time_in,
@@ -134,8 +145,8 @@ class Flight < ApplicationRecord
           flight_date: r[:flight_date],
           aircraft_identifier: r[:aircraft_identifier],
           aircraft_id: find_aircraft_id(r[:aircraft_identifier]),
-          from_id: find_location_from(r[:from_id]),
-          to_id: find_location_from(r[:to_id]),
+          origin_id: find_location_from(r[:origin_id]),
+          destination_id: find_location_from(r[:destination_id]),
           time_out: r[:time_out],
           time_in: r[:time_in],
           total_time: r[:total_time],
@@ -143,7 +154,7 @@ class Flight < ApplicationRecord
           distance: r[:distance]
         )
         if f.save
-          f.add_waypoints(r, :route, :from_id, :to_id)
+          f.add_waypoints(r, :route, :origin_id, :destination_id)
         end
       end
   end
@@ -157,8 +168,8 @@ class Flight < ApplicationRecord
         flight_date: r["Date"],
         aircraft_identifier: r["Aircraft ID"],
         aircraft_id: find_aircraft_id(r["Aircraft ID"]),
-        from_id: find_location_from(r["From"]),
-        to_id: find_location_from(r["To"]),
+        origin_id: find_location_from(r["From"]),
+        destination_id: find_location_from(r["To"]),
         total_time: convert_time(r["Total Time"]),
         pic: convert_time(r["PIC"]),
       )
@@ -175,8 +186,8 @@ class Flight < ApplicationRecord
         flight_date: r["mcc_DATE"],
         aircraft_identifier: r["AC_REG"],
         aircraft_id: find_aircraft_id(r["AC_REG"]),
-        from_id: find_location_from(r["AF_DEP"]),
-        to_id: find_location_from(r["AF_ARR"]),
+        origin_id: find_location_from(r["AF_DEP"]),
+        destination_id: find_location_from(r["AF_ARR"]),
         time_out: r["TIME_DEP"],
         time_in: r["TIME_ARR"],
         total_time: r["TIME_TOTAL"].to_f/60,
@@ -194,8 +205,8 @@ class Flight < ApplicationRecord
         flight_date: r["Date"],
         aircraft_identifier: r["Aircraft Registration"],
         aircraft_id: find_aircraft_id(r["Aircraft Registration"]),
-        from_id: get_safelog_departure(row),
-        to_id: get_safelog_arrival(row),
+        origin_id: get_safelog_departure(row),
+        destination_id: get_safelog_arrival(row),
         time_out: r["Depart Time"],
         time_in: r["Arrival Time"],
         pic: r["Day Single-Engine (SE) Pilot"] || convert_time(r["Day Single-Engine (SE) in Command"]),
@@ -217,8 +228,8 @@ class Flight < ApplicationRecord
         flight_date: r["Date"],
         aircraft_identifier: r["Aircraft ID"],
         aircraft_id: find_aircraft_id(r["Aircraft ID"]),
-        from_id: find_location_from(route.first),
-        to_id: find_location_from(route.last),
+        origin_id: find_location_from(route.first),
+        destination_id: find_location_from(route.last),
         pic: r["PIC"],
         total_time: r["Total Time"]
       )
@@ -244,8 +255,8 @@ class Flight < ApplicationRecord
           flight_date: r["Date"],
           aircraft_identifier: r["Tail Number"],
           aircraft_id: find_aircraft_id(r["Tail Number"]),
-          from_id: find_location_from(route.first),
-          to_id: find_location_from(route.last),
+          origin_id: find_location_from(route.first),
+          destination_id: find_location_from(route.last),
           time_out: r["Engine Start"],
           time_in: r["Engine End"],
           pic: r["PIC"],
@@ -274,8 +285,8 @@ class Flight < ApplicationRecord
         flight_date: r["DATE"],
         aircraft_identifier: r["AIRCRAFT IDENT"],
         aircraft_id: find_aircraft_id(r["AIRCRAFT IDENT"]),
-        from_id: find_location_from(route.first),
-        to_id: find_location_from(route.last),
+        origin_id: find_location_from(route.first),
+        destination_id: find_location_from(route.last),
         pic: r["PILOT IN COMMAND"],
         total_time: r["DURATION"]
       )
@@ -297,8 +308,8 @@ class Flight < ApplicationRecord
         flight_date: r["Date"],
         aircraft_identifier: r["Aircraft ID"],
         aircraft_id: find_aircraft_id(r["Aircraft ID"]),
-        from_id: find_location_from(r["Departure"]),
-        to_id: find_location_from(r["Destination"]),
+        origin_id: find_location_from(r["Departure"]),
+        destination_id: find_location_from(r["Destination"]),
         time_out: r["Time Out"],
         time_in: r["Time In"],
         pic: r["PIC Duration"],
@@ -319,8 +330,8 @@ class Flight < ApplicationRecord
         flight_date: r["date"],
         aircraft_identifier: r["aircraft_registration"],
         aircraft_id: find_aircraft_id(r["aircraft_registration"]),
-        from_id: find_location_from(r["departure_airport"]),
-        to_id: find_location_from(r["arrival_airport"]),
+        origin_id: find_location_from(r["departure_airport"]),
+        destination_id: find_location_from(r["arrival_airport"]),
         time_out: r["departure_time"],
         time_in: r["arrival_time"],
         pic: convert_time(r["pic"]),
@@ -337,8 +348,8 @@ class Flight < ApplicationRecord
         flight_date: r["Date"],
         aircraft_identifier: r["AircraftID"],
         aircraft_id: find_aircraft_id(r["AircraftID"]),
-        from_id: find_location_from(r["From"]),
-        to_id: find_location_from(r["To"]),
+        origin_id: find_location_from(r["From"]),
+        destination_id: find_location_from(r["To"]),
         time_out: r["TimeOut"],
         time_in: r["TimeIn"],
         pic: r["PIC"],
@@ -359,8 +370,8 @@ class Flight < ApplicationRecord
         flight_date: r["Depature_Date"],
         aircraft_identifier: r["Registration"],
         aircraft_id: find_aircraft_id(r["Registration"]),
-        from_id: find_location_from(r["ICAO_Depature"]),
-        to_id: find_location_from(r["ICAO_Destination"]),
+        origin_id: find_location_from(r["ICAO_Depature"]),
+        destination_id: find_location_from(r["ICAO_Destination"]),
         time_out: r["Off_Block"],
         time_in: r["On_Block"],
         pic: convert_time(r["Block_Time"]),
@@ -369,12 +380,12 @@ class Flight < ApplicationRecord
     end
   end
 
-  def add_waypoints(logbook_row, waypoint_column, from_column, to_column)
+  def add_waypoints(logbook_row, waypoint_column, origin_column, destination_column)
     if route = logbook_row[waypoint_column]
       route = route.scan(/[\w']+/)
       # save route, but check if first and last values are same as start and end.
-      if route.first == logbook_row[from_column] then route.shift end
-      if route.last == logbook_row[to_column] then route.pop end
+      if route.first == logbook_row[origin_column] then route.shift end
+      if route.last == logbook_row[destination_column] then route.pop end
       route.each do |waypoint|
         waypoints.create(location_id: Flight.find_location_from(waypoint))
       end
@@ -383,8 +394,8 @@ class Flight < ApplicationRecord
 
   def add_distance
     distance = 0
-    origin = self.from
-    destination = self.to
+    origin = self.origin
+    destination = self.destination
     self.waypoints.each do |waypoint|
       distance += Geocoder::Calculations.distance_between(
         [origin.latitude,origin.longitude],
@@ -525,12 +536,12 @@ private
     unknown_placeholder = Location.find_by(identifier:"XXXX")
     user_flight_ids = user.flights.pluck(:id)
 
-    missing_froms = self.where(user_id: user.id, from_id: unknown_placeholder.id)
-    missing_tos = self.where(user_id: user.id, to_id: unknown_placeholder.id)
+    missing_origins = self.where(user_id: user.id, origin_id: unknown_placeholder.id)
+    missing_destinations = self.where(user_id: user.id, destination_id: unknown_placeholder.id)
     missing_waypoint_flights = FlightWaypoint.where(flight_id: user_flight_ids, location_id: unknown_placeholder.id).pluck(:flight_id)
     flights_from_waypoints = self.where(id: missing_waypoint_flights)
 
-    all_flights = missing_froms + missing_tos + flights_from_waypoints
+    all_flights = missing_origins + missing_destinations + flights_from_waypoints
     all_flights.uniq
   end
 

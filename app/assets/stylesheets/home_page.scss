@@ -55,6 +55,25 @@
   }
   #main_feed {
     min-height: 100vh;
+    .story-input-description {
+      background-color: $feedBackground;
+    }
+    .create-story {
+      padding: 1rem;
+      background-color: white;
+    }
+    .story_ratings {
+      .form-check-label.active {
+        color: $softText;
+        font-weight: $regular;
+        font-size: 1.125rem;
+      }
+      .form-check-label.inactive {
+        color: $disabledText;
+        font-weight: $extraLight;
+        font-size: 1.125rem;
+      }
+    }
     .nav-item.nav-link.active {
       font-weight: $extraBold;
     }
@@ -68,31 +87,37 @@
       margin-left: 0.5rem;
     }
     .feed_card {
-      .date {
-        font-size: 1.125rem;
-        font-weight: $regular;
-        color: $lightSubTextColor;
-      }
       .updated {
         font-size: 1rem;
         font-weight: $regular;
         color: $lightSubTextColor;
       }
       .name a {
-        font-size: 1.5rem;
+        font-size: 1.125rem;
         font-weight: $black;
         color: $primaryTextColor;
       }
       .flight-count {
+        font-size: 1.125rem;
         font-weight: $regular;
       }
-      .stats {
-        .value {
+      .date {
+        font-size: 1rem;
+        font-weight: $regular;
+        color: $lightSubTextColor;
+      }
+      .description {
+        font-size: 1.5rem;
+        font-weight: $regular;
+        color: $primaryTextColor;
+      }
+      .airports {
+        .identifier {
           font-size: 1.5rem;
-          font-weight: $black;
+          font-weight: $regular;
           color: $primaryTextColor;
         }
-        .heading {
+        .region {
           font-size: 1rem;
           font-weight: $regular;
           color: $lightSubTextColor;
@@ -102,6 +127,36 @@
         font-size: 1rem;
         font-weight: $regular;
         color: $linkColor;
+      }
+      .social_actions {
+        white-space: nowrap;
+        .count {}
+        .actions {
+          a {
+            font-size: 1.125rem;
+            font-weight: $regular;
+            color: $darkTextColor;
+          }
+        }
+      }
+      .comments {
+        .username {
+          color: $darkTextColor;
+          font-weight: $semiBold;
+        }
+        .username:hover {
+          text-decoration: underline;
+        }
+        .timestamp {
+          font-size: 0.85rem;
+          font-weight: $regular;
+          color: $lightSubTextColor;
+        }
+      }
+      .rating_name {
+        font-size: 1.125rem;
+        font-weight: $semiBold;
+        color: $darkTextColor;
       }
     }
   }

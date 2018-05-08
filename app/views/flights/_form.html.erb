@@ -30,14 +30,14 @@
         <div class="row">
           <div class="col-12 col-lg-4">
             <div class="mb-3">
-              <%= form.label :from_airport, 'Departure Airport (ICAO)', class: 'light-sub-text' %><br />
-              <%= form.collection_select :from_id, Location.order(:identifier).page, :id, :identifier, { include_blank: true}, class: 'identifier_lookup', id: 'departure_airport', style: 'width: 100%;' %>
+              <%= form.label :origin_airport, 'Departure Airport (ICAO)', class: 'light-sub-text' %><br />
+              <%= form.collection_select :origin_id, Location.order(:identifier).page, :id, :identifier, { include_blank: true}, class: 'identifier_lookup', id: 'departure_airport', style: 'width: 100%;' %>
             </div>
           </div>
           <div class="col-12 col-lg-4">
             <div class="mb-3">
-              <%= form.label :to_airport, 'Arrival Airport (ICAO)', class: 'light-sub-text' %><br />
-              <%= form.collection_select :to_id, Location.order(:identifier).page, :id, :identifier, { include_blank: true}, class: 'identifier_lookup', id: 'arrival_airport', style: 'width: 100%;' %>
+              <%= form.label :destination_airport, 'Arrival Airport (ICAO)', class: 'light-sub-text' %><br />
+              <%= form.collection_select :destination_id, Location.order(:identifier).page, :id, :identifier, { include_blank: true}, class: 'identifier_lookup', id: 'arrival_airport', style: 'width: 100%;' %>
             </div>
           </div>
           <div class="col-12 col-lg-4">

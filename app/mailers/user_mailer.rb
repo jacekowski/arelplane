@@ -16,7 +16,7 @@ class UserMailer < ApplicationMailer
     mail(
       to: @following.email,
       reply_to: "no-reply@arelplane.com",
-      subject: "#{@follower.name} liked your map!"
+      subject: "#{@follower.name} followed you!"
     )
   end
 end

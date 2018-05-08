@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180410165840) do
+ActiveRecord::Schema.define(version: 20180503172453) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,17 @@ ActiveRecord::Schema.define(version: 20180410165840) do
     t.integer "user_id"
   end
 
+  create_table "comments", force: :cascade do |t|
+    t.string "commentable_type"
+    t.bigint "commentable_id"
+    t.bigint "user_id"
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
   create_table "flight_waypoints", force: :cascade do |t|
     t.integer "location_id"
     t.integer "flight_id"
@@ -38,8 +49,8 @@ ActiveRecord::Schema.define(version: 20180410165840) do
   create_table "flights", force: :cascade do |t|
     t.string "flight_date"
     t.string "aircraft_identifier"
-    t.integer "from_id"
-    t.integer "to_id"
+    t.bigint "origin_id"
+    t.bigint "destination_id"
     t.string "time_out"
     t.string "time_in"
     t.decimal "total_time", precision: 10, scale: 2
@@ -49,7 +60,21 @@ ActiveRecord::Schema.define(version: 20180410165840) do
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.bigint "aircraft_id"
+    t.bigint "story_id"
     t.index ["aircraft_id"], name: "index_flights_on_aircraft_id"
+    t.index ["destination_id"], name: "index_flights_on_destination_id"
+    t.index ["origin_id"], name: "index_flights_on_origin_id"
+    t.index ["story_id"], name: "index_flights_on_story_id"
+  end
+
+  create_table "likes", force: :cascade do |t|
+    t.string "likeable_type"
+    t.bigint "likeable_id"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable_type_and_likeable_id"
+    t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
   create_table "locations", force: :cascade do |t|
@@ -91,6 +116,15 @@ ActiveRecord::Schema.define(version: 20180410165840) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "stories", force: :cascade do |t|
+    t.bigint "user_id"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "map_image_url"
+    t.index ["user_id"], name: "index_stories_on_user_id"
+  end
+
   create_table "subscription_preferences", force: :cascade do |t|
     t.bigint "user_id"
     t.boolean "new_follower_email", default: true
@@ -113,7 +147,9 @@ ActiveRecord::Schema.define(version: 20180410165840) do
     t.bigint "rating_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "story_id"
     t.index ["rating_id"], name: "index_user_ratings_on_rating_id"
+    t.index ["story_id"], name: "index_user_ratings_on_story_id"
     t.index ["user_id"], name: "index_user_ratings_on_user_id"
   end
 
@@ -149,7 +185,11 @@ ActiveRecord::Schema.define(version: 20180410165840) do
     t.index ["username"], name: "index_users_on_username"
   end
 
+  add_foreign_key "comments", "users"
   add_foreign_key "flights", "aircrafts"
+  add_foreign_key "flights", "stories"
+  add_foreign_key "likes", "users"
+  add_foreign_key "stories", "users"
   add_foreign_key "user_ratings", "ratings"
   add_foreign_key "user_ratings", "users"
 end

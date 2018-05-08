@@ -1,0 +1,2 @@
+$("#comments_<%= @commentable.id %>").prepend("<%=j render 'stories/comment', comment: @comment %>");
+$("#like_count_<%= @commentable.id %>").html("<%=j render 'stories/like_count', story: @commentable %>");

@@ -38,6 +38,8 @@ class User < ApplicationRecord
   has_many :user_ratings
   has_many :ratings, through: :user_ratings, dependent: :destroy
 
+  has_many :stories, dependent: :destroy
+
   def add_subscription_preferences
     build_subscription_preference(unsubscribe_token: SecureRandom.hex)
   end
@@ -63,7 +65,7 @@ class User < ApplicationRecord
   end
 
   def airports
-    flights.pluck(:from_id, :to_id).flatten
+    flights.pluck(:origin_id, :destination_id).flatten
   end
 
   def top_location
@@ -106,7 +108,7 @@ class User < ApplicationRecord
   end
 
   def save_num_airports
-    airports = flights.pluck(:from_id, :to_id)
+    airports = flights.pluck(:origin_id, :destination_id)
     waypoints.each do |wp|
       if wp.location.location_type.try(:include?, "airport")
         airports << wp.location.id
@@ -134,7 +136,7 @@ class User < ApplicationRecord
     locations = Location.where(
       Location.arel_table[:identifier].lower.matches("%#{identifier.try(:downcase)}%")
     ).pluck(:id)
-    flight_results   = self.flights.where(from_id: locations).or(self.flights.where(to_id: locations))
+    flight_results   = self.flights.where(origin_id: locations).or(self.flights.where(destination_id: locations))
     waypoint_results = Flight.find(self.waypoints.where(location_id: locations).pluck(:flight_id))
     search_results = flight_results + waypoint_results
     Kaminari.paginate_array(search_results.uniq.sort_by(&:flight_date).reverse)
@@ -162,5 +164,15 @@ class User < ApplicationRecord
 
   def recent_updates
     flights.order('created_at::date DESC').group('created_at::date').limit(5).count
+  end
+
+  def likes?(story)
+    story.likes.where(user_id: self.id).any?
+  end
+
+  # for gravatars
+  def avatar_url
+    hash = Digest::MD5.hexdigest(email)
+    "http://www.gravatar.com/avatar/#{hash}"
   end
 end

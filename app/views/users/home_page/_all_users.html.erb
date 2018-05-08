@@ -1,83 +1,75 @@
-<% @feed.each do |user| %>
-  <% if user == current_user then next end %>
-  <div class="card mb-4 feed_card">
-    <%#= image_tag 'demo-img.png', class: 'card-img-top', alt: 'Map image'%>
+<% @feed.each do |story| %>
+  <div class="card mb-4 feed_card" id="story_<%= story.id %>">
     <div class="card-body">
-      <span class="date"><%= time_ago_in_words(user.datetime_of_last_flight) %> ago</span>
       <div class="row">
         <div class="col-lg-8 col-12">
-          <h4 class="card-title name"><%= link_to user.name, username_path(user.username) %> <span class="flight-count">added <%= pluralize(number_with_delimiter(user.lastest_upload.count), "new flight") %> to their Map.</span></h4>
+          <h4 class="card-title name"><%= link_to story.user.name, username_path(story.user.username) %> <span class="flight-count">added a new trip to their map</span></h4>
         </div>
         <div class="col-lg-4 col-12">
           <div class="float-lg-right">
-            <%= render 'users/profile/follow_form', user: user %>
+            <%= render 'users/profile/follow_form', user: story.user %>
           </div>
         </div>
       </div>
-      <hr>
-      <div class="row text-center text-nowrap">
-        <div class="col-lg-2 col-3 stats">
-          <div class="row value">
-            <div class="col-12">
-              <%= number_with_delimiter(user.flights.count) %>
-            </div>
-          </div>
-          <div class="row heading">
-            <div class="col-12">
-              Flights
-            </div>
+      <span class="date"><%= time_ago_in_words(story.created_at) %> ago</span>
+      <div class="row mt-3">
+        <div class="col-12 mb-4">
+          <div class="description"><%= story.description %></div>
+        </div>
+      </div>
+      <% if story.flights.any? %>
+        <div class="row">
+          <div class="col-12">
+            <%= image_tag(story.map_image_url, class: 'card-img-top', alt: 'Story map', onerror: "this.error=null;this.src='#{image_path('placeholderMap.png')}'") unless story.map_image_url.blank? %>
           </div>
         </div>
-        <div class="col-lg-2 col-3 stats">
-          <div class="row value">
-            <div class="col-12">
-              <%= number_with_delimiter(user.num_airports) %>
-            </div>
-          </div>
-          <div class="row heading">
-            <div class="col-12">
-              Airports
-            </div>
+        <div class="row airports mt-3">
+          <div class="col-12">
+            <span class="identifier">
+              <%= story.locations.map { |location| location.identifier }.join(" → ") %>
+            </span>
           </div>
         </div>
-        <div class="col-lg-2 col-3 stats">
-          <div class="row value">
-            <div class="col-12">
-              <%= number_with_delimiter(user.total_flight_hours) %>
-            </div>
-          </div>
-          <div class="row heading">
-            <div class="col-12">
-              Hours
-            </div>
+      <% end %>
+      <% if story.ratings.any? %>
+        <div class="row">
+          <div class="col-12 text-center">
+            <%= image_tag('icons/rating_award.png', width: 75, height: 75) %>
           </div>
         </div>
-        <div class="col-lg-2 col-3 stats">
-          <div class="row value">
-            <div class="col-12">
-              <%= number_with_delimiter(user.num_regions) %>
-            </div>
+        <div class="row mt-3">
+          <div class="col-12 text-center">
+            <p class="rating_name">
+              <%= story.ratings.first.name %>
+            </p>
           </div>
-          <div class="row heading">
-            <div class="col-12">
-              Regions
+        </div>
+      <% end %>
+    </div>
+    <div class="card-body social_actions">
+      <div class="row">
+        <div class="count col pt-2" id="like_count_<%= story.id %>">
+          <%= render 'stories/like_count', story: story %>
+        </div>
+        <div class="actions col-md-7 float-right">
+          <div class="row">
+            <div class="col">
+              <div class="float-right">
+                <div id="like_button_<%= story.id %>">
+                  <%= render 'stories/like_button', story: story %>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+              <div class="float-right">
+                <%= render 'stories/comment_button' %>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <ul class="list-group list-group-flush">
-      <%= link_to username_path(user.username) do %>
-        <li class="list-group-item link_section">
-          <span>
-            View their Map
-          </span>
-          <span class="float-right">
-            <%= image_tag 'icons/chevron_icon.png', width: 12, height: 10 %>
-          </span>
-        </li>
-      <% end %>
-    </ul>
+    <%= render 'stories/comments_section', story: story %>
   </div>
 <% end %>
 

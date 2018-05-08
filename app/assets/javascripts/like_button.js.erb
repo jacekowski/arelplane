@@ -1,9 +1,9 @@
 $(document).ready(function() {
-    updateButton();
+    likeButton();
 });
 
-function updateButton() {
-  $("button.following-button-text").hover(
+function likeButton() {
+  $("a.story_liked").hover(
     function () {
       $(this).find('img').attr('src', "<%= asset_path('icons/broken_heart_icon.png') %>")
       $(this).find('span').text(" Unlike")

@@ -1,11 +1,11 @@
 $(document).ready(function() {
-  var pathname = window.location.pathname;
-  if (pathname === "/flights/new") {
+  var pageTitle = $(document).find("title").text();
+  if (pageTitle.includes("New Flight") || pageTitle.includes("Home")) {
     loadData();
-  } else if (pathname.includes("/flights/") && pathname.includes("/edit")) {
+  } else if (pageTitle.includes("Edit Flight")) {
     loadData();
     fetchExistingValues();
-  } else if (pathname.includes("/@") && pathname.includes("/edit")) {
+  } else if (pageTitle.includes("Edit Account")) {
     loadData();
     fetchHomeBase();
   }
@@ -89,7 +89,7 @@ function fetchExistingValues() {
     };
     $.ajax({
       type: 'GET',
-      url: '/api/v1/locations/' + data.from_id
+      url: '/api/v1/locations/' + data.origin_id
     }).then(function (data){
       // create the option and append to Select2
       var option = new Option(data.identifier + " ("+ data.name + ")", data.id, true, true);
@@ -104,7 +104,7 @@ function fetchExistingValues() {
     });
     $.ajax({
       type: 'GET',
-      url: '/api/v1/locations/' + data.to_id
+      url: '/api/v1/locations/' + data.destination_id
     }).then(function (data){
       // create the option and append to Select2
       var option = new Option(data.identifier + " ("+ data.name + ")", data.id, true, true);

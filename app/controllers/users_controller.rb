@@ -15,9 +15,13 @@ class UsersController < ApplicationController
 
   def home
     @user = current_user
-    @feed = NewsFeed.user_feed.page(params[:page]).per(5)
+    @feed = Story.all.page(params[:page]).per(5)
     @followers = current_user.followers
     @following = current_user.following
+
+    @story = current_user.stories.new
+    flight = @story.flights.build
+    flight.waypoints.build
   end
 
   def unsubscribe
@@ -27,7 +31,7 @@ class UsersController < ApplicationController
       redirect_to unsubscribe_confirmation_path(type: 'all emails')
     else
       subscription_preference.update_attributes(new_follower_email: false)
-      redirect_to unsubscribe_confirmation_path(type: 'new like emails')
+      redirect_to unsubscribe_confirmation_path(type: 'new follower emails')
     end
   end
 

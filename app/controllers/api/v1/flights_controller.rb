@@ -1,5 +1,5 @@
 class Api::V1::FlightsController < ApiController
-  before_action :set_flight, only: [:show, :edit, :update, :destroy]
+  before_action :set_flight, only: :show
 
   def index
     if user_id = params[:user_id]
@@ -10,6 +10,9 @@ class Api::V1::FlightsController < ApiController
         @flights = Flight.map_data(user.flights)
         CacheUserMapJob.perform_later(user)
       end
+    elsif story_id = params[:story_id]
+      story = Story.find(story_id)
+      @flights = Flight.map_data(story.flights)
     else
       arel = User.find_by(email: 'arelenglish@gmail.com')
       @flights = arel.cache_datum.map_data
