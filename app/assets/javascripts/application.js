@@ -15,6 +15,5 @@
 //= require rails-ujs
 //= require_tree .
 //= require popper
-//= require bootstrap
 //= require bootstrap-sprockets
 //= require select2

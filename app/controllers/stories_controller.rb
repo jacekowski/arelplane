@@ -1,4 +1,6 @@
 class StoriesController < ApplicationController
+  before_action :set_story, only: :destroy
+  before_action :authenticate_user!
 
   def create
     @story = current_user.stories.new(story_params)
@@ -12,7 +14,24 @@ class StoriesController < ApplicationController
     end
   end
 
+  def destroy
+    if current_user.id = @story.user_id
+      @story.destroy
+      respond_to do |format|
+        format.html { redirect_to root_path, notice: 'Story was successfully destroyed.' }
+        format.js   { render layout: false }
+      end
+    else
+      flash[:notice] = "You are not authorized to delete that story"
+      redirect_back
+    end
+  end
+
 private
+  def set_story
+    @story = Story.find(params[:id])
+  end
+
   def story_params
     params.require(:story).permit(
       :description,

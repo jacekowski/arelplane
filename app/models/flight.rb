@@ -4,7 +4,7 @@ class Flight < ApplicationRecord
   belongs_to :origin, class_name: 'Location', foreign_key: 'origin_id'
   belongs_to :destination, class_name: 'Location', foreign_key: 'destination_id'
   belongs_to :user, counter_cache: true
-  belongs_to :story, optional: true, dependent: :destroy
+  belongs_to :story, optional: true
   belongs_to :aircraft, optional: true
 
   has_many :waypoints, foreign_key: "flight_id", class_name: "FlightWaypoint", dependent: :destroy, inverse_of: :flight

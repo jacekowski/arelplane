@@ -109,6 +109,9 @@ class FlightsController < ApplicationController
 
   def destroy
     if current_user.id = @flight.user_id
+      if @flight.story.try(:flights).try(:count) == 1
+        @flight.story.destroy
+      end
       @flight.destroy
       cache_map_data
       respond_to do |format|

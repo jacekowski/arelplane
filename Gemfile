@@ -39,6 +39,9 @@ end
 # For geolocation stuff
 gem 'geocoder'
 
+# github icons
+gem 'octicons_helper'
+
 # For raw api calls
 gem 'rest-client'
 

@@ -3,11 +3,28 @@
     <div class="card-body">
       <div class="row">
         <div class="col-lg-8 col-12">
-          <h4 class="card-title name"><%= link_to story.user.name, username_path(story.user.username) %> <span class="flight-count">added a new trip to their map</span></h4>
+          <h4 class="card-title name"><%= link_to story.user.name, username_path(story.user.username) %> <span class="flight-count">
+            <% if story.flights.any? %>
+              added a new trip to their <%= link_to 'map', username_path(story.user.username) %>
+            <% elsif story.ratings.any? %>
+              added a new rating to their <%= link_to 'profile', username_path(story.user.username) %>
+            <% end %>
+          </span></h4>
         </div>
         <div class="col-lg-4 col-12">
           <div class="float-lg-right">
-            <%= render 'users/profile/follow_form', user: story.user %>
+            <% if story.user == current_user %>
+              <div class="btn-group">
+                <p data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <%= octicon "kebab-horizontal", width: 20 %>
+                </p>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <%= link_to 'Delete', story, method: :delete, data: { confirm: 'Are you sure? You can not un-delete this story'}, remote: true, class: 'delete_story dropdown-item' %>
+                </div>
+              </div>
+            <% else %>
+              <%= render 'users/profile/follow_form', user: story.user %>
+            <% end %>
           </div>
         </div>
       </div>
@@ -24,7 +41,7 @@
       <% if story.flights.any? %>
         <div class="row">
           <div class="col-12">
-            <%= image_tag(story.map_image_url, class: 'card-img-top', alt: 'Story map', onerror: "this.error=null;this.src='#{image_path('placeholderMap.png')}'") unless story.map_image_url.blank? %>
+            <%= link_to(image_tag(story.map_image_url, class: 'card-img-top', alt: 'Story map', onerror: "this.error=null;this.src='#{image_path('placeholderMap.png')}'"), username_path(story.user.username)) unless story.map_image_url.blank? %>
           </div>
         </div>
         <% if story.flights.count == 1 %>
@@ -54,19 +71,19 @@
     </div>
     <div class="card-body social_actions">
       <div class="row">
-        <div class="count col pt-2" id="like_count_<%= story.id %>">
+        <div class="count col-6 pt-2" id="like_count_<%= story.id %>">
           <%= render 'stories/like_count', story: story %>
         </div>
-        <div class="actions col-md-7 float-right">
+        <div class="actions col-5 float-right">
           <div class="row">
-            <div class="col">
+            <div class="col-sm-12 col-md-4 col-lg-6">
               <div class="float-right">
                 <div id="like_button_<%= story.id %>">
                   <%= render 'stories/like_button', story: story %>
                 </div>
               </div>
             </div>
-            <div class="col-md-6 col-sm-12">
+            <div class="col-sm-12 col-md-8 col-lg-6">
               <div class="float-right">
                 <%= render 'stories/comment_button' %>
               </div>

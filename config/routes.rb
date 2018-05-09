@@ -59,7 +59,7 @@ Rails.application.routes.draw do
 
   get 'unsubscribe/:unsubscribe_token', to: 'users#unsubscribe', as: 'unsubscribe'
 
-  resources :stories, only: :create do
+  resources :stories, only: [:create, :destroy] do
     resource :like, only: [:create, :destroy], module: :stories
     resources :comments, only: [:create, :destroy], module: :stories
   end
