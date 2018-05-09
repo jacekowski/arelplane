@@ -81,7 +81,7 @@
     <div class="row stats ml-1 mr-2 text-center">
       <div class="col-3">
         <div class="number">
-          <%= number_to_human(current_user.total_distance, precision: 2) || 'No Flights' %>
+          <%= number_to_human(@user.total_distance, precision: 2) || 'No Flights' %>
         </div>
         <div class="title">
           Distance
