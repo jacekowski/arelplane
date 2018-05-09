@@ -27,6 +27,12 @@ class StoriesController < ApplicationController
     end
   end
 
+  def regenerate_map
+    @story = Story.find(params[:story_id])
+    CreateStoryImageJob.perform_later(@story)
+    redirect_to root_path, notice: 'New map generating! It may take up to 10 minutes for the new image to appear'
+  end
+
 private
   def set_story
     @story = Story.find(params[:id])

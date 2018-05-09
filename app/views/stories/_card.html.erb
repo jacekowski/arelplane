@@ -19,6 +19,7 @@
               </p>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <%= link_to 'Delete', story, method: :delete, data: { confirm: 'Are you sure? You can not un-delete this story'}, remote: true, class: 'delete_story dropdown-item' %>
+                <%= link_to 'Regenerate Map', story_regenerate_map_path(story), method: :post, class: 'dropdown-item' %>
               </div>
             </div>
           <% else %>
