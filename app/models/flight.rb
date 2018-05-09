@@ -414,7 +414,9 @@ class Flight < ApplicationRecord
   end
 
   def self.add_to_story(story, flight)
-    story.flights << flight
+    if flight
+      story.flights << flight
+    end
     story
   end
 
