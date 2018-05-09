@@ -1,7 +1,7 @@
 <nav class="nav nav-tabs mb-1" id="myTab" role="tablist">
-  <a class="nav-item nav-link active" id="nav-all-tab" data-toggle="tab" href="#nav-all" role="tab" aria-controls="nav-all" aria-selected="true">Feed</a>
-  <a class="nav-item nav-link" id="nav-followers-tab" data-toggle="tab" href="#nav-followers" role="tab" aria-controls="nav-followers" aria-selected="false">Followers <span class="count"><%= @followers.count %></span></a>
+  <a class="nav-item nav-link active" id="nav-all-tab" data-toggle="tab" href="#nav-all" role="tab" aria-controls="nav-all" aria-selected="true">Everyone</a>
   <a class="nav-item nav-link" id="nav-following-tab" data-toggle="tab" href="#nav-following" role="tab" aria-controls="nav-following" aria-selected="false">Following <span class="count"><%= @following.count %></span></a>
+  <a class="nav-item nav-link" id="nav-followers-tab" data-toggle="tab" href="#nav-followers" role="tab" aria-controls="nav-followers" aria-selected="false">Followers <span class="count"><%= @followers.count %></span></a>
 </nav>
 <div class="tab-content" id="nav-tabContent">
   <div class="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab">
@@ -10,13 +10,13 @@
     </div>
   </div>
   <div class="tab-pane fade" id="nav-followers" role="tabpanel" aria-labelledby="nav-followers-tab">
-    <div class="row">
-      <%= render 'users/home_page/followings', objects: @followers %>
+    <div class="infinite-scroll">
+      <%= render 'users/home_page/followings', stories: @follower_stories, users: @followers %>
     </div>
   </div>
   <div class="tab-pane fade" id="nav-following" role="tabpanel" aria-labelledby="nav-following-tab">
-    <div class="row">
-      <%= render 'users/home_page/followings', objects: @following %>
+    <div class="infinite-scroll">
+      <%= render 'users/home_page/followings', stories: @following_stories, users: @following %>
     </div>
   </div>
 </div>
