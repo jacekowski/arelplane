@@ -5,7 +5,7 @@ $(document).ready(function() {
     $('.comments').append("<p>ERROR</p>");
   });
 
-  $('.comments').hide();
+  // $('.comments').hide();
   $('a.comment_button').click(function() {
     $(this).closest('.social_actions').nextAll(".comments").slideToggle();
   });
