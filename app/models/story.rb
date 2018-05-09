@@ -33,7 +33,7 @@ class Story < ApplicationRecord
 
   def fetch_image
     if self.flights.any?
-      CreateStoryImageJob.perform_now(self)
+      CreateStoryImageJob.perform_later(self)
     end
   end
 
