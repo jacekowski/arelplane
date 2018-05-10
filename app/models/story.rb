@@ -68,21 +68,28 @@ class Story < ApplicationRecord
     feed = []
     self.find_each(batch_size: 10).group_by do |story|
       [story.user_id, story.created_at.beginning_of_hour]
-    end.map do |stories|
-      if stories.second.count > 1
-        temp_story = self.new()
-        stories.second.map do |story|
+    end.map do |match|
+      stories = match.second
+      user_id = match.first.first
+      if stories.count > 1
+        temp_story = self.new(user_id: user_id)
+        stories.map do |story|
           if story.ratings.any?
             temp_story.ratings.append(story.ratings)
           elsif story.flights.any?
             temp_story.flights.append(story.flights)
           end
-          temp_story.description = "Added #{temp_story.ratings.size} new ratings and #{temp_story.flights.size} new flights"
-          temp_story.user_id = story.user_id
+        end
+        if temp_story.ratings.any? && temp_story.flights.any?
+          temp_story.description = "Added #{ActionController::Base.helpers.pluralize(temp_story.ratings.size, 'new rating')} and #{ActionController::Base.helpers.pluralize(temp_story.flights.size, 'new flight')}"
+        elsif temp_story.ratings.any?
+          temp_story.description = "Added #{ActionController::Base.helpers.pluralize(temp_story.ratings.size, 'new rating')}"
+        elsif temp_story.flights.any?
+          temp_story.description = "Added #{ActionController::Base.helpers.pluralize(temp_story.flights.size, 'new flight')}"
         end
         feed.append(temp_story)
       else
-        feed.append(stories.second.first)
+        feed.append(stories.first)
       end
     end
     return feed.reverse
@@ -92,7 +99,6 @@ class Story < ApplicationRecord
     if self.flights.any?
       self.save
     end
-    puts "no flights"
   end
 
 end
