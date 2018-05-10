@@ -64,4 +64,28 @@ class Story < ApplicationRecord
     Location.find(locations.uniq).pluck(:iso_region).uniq.count
   end
 
+  def self.smart_feed
+    feed = []
+    self.all.group_by do |story|
+      [story.user_id, story.created_at.beginning_of_hour]
+    end.map do |stories|
+      if stories.second.count > 1
+        temp_story = self.new()
+        stories.second.map do |story|
+          if story.ratings.any?
+            temp_story.ratings.append(story.ratings)
+          elsif story.flights.any?
+            temp_story.flights.append(story.flights)
+          end
+          temp_story.description = "Added #{temp_story.ratings.size} new ratings and #{temp_story.flights.size} new flights"
+          temp_story.user_id = story.user_id
+        end
+        feed.append(temp_story)
+      else
+        feed.append(stories.second.first)
+      end
+    end
+    return feed
+  end
+  
 end

@@ -15,7 +15,7 @@ class UsersController < ApplicationController
 
   def home
     @user = current_user
-    @feed = Story.all.page(params[:page]).per(10)
+    @stories = Kaminari.paginate_array(Story.smart_feed).page(params[:page]).per(10)
     @followers = current_user.followers
     @following = current_user.following
     @follower_stories = Story.where(user: @followers).page(params[:page]).per(10)

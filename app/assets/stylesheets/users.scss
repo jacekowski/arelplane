@@ -268,4 +268,8 @@
     min-height: 75vh;
     height: 75vh;
   }
+  #sticky-sidebar {
+    min-width: 18.75rem;
+    max-width: none !important;
+  }
 }

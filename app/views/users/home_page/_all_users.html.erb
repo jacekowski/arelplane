@@ -1,4 +1,4 @@
-<% @feed.each do |story| %>
+<% @stories.each do |story| %>
   <%= render 'stories/card', story: story %>
 <% end %>
-<%= paginate @feed, theme: 'bootstrap4' %>
+<%= paginate @stories, theme: 'bootstrap4' %>
