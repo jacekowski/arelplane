@@ -13,6 +13,7 @@ class StoriesController < ApplicationController
         format.js
       else
         format.html { redirect_to root_path, alert: @story.errors.full_messages }
+        format.js { render action: "failure"}
       end
     end
   end

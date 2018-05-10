@@ -16,10 +16,6 @@ $(document).ready(function() {
   $('input#create-story').click(function() {
     $('.story_ratings').slideUp();
     $('.story_flight').slideUp();
-    $('form.new_story').trigger('reset');
-    $('#departure_airport').val('').trigger('change');
-    $('#arrival_airport').val('').trigger('change');
-    $('.identifier_lookup').val('').trigger('change')
   });
 
 });

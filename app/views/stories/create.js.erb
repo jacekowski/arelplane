@@ -1,7 +1,5 @@
-// $('.story_ratings').slideUp();
-// $('.story_flight').slideUp();
-// $('form.new_story').trigger('reset');
-// $('#departure_airport').val('').trigger('change');
-// $('#arrival_airport').val('').trigger('change');
-// $('.identifier_lookup').val('').trigger('change')
+$('form.new_story').trigger('reset');
+$('#departure_airport').val('').trigger('change');
+$('#arrival_airport').val('').trigger('change');
+$('.identifier_lookup').val('').trigger('change')
 $("#main-feed").prepend("<%=j render 'stories/card', story: @story %>");

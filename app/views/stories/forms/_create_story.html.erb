@@ -1,14 +1,9 @@
 <%= form_with model: @story, local: false, class: 'new_story' do |form| %>
-  <% if alert %>
-    <% alert.each do |message| %>
-      <div class="alert alert-danger" role="alert">
-        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span>
-          <span class="sr-only">Close</span>
-        </button>
-        <%= message %>
-      </div>
+  <div id="form-errors">
+    <% if alert %>
+      <%= render 'stories/form_errors', alerts: alert %>
     <% end %>
-  <% end %>
+  </div>
 
   <div class="create-story mb-4">
     <%= form.text_area :description, class: 'form-control story-input-description', rows: 4, placeholder: 'Say something ...' %>
