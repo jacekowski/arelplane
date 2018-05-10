@@ -62,6 +62,12 @@
       padding: 1rem;
       background-color: white;
     }
+    .story_flight {
+      display: none;
+    }
+    .story_ratings {
+      display: none;
+    }
     .story_ratings {
       .form-check-label.active {
         color: $softText;

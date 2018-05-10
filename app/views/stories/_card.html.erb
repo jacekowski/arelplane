@@ -3,8 +3,10 @@
     <div class="row">
       <div class="col-lg-8 col-12">
         <h4 class="card-title name"><%= link_to story.user.name, username_path(story.user.username) %> <span class="flight-count">
-          <% if story.flights.any? %>
+          <% if story.flights.try(:count) == 1 %>
             added a new trip to their <%= link_to 'map', username_path(story.user.username) %>
+          <% elsif story.flights.try(:count) > 1 %>
+            added new flights to their <%= link_to 'map', username_path(story.user.username) %>
           <% elsif story.ratings.any? %>
             added a new rating to their <%= link_to 'profile', username_path(story.user.username) %>
           <% end %>
