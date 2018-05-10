@@ -16,6 +16,9 @@ $(document).ready(function() {
   $('input#create-story').click(function() {
     $('.story_ratings').slideUp();
     $('.story_flight').slideUp();
+    $("#main-feed").prepend(html);
   });
+
+  var html = "<div class='alert alert-success tmp-alert' role='alert'>Story created! It'll show up soon!</div>";
 
 });

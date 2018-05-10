@@ -1,5 +1,6 @@
 $('form.new_story').trigger('reset');
 $('#departure_airport').val('').trigger('change');
 $('#arrival_airport').val('').trigger('change');
-$('.identifier_lookup').val('').trigger('change')
+$('.identifier_lookup').val('').trigger('change');
+$('.tmp-alert').hide();
 $("#main-feed").prepend("<%=j render 'stories/card', story: @story %>");
