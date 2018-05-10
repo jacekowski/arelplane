@@ -66,7 +66,7 @@ class Story < ApplicationRecord
 
   def self.smart_feed
     feed = []
-    self.all.group_by do |story|
+    self.find_each(batch_size: 10).group_by do |story|
       [story.user_id, story.created_at.beginning_of_hour]
     end.map do |stories|
       if stories.second.count > 1
@@ -85,7 +85,7 @@ class Story < ApplicationRecord
         feed.append(stories.second.first)
       end
     end
-    return feed
+    return feed.reverse
   end
-  
+
 end
