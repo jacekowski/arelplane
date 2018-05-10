@@ -109,7 +109,7 @@ class Flight < ApplicationRecord
   end
 
   def self.parse_foreflight(logbook_csv, user)
-    story = create_story(user)
+    story = Story.new(user_id: user.id)
     CSV.foreach(logbook_csv, headers: [
       :flight_date,
       :aircraft_identifier,
@@ -149,11 +149,11 @@ class Flight < ApplicationRecord
         add_to_story(story, f)
       end
       story.description = "Uploaded #{story.flights.size} flights from ForeFlight"
-      story.save
+      story.persist_if_flights
   end
 
   def self.parse_logtenpro(logbook_csv, user)
-    story = create_story(user)
+    story = Story.new(user_id: user.id)
     file = logbook_csv.read.gsub(/[^\.0-9A-Za-z\s,;@_()&:\\-]/, '')
     CSV.parse(file, {col_sep: "\t", headers: true}) do |row|
       r = row.to_hash
@@ -170,11 +170,11 @@ class Flight < ApplicationRecord
       add_to_story(story, f)
     end
     story.description = "Uploaded #{story.flights.size} flights from LogTen Pro"
-    story.save
+    story.persist_if_flights
   end
 
   def self.parse_mccpilotlog(logbook_csv, user)
-    story = create_story(user)
+    story = Story.new(user_id: user.id)
     file = logbook_csv.read.gsub(/[^\.0-9A-Za-z\s,;:@"\/_()&\\-]/, '')
     delimiter = sniff(logbook_csv)
     CSV.parse(file, {col_sep: delimiter, headers: true}) do |row|
@@ -194,11 +194,11 @@ class Flight < ApplicationRecord
       add_to_story(story, f)
     end
     story.description = "Uploaded #{story.flights.size} flights from mccPILOTLOG"
-    story.save
+    story.persist_if_flights
   end
 
   def self.parse_safelog(logbook_csv, user)
-    story = create_story(user)
+    story = Story.new(user_id: user.id)
     file = logbook_csv.read.gsub(/[^\.0-9A-Za-z\s,;:@"\/_()&\\-]/, '')
     CSV.parse(file, headers: true, skip_blanks: true) do |row|
       r = row.to_hash
@@ -220,11 +220,11 @@ class Flight < ApplicationRecord
       add_to_story(story, f)
     end
     story.description = "Uploaded #{story.flights.size} flights from Safelog"
-    story.save
+    story.persist_if_flights
   end
 
   def self.parse_zululog(logbook_csv, user)
-    story = create_story(user)
+    story = Story.new(user_id: user.id)
     file = logbook_csv.read.gsub(/[^\.0-9A-Za-z\s,;:@"\/_()&\\-]/, '')
     CSV.parse(file, headers: true, skip_blanks: true) do |row|
       r = row.to_hash
@@ -249,11 +249,11 @@ class Flight < ApplicationRecord
       add_to_story(story, f)
     end
     story.description = "Uploaded #{story.flights.size} flights from ZuluLog"
-    story.save
+    story.persist_if_flights
   end
 
   def self.parse_myflightbook(logbook_csv, user)
-    story = create_story(user)
+    story = Story.new(user_id: user.id)
     file = logbook_csv.read.gsub(/[^\.0-9A-Za-z\s,;:@"\/_()&\\-]/, '')
     delimiter = sniff(logbook_csv)
     CSV.parse(file, {col_sep: delimiter, headers: true} ) do |row|
@@ -283,11 +283,11 @@ class Flight < ApplicationRecord
       add_to_story(story, f)
     end
     story.description = "Uploaded #{story.flights.size} flights from MyFlightbook"
-    story.save
+    story.persist_if_flights
   end
 
   def self.parse_logbookpro(logbook_csv, user)
-    story = create_story(user)
+    story = Story.new(user_id: user.id)
     file = File.read(logbook_csv).gsub(/[\"\r]/," ")
     CSV.parse(file, headers: true, skip_blanks: true) do |row|
       r = row.to_hash
@@ -314,11 +314,11 @@ class Flight < ApplicationRecord
       add_to_story(story, f)
     end
     story.description = "Uploaded #{story.flights.size} flights from Logbook Pro"
-    story.save
+    story.persist_if_flights
   end
 
   def self.parse_garmin_pilot(logbook_csv, user)
-    story = create_story(user)
+    story = Story.new(user_id: user.id)
     CSV.parse(logbook_csv, headers: true, skip_blanks: true) do |row|
       r = row.to_hash
       f = Flight.find_or_initialize_by(
@@ -339,11 +339,11 @@ class Flight < ApplicationRecord
       add_to_story(story, f)
     end
     story.description = "Uploaded #{story.flights.size} flights from Garmin Pilot"
-    story.save
+    story.persist_if_flights
   end
 
   def self.parse_fly_logio(logbook_csv, user)
-    story = create_story(user)
+    story = Story.new(user_id: user.id)
     delimiter = sniff(logbook_csv)
     CSV.parse(logbook_csv, col_sep: delimiter, headers: true, skip_blanks: true) do |row|
       r = row.to_hash
@@ -362,11 +362,11 @@ class Flight < ApplicationRecord
       add_to_story(story, f)
     end
     story.description = "Uploaded #{story.flights.size} flights from FlyLogio"
-    story.save
+    story.persist_if_flights
   end
 
   def self.parse_pilot_pro(logbook_csv, user)
-    story = create_story(user)
+    story = Story.new(user_id: user.id)
     CSV.parse(logbook_csv, headers: true, skip_blanks: true) do |row|
       r = row.to_hash
       f = Flight.find_or_initialize_by(
@@ -388,11 +388,11 @@ class Flight < ApplicationRecord
       add_to_story(story, f)
     end
     story.description = "Uploaded #{story.flights.size} flights from PilotPro"
-    story.save
+    story.persist_if_flights
   end
 
   def self.parse_aviation_pilot_logbook(logbook_csv, user)
-    story = create_story(user)
+    story = Story.new(user_id: user.id)
     CSV.parse(logbook_csv, headers: true, skip_blanks: true, col_sep: ";") do |row|
       r = row.to_hash
       f = Flight.find_or_create_by(
@@ -410,7 +410,7 @@ class Flight < ApplicationRecord
       add_to_story(story, f)
     end
     story.description = "Uploaded #{story.flights.size} flights from Aviation Pilot Logbook"
-    story.save
+    story.persist_if_flights
   end
 
   def self.add_to_story(story, flight)
@@ -418,10 +418,6 @@ class Flight < ApplicationRecord
       story.flights << flight
     end
     story
-  end
-
-  def self.create_story(user, description=nil)
-    user.stories.new(description: description)
   end
 
   def add_waypoints(logbook_row, waypoint_column, origin_column, destination_column)

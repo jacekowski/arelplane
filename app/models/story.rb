@@ -88,4 +88,11 @@ class Story < ApplicationRecord
     return feed.reverse
   end
 
+  def persist_if_flights
+    if self.flights.any?
+      self.save
+    end
+    puts "no flights"
+  end
+
 end
