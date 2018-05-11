@@ -17,9 +17,9 @@
           <% if story.persisted? %>
             <% if story.user == current_user %>
               <div class="btn-group">
-                <p data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="options_button">
                   <%= octicon "kebab-horizontal", width: 20 %>
-                </p>
+                </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <%= link_to 'Delete', story, method: :delete, data: { confirm: 'Are you sure? You can not un-delete this story'}, remote: true, class: 'delete_story dropdown-item' %>
                   <% if story.flights.any? %>

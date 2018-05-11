@@ -96,6 +96,11 @@
       .octicon {
         fill: $lightSubTextColor;
       }
+      .options_button {
+        -webkit-appearance: none;
+        background-color: transparent;
+        border: none;
+      }
       .updated {
         font-size: 1rem;
         font-weight: $regular;
