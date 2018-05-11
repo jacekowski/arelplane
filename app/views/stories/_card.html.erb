@@ -14,8 +14,8 @@
       </div>
       <div class="col-lg-4 col-12">
         <div class="float-lg-right">
-          <% if story.persisted? %>
-            <% if story.user == current_user %>
+          <% if story.user == current_user %>
+            <% if story.persisted? %>
               <div class="btn-group">
                 <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="options_button">
                   <%= octicon "kebab-horizontal", width: 20 %>
@@ -27,9 +27,9 @@
                   <% end %>
                 </div>
               </div>
-            <% else %>
-              <%= render 'users/profile/follow_form', user: story.user %>
             <% end %>
+          <% else %>
+            <%= render 'users/profile/follow_form', user: story.user %>
           <% end %>
         </div>
       </div>
