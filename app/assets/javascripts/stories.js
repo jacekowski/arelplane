@@ -1,11 +1,11 @@
 $(document).ready(function() {
-  $('a.add_flight_button').click(function() {
+  $('.add_flight_button').click(function() {
     $(".story_flight").slideToggle();
     $('.story_ratings').slideUp();
     $('.form-check-input').prop('checked', false);
   });
 
-  $('a.add_ratings_button').click(function() {
+  $('.add_ratings_button').click(function() {
     $(".story_ratings").slideToggle();
     $('.story_flight').slideUp();
     $('#departure_airport').val('').trigger('change');

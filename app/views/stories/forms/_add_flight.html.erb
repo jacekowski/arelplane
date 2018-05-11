@@ -13,12 +13,6 @@
         </div>
         <div class="col-12 col-lg-4">
           <div class="mb-3">
-            <%= flight_fields.label :destination_airport, 'Arrival Airport (ICAO)', class: 'light-sub-text' %><br />
-            <%= flight_fields.collection_select :destination_id, Location.order(:identifier).page, :id, :identifier, { include_blank: true}, class: 'identifier_lookup', id: 'arrival_airport', style: 'width: 100%;' %>
-          </div>
-        </div>
-        <div class="col-12 col-lg-4">
-          <div class="mb-3">
             <%= flight_fields.label :waypoint, 'Waypoints / Stops', class: 'light-sub-text' %><br />
             <%= flight_fields.fields_for :waypoints do |waypoint_fields| %>
               <div class="waypoint_fields mb-2">
@@ -26,6 +20,12 @@
               </div>
             <% end %>
             <a href="#" id="add_waypoint_select">Add waypoint</a>
+          </div>
+        </div>
+        <div class="col-12 col-lg-4">
+          <div class="mb-3">
+            <%= flight_fields.label :destination_airport, 'Arrival Airport (ICAO)', class: 'light-sub-text' %><br />
+            <%= flight_fields.collection_select :destination_id, Location.order(:identifier).page, :id, :identifier, { include_blank: true}, class: 'identifier_lookup', id: 'arrival_airport', style: 'width: 100%;' %>
           </div>
         </div>
       </div>
