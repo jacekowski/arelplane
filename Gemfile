@@ -11,6 +11,9 @@ gem 'rails', '~> 5.2.0'
 
 gem 'bootsnap'
 
+# Moniter app performance
+gem 'skylight'
+
 # Use Puma as the app server
 gem 'puma', '~> 3.7'
 # Use SCSS for stylesheets

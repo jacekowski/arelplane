@@ -81,11 +81,11 @@ class Story < ApplicationRecord
           end
         end
         if temp_story.ratings.any? && temp_story.flights.any?
-          temp_story.description = "Added #{ActionController::Base.helpers.pluralize(temp_story.ratings.size, 'new rating')} and #{ActionController::Base.helpers.pluralize(temp_story.flights.size, 'new flight')}"
+          temp_story.description = "Added #{ActionController::Base.helpers.pluralize(temp_story.ratings.size, 'new rating')} and #{ActionController::Base.helpers.pluralize(temp_story.flights.size, 'new flight')}."
         elsif temp_story.ratings.any?
-          temp_story.description = "Added #{ActionController::Base.helpers.pluralize(temp_story.ratings.size, 'new rating')}"
+          temp_story.description = "Added #{ActionController::Base.helpers.pluralize(temp_story.ratings.size, 'new rating')}."
         elsif temp_story.flights.any?
-          temp_story.description = "Added #{ActionController::Base.helpers.pluralize(temp_story.flights.size, 'new flight')}"
+          temp_story.description = "Added #{ActionController::Base.helpers.pluralize(temp_story.flights.size, 'new flight')}."
         end
         feed.append(temp_story)
       else
