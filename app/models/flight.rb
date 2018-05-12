@@ -13,6 +13,15 @@ class Flight < ApplicationRecord
   validates :flight_date, presence: true
 
   before_save :add_distance
+  around_destroy :destroy_orphaned_story
+
+  def destroy_orphaned_story
+    story = self.story
+    yield # executes a DELETE database statement
+    if story.flights.length == 0
+      story.destroy
+    end
+  end
 
   def aircraft_identifier=(val)
     write_attribute :aircraft_identifier, val.try(:upcase)
