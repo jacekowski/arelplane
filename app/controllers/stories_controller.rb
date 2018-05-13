@@ -1,6 +1,9 @@
 class StoriesController < ApplicationController
-  before_action :set_story, only: :destroy
+  before_action :set_story, only: [:show, :destroy]
   before_action :authenticate_user!
+
+  def show
+  end
 
   def create
     @story = current_user.stories.new(story_params)
