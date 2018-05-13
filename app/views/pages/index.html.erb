@@ -1,6 +1,6 @@
+<span id="run-cesium" data-map="true"></span>
 <%= content_tag :div, id: "current_page", data: {page: "homepage"} do %>
 <% end %>
-
 <div class='container mt-2 mb-2'>
   <div class='row'>
     <div class="col">
@@ -28,3 +28,5 @@
 </div>
 <div class='homepage-map' id='cesiumContainer'></div>
 <%= render 'vendors/fb_pixel_register' %>
+
+<script src="../Cesium/Cesium.js"></script>
