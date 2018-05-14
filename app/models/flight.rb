@@ -16,8 +16,9 @@ class Flight < ApplicationRecord
   around_destroy :destroy_orphaned_story
 
   def destroy_orphaned_story
-    if story = self.story
-      yield # executes a DELETE database statement
+    story = self.story
+    yield # executes a DELETE database statement
+    if story
       if story.flights.length == 0
         story.destroy
       end
