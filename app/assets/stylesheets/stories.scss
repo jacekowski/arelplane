@@ -1,0 +1,108 @@
+@import "colors";
+@import "fonts";
+
+.story-show {
+  background-color: $backgroundColor;
+  min-height: 100vh;
+}
+
+.story_card {
+  .octicon {
+    fill: $lightSubTextColor;
+  }
+  .options_button {
+    -webkit-appearance: none;
+    background-color: transparent;
+    border: none;
+  }
+  .updated {
+    font-size: 1rem;
+    font-weight: $regular;
+    color: $lightSubTextColor;
+  }
+  .name a {
+    font-size: 1.125rem;
+    font-weight: $black;
+    color: $primaryTextColor;
+  }
+  .flight-count {
+    font-size: 1.125rem;
+    font-weight: $regular;
+  }
+  .date {
+    font-size: 1rem;
+    font-weight: $regular;
+    color: $lightSubTextColor;
+  }
+  .description {
+    font-size: 1.5rem;
+    font-weight: $regular;
+    color: $primaryTextColor;
+  }
+  .airports {
+    .identifier {
+      font-size: 1.5rem;
+      font-weight: $regular;
+      color: $primaryTextColor;
+    }
+    .region {
+      font-size: 1rem;
+      font-weight: $regular;
+      color: $lightSubTextColor;
+    }
+  }
+  .link_section {
+    font-size: 1rem;
+    font-weight: $regular;
+    color: $linkColor;
+  }
+  .social_actions {
+    white-space: nowrap;
+    .count {}
+    .actions {
+      a {
+        font-size: 1.125rem;
+        font-weight: $regular;
+        color: $darkTextColor;
+      }
+    }
+  }
+  .comments {
+    .username {
+      color: $darkTextColor;
+      font-weight: $semiBold;
+    }
+    .username:hover {
+      text-decoration: underline;
+    }
+    .timestamp {
+      font-size: 0.85rem;
+      font-weight: $regular;
+      color: $lightSubTextColor;
+    }
+  }
+  .rating_name {
+    font-size: 1.125rem;
+    font-weight: $semiBold;
+    color: $darkTextColor;
+  }
+}
+
+@media (max-width: 767px) {
+  .story_card {
+    .date {}
+    .name {
+      font-size: 1.2rem;
+    }
+    .flight-count {}
+    .stats {
+      .value {
+        font-size: 1.2rem;
+      }
+      .heading {
+        font-size: 0.8rem;
+      }
+    }
+    .link_section {}
+  }
+}
