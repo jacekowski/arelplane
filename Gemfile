@@ -31,7 +31,7 @@ gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
 gem 'redis'
 gem 'hiredis'
-gem 'resque', "~> 1.22.0"
+gem 'resque'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -61,7 +61,7 @@ gem 'kaminari'
 gem 'devise'
 
 # Exception reporting
-# gem "bugsnag"
+gem "bugsnag"
 
 # sending email
 gem 'postmark-rails'
