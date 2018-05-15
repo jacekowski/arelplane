@@ -1,0 +1,1 @@
+$('#loginOrRegisterModal').modal()

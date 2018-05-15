@@ -5,7 +5,7 @@
         <div class="col">
           <%= form_with model: [story, Comment.new], local: false, class: "new_comment" do |f| %>
             <div class="form-group">
-              <%= f.text_area :body, class: 'form-control comment_text', placeholder: "Add a comment" %>
+              <%= f.text_area :body, class: 'form-control comment_text', placeholder: "Add a comment", value: session[:form_data] %>
               <%= f.submit 'Comment', class: 'btn btn-primary mt-2 float-right'%>
             </div>
           <% end %>

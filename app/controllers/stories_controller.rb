@@ -1,6 +1,5 @@
 class StoriesController < ApplicationController
   before_action :set_story, only: [:show, :destroy]
-  before_action :authenticate_user!
 
   def show
   end
