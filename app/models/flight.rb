@@ -29,7 +29,7 @@ class Flight < ApplicationRecord
 
   def self.map_data(flights)
     map_data = feature_collection
-    flights.all.each do |flight|
+    flights.includes(:origin, :destination).find_each(batch_size: 10) do |flight|
       origin = flight.origin
       destination = flight.destination
       if origin.latitude == nil || destination.latitude == nil

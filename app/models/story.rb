@@ -66,7 +66,7 @@ class Story < ApplicationRecord
 
   def self.smart_feed
     feed = []
-    self.find_each(batch_size: 10).group_by do |story|
+    self.includes(:flights, :ratings).find_each(batch_size: 10).group_by do |story|
       [story.user_id, story.created_at.beginning_of_hour]
     end.map do |match|
       stories = match.second
