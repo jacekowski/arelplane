@@ -61,7 +61,7 @@ gem 'kaminari'
 gem 'devise'
 
 # Exception reporting
-gem "bugsnag"
+# gem "bugsnag"
 
 # sending email
 gem 'postmark-rails'
