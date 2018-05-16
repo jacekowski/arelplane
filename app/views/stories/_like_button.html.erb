@@ -1,11 +1,17 @@
-<% if user_signed_in? && current_user.likes?(story) %>
-  <%= link_to story_like_path(story), method: :delete, remote: true, class: 'story_liked' do %>
-    <%= image_tag('icons/heart_icon_solid.png', width: 19, height: 17) %><span> Liked</span>
+<% if user_signed_in? %>
+  <% if current_user.likes?(story) %>
+    <%= link_to story_like_path(story), method: :delete, remote: true, class: 'story_liked btn' do %>
+      <%= image_tag('icons/heart_icon_solid.png', width: 19, height: 17) %><span> Liked</span>
+    <% end %>
+  <% else %>
+    <%= link_to story_like_path(story), method: :post, remote: true, class: 'btn' do %>
+      <%= image_tag('icons/heart_icon.png', width: 19, height: 17) %> Like
+    <% end %>
   <% end %>
 <% else %>
-  <%= link_to story_like_path(story), method: :post, remote: true do %>
+  <a href="#" data-toggle='modal' data-target='#loginOrRegisterModal' class="btn">
     <%= image_tag('icons/heart_icon.png', width: 19, height: 17) %> Like
-  <% end %>
+  </a>
 <% end %>
 <%# story.likes.each do |like| %>
   <%#= image_tag like.user.avatar_url, width: 20 %>

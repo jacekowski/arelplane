@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180503172453) do
+ActiveRecord::Schema.define(version: 2018_05_16_024634) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -132,7 +132,18 @@ ActiveRecord::Schema.define(version: 20180503172453) do
     t.string "unsubscribe_token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "story_emails", default: true
     t.index ["user_id"], name: "index_subscription_preferences_on_user_id"
+  end
+
+  create_table "subscriptions", force: :cascade do |t|
+    t.string "subscribable_type"
+    t.bigint "subscribable_id"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["subscribable_type", "subscribable_id"], name: "index_subscriptions_on_subscribable_type_and_subscribable_id"
+    t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 
   create_table "user_followings", force: :cascade do |t|
@@ -190,6 +201,7 @@ ActiveRecord::Schema.define(version: 20180503172453) do
   add_foreign_key "flights", "stories"
   add_foreign_key "likes", "users"
   add_foreign_key "stories", "users"
+  add_foreign_key "subscriptions", "users"
   add_foreign_key "user_ratings", "ratings"
   add_foreign_key "user_ratings", "users"
 end

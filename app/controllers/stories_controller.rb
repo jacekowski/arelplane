@@ -1,6 +1,8 @@
 class StoriesController < ApplicationController
-  before_action :set_story, only: :destroy
-  before_action :authenticate_user!
+  before_action :set_story, only: [:show, :destroy]
+
+  def show
+  end
 
   def create
     @story = current_user.stories.new(story_params)
@@ -8,6 +10,7 @@ class StoriesController < ApplicationController
     @story.user_ratings.each {|user_rating| user_rating.user_id = current_user.id}
     respond_to do |format|
       if @story.save
+        add_subscription(@story)
         cache_map_data if @story.flights.any?
         format.html { redirect_to root_path, notice: 'Post was successfully created.' }
         format.js

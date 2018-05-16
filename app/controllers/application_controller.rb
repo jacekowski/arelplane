@@ -14,6 +14,14 @@ class ApplicationController < ActionController::Base
     current_user.save_num_regions
   end
 
+  def add_subscription(story)
+    if !current_user.subscription_preference.no_emails && current_user.subscription_preference.story_emails
+      if !story.subscribers.include?(current_user)
+        story.subscriptions.create(user: current_user)
+      end
+    end
+  end
+
 private
   def storable_location?
     request.get? && is_navigational_format? && !devise_controller? && !request.xhr?

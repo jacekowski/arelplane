@@ -20,14 +20,16 @@
           <%= f.label :username, class: 'light-sub-text' %>
           <% if @user.username.blank? %>
             <div class="input-group">
-              <span class="input-group-addon">@</span>
+              <div class="input-group-prepend">
+                <div class="input-group-text">@</div>
+              </div>
               <%= f.text_field :username, class: 'form-control' %>
             </div>
           <% else %>
             <%= f.text_field :username, class: 'form-control' %>
           <% end %>
           <br>
-          
+
           <%= f.label :password, class: 'light-sub-text' %>
           <% if @minimum_password_length %>
           <em>(<%= @minimum_password_length %> characters minimum)</em>

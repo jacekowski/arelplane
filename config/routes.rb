@@ -57,9 +57,9 @@ Rails.application.routes.draw do
   resources :users, param: :username, path: '', only: :show, as: :username
   post 'users/search', to: 'users#search', as: 'user_search'
 
-  get 'unsubscribe/:unsubscribe_token', to: 'users#unsubscribe', as: 'unsubscribe'
+  resources :subscriptions, param: :token, only: :show, as: :unsubscribe
 
-  resources :stories, only: [:create, :destroy] do
+  resources :stories, only: [:create, :show, :destroy] do
     post 'regenerate_map', to: 'stories#regenerate_map'
     resource :like, only: [:create, :destroy], module: :stories
     resources :comments, only: [:create, :destroy], module: :stories

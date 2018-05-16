@@ -1,0 +1,19 @@
+<div class="mt-2">
+  <% if alerts.class == String %>
+    <div class="alert alert-danger" role="alert">
+      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span>
+        <span class="sr-only">Close</span>
+      </button>
+      <%= alerts %>
+    </div>
+  <% else %>
+    <% alerts.each do |message| %>
+      <div class="alert alert-danger" role="alert">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <%= message %>
+      </div>
+    <% end %>
+  <% end %>
+</div>
