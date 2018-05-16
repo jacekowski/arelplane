@@ -3,6 +3,10 @@ module ApplicationHelper
     content_for(:title) { page_title }
   end
 
+  def image(story_image)
+    content_for(:image) { story_image }
+  end
+
   def resource_name
    :user
   end
