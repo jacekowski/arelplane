@@ -25,11 +25,34 @@
                   <% if story.flights.any? %>
                     <%= link_to 'Regenerate Map', story_regenerate_map_path(story), method: :post, class: 'dropdown-item' %>
                   <% end %>
+                  <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=<%= story_url(story) %>" class="dropdown-item">Share to Facebook</a>
+                  <a target="_blank" href="https://twitter.com/intent/tweet?text=Checkout+this+post+on+@arelplane&url=<%= story_url(story) %>" class="dropdown-item">Share on Twitter</a>
+                  <a target="_blank" href="mailto:?subject= Checkout this post on Arelplane &body=<%= story_url(story) %>" class="dropdown-item">Share by email</a>
+                  <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=<%= story_url(story) %>" class="dropdown-item">Share on LinkedIn</a>
                 </div>
               </div>
             <% end %>
           <% else %>
-            <%= render 'users/profile/follow_form', user: story.user %>
+            <div class="row mr-1">
+              <div class="col-10">
+                <%= render 'users/profile/follow_form', user: story.user %>
+              </div>
+              <div class="col-1">
+                <% if story.persisted? %>
+                  <div class="btn-group dropleft">
+                    <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="options_button">
+                      <%= octicon "kebab-vertical", height: 30, class: 'pt-2' %>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=<%= story_url(story) %>" class="dropdown-item">Share to Facebook</a>
+                      <a target="_blank" href="https://twitter.com/intent/tweet?text=Checkout+this+post+on+@arelplane&url=<%= story_url(story) %>" class="dropdown-item">Share on Twitter</a>
+                      <a target="_blank" href="mailto:?subject= Checkout this post on Arelplane &body=<%= story_url(story) %>" class="dropdown-item">Share by email</a>
+                      <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=<%= story_url(story) %>" class="dropdown-item">Share on LinkedIn</a>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
           <% end %>
         </div>
       </div>
