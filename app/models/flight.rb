@@ -176,6 +176,9 @@ class Flight < ApplicationRecord
         total_time: convert_time(r["Total Time"]),
         pic: convert_time(r["PIC"]),
       )
+      if f.save
+        f.add_waypoints(r, "Route", "From", "To")
+      end
       add_to_story(story, f)
     end
     story.description = "Uploaded #{story.flights.size} flights from LogTen Pro"
