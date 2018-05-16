@@ -4,6 +4,7 @@ class Stories::LikesController < ApplicationController
 
   def create
     @story.likes.where(user_id: current_user.id).first_or_create
+    send_email
     respond_to do |format|
       format.html { redirect_to root_path}
       format.js
@@ -15,6 +16,13 @@ class Stories::LikesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to root_path}
       format.js
+    end
+  end
+
+private
+  def send_email
+    if current_user != @story.user && @story.subscribers.include?(@story.user)
+      StoryMailer.new_like(current_user, @story).deliver_later
     end
   end
 
