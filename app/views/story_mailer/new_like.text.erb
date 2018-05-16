@@ -1,6 +1,6 @@
 I've got some good news!
 
-<%= @liker.username %> [<% username_url(@liker.username) %>] just liked your your post! [<%= story_url(@story) %>]
+<%= @liker.username %> [<%= username_url(@liker.username) %>] just liked your post! [<%= story_url(@story) %>]
 
 
 Unsubscribe from emails about this post here: [<%= unsubscribe_url(@story_owner.subscription_preference.unsubscribe_token, unsubscribe: :story, story_id: @story.id) %>]

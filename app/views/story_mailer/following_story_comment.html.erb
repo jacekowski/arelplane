@@ -1,6 +1,11 @@
-<p>I've got some good news!</p>
+<p><%= link_to @commenter.username, username_url(@commenter.username) %> also commented on <%= link_to @story_owner.username, username_url(@story_owner.username) %>'s <%= link_to 'post', story_url(@story) %>.</p>
 
-<p><%= link_to @liker.username, username_url(@liker.username) %> just liked your your <%= link_to 'post', story_url(@story) %>!</p>
+<p>They said:</p>
+<blockquote cite="<%= story_url(@story) %>">
+  <%= @comment.body %>
+</blockquote>
+
+<p>Reply <%= link_to 'here', story_url(@story) %></p>
 
 <br>
 <br>

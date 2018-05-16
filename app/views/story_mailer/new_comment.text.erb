@@ -1,0 +1,11 @@
+You've got a new comment!
+
+<%= @commenter.username %> [<% username_url(@commenter.username) %>] just commented on your post! [<%= story_url(@story) %>]
+
+They said: <%= @comment.body %>
+
+Reply here: <%= story_url(@story) %>
+
+Unsubscribe from emails about this post here: [<%= unsubscribe_url(@story_owner.subscription_preference.unsubscribe_token, unsubscribe: :story, story_id: @story.id) %>]
+Unsubscribe from emails about any post here: [<%= unsubscribe_url(@story_owner.subscription_preference.unsubscribe_token, unsubscribe: :all_stories) %>]
+If you don't want any emails about anything, ever, do it here: [ <%= unsubscribe_url(@story_owner.subscription_preference.unsubscribe_token, unsubscribe: :everything) %>]
