@@ -1,12 +1,13 @@
 class CommentsController < ApplicationController
 
   def create
-    @comment = @commentable.comments.new(comment_params)
     respond_to do |format|
       if current_user
+        @comment = @commentable.comments.new(comment_params)
         @comment.user = current_user
-        @comment.save
         if @comment.save
+          add_subscription(@commentable)
+          send_email
           format.html { redirect_to root_path}
           format.js
         else
@@ -21,6 +22,14 @@ class CommentsController < ApplicationController
   end
 
 private
+  def send_email
+    @commentable.subscribers.each do |subscriber|
+      if @comment.user != subscriber
+        StoryMailer.following_story_comment(@comment, subscriber).deliver_later
+      end
+    end
+  end
+
   def comment_params
     params.require(:comment).permit(:body)
   end

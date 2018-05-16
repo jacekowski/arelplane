@@ -6,9 +6,11 @@ class SubscriptionsController < ApplicationController
     case params[:unsubscribe]
     when "everything"
       @subscription_preference.update_attributes(no_emails: true)
+      Subscription.where(user: @user).destroy_all
       redirect_to unsubscribe_confirmation_path(type: 'all emails')
     when "all_stories"
       @subscription_preference.update_attributes(story_emails: false)
+      Subscription.where(user: @user, subscribable_type: "Story").destroy_all
       redirect_to unsubscribe_confirmation_path(type: 'all posts')
     when "new_followers"
       @subscription_preference.update_attributes(new_follower_email: false)

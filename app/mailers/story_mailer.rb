@@ -1,6 +1,17 @@
 class StoryMailer < ApplicationMailer
   default from: "Arel from Arelplane <hello@arelplane.com>"
 
+  def new_story(story, follower)
+    @story = story
+    @story_owner = story.user
+    @follower = follower
+    mail(
+      to: @follower.email,
+      reply_to: "no-reply@arelplane.com",
+      subject: "A pilot you follow just added a new post!"
+    )
+  end
+
   def new_comment(comment)
     @comment = comment
     @commenter = comment.user
