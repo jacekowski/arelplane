@@ -26,17 +26,6 @@ class UsersController < ApplicationController
     flight.waypoints.build
   end
 
-  def unsubscribe
-    subscription_preference = SubscriptionPreference.find_by(unsubscribe_token: params[:unsubscribe_token])
-    if params[:unsubscribe_all]
-      subscription_preference.update_attributes(no_emails: true)
-      redirect_to unsubscribe_confirmation_path(type: 'all emails')
-    else
-      subscription_preference.update_attributes(new_follower_email: false)
-      redirect_to unsubscribe_confirmation_path(type: 'new follower emails')
-    end
-  end
-
   private
     def set_user
       if params[:username]
