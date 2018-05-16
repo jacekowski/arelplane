@@ -18,8 +18,8 @@ class UsersController < ApplicationController
     @stories = Kaminari.paginate_array(Story.smart_feed).page(params[:page]).per(10)
     @followers = current_user.followers
     @following = current_user.following
-    @follower_stories = Story.where(user: @followers).page(params[:page]).per(10)
-    @following_stories = Story.where(user: @following).page(params[:page]).per(10)
+    @follower_stories = Story.includes(:flights, :ratings).where(user: @followers).page(params[:page]).per(10)
+    @following_stories = Story.includes(:flights, :ratings).where(user: @following).page(params[:page]).per(10)
 
     @story = current_user.stories.new
     flight = @story.flights.build

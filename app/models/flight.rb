@@ -18,10 +18,8 @@ class Flight < ApplicationRecord
   def destroy_orphaned_story
     story = self.story
     yield # executes a DELETE database statement
-    if story
-      if story.flights.length == 0
-        story.destroy
-      end
+    if story && story.flights.length == 0
+      story.destroy
     end
   end
 
@@ -31,7 +29,7 @@ class Flight < ApplicationRecord
 
   def self.map_data(flights)
     map_data = feature_collection
-    flights.all.each do |flight|
+    flights.includes(:origin, :destination).find_each(batch_size: 100) do |flight|
       origin = flight.origin
       destination = flight.destination
       if origin.latitude == nil || destination.latitude == nil
@@ -156,8 +154,8 @@ class Flight < ApplicationRecord
         )
         if f.save
           f.add_waypoints(r, :route, :origin_id, :destination_id)
+          add_to_story(story, f)
         end
-        add_to_story(story, f)
       end
       story.description = "Uploaded #{story.flights.size} flights from ForeFlight"
       story.persist_if_flights
@@ -178,7 +176,10 @@ class Flight < ApplicationRecord
         total_time: convert_time(r["Total Time"]),
         pic: convert_time(r["PIC"]),
       )
-      add_to_story(story, f)
+      if f.save
+        f.add_waypoints(r, "Route", "From", "To")
+        add_to_story(story, f)
+      end
     end
     story.description = "Uploaded #{story.flights.size} flights from LogTen Pro"
     story.persist_if_flights
@@ -202,7 +203,9 @@ class Flight < ApplicationRecord
         total_time: r["TIME_TOTAL"].to_f/60,
         pic: r["TIME_TOTAL"].to_f/60
       )
-      add_to_story(story, f)
+      if f.save
+        add_to_story(story, f)
+      end
     end
     story.description = "Uploaded #{story.flights.size} flights from mccPILOTLOG"
     story.persist_if_flights
@@ -227,8 +230,8 @@ class Flight < ApplicationRecord
       )
       if f.save
         f.add_waypoints(r, "Mission Via", "Mission Departure", "Mission Arrival")
+        add_to_story(story, f)
       end
-      add_to_story(story, f)
     end
     story.description = "Uploaded #{story.flights.size} flights from Safelog"
     story.persist_if_flights
@@ -256,8 +259,8 @@ class Flight < ApplicationRecord
         route.each do |waypoint|
           f.waypoints.create(location_id: find_location_from(waypoint))
         end
+        add_to_story(story, f)
       end
-      add_to_story(story, f)
     end
     story.description = "Uploaded #{story.flights.size} flights from ZuluLog"
     story.persist_if_flights
@@ -289,9 +292,9 @@ class Flight < ApplicationRecord
           route.each do |waypoint|
             f.waypoints.create(location_id: find_location_from(waypoint))
           end
+          add_to_story(story, f)
         end
       end
-      add_to_story(story, f)
     end
     story.description = "Uploaded #{story.flights.size} flights from MyFlightbook"
     story.persist_if_flights
@@ -321,8 +324,8 @@ class Flight < ApplicationRecord
         route.each do |waypoint|
           f.waypoints.create(location_id: find_location_from(waypoint))
         end
+        add_to_story(story, f)
       end
-      add_to_story(story, f)
     end
     story.description = "Uploaded #{story.flights.size} flights from Logbook Pro"
     story.persist_if_flights
@@ -346,8 +349,8 @@ class Flight < ApplicationRecord
       )
       if f.save
         f.add_waypoints(r, "Route", "Departure", "Destination")
+        add_to_story(story, f)
       end
-      add_to_story(story, f)
     end
     story.description = "Uploaded #{story.flights.size} flights from Garmin Pilot"
     story.persist_if_flights
@@ -370,7 +373,9 @@ class Flight < ApplicationRecord
         pic: convert_time(r["pic"]),
         total_time: convert_time(r["total_time"])
       )
-      add_to_story(story, f)
+      if f.save
+        add_to_story(story, f)
+      end
     end
     story.description = "Uploaded #{story.flights.size} flights from FlyLogio"
     story.persist_if_flights
@@ -395,8 +400,8 @@ class Flight < ApplicationRecord
       )
       if f.save
         f.add_waypoints(r, "Route", "From", "To")
+        add_to_story(story, f)
       end
-      add_to_story(story, f)
     end
     story.description = "Uploaded #{story.flights.size} flights from PilotPro"
     story.persist_if_flights
@@ -418,7 +423,9 @@ class Flight < ApplicationRecord
         pic: convert_time(r["Block_Time"]),
         total_time: convert_time(r["Block_Time"])
       )
-      add_to_story(story, f)
+      if f.save
+        add_to_story(story, f)
+      end
     end
     story.description = "Uploaded #{story.flights.size} flights from Aviation Pilot Logbook"
     story.persist_if_flights
