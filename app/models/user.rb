@@ -8,37 +8,29 @@ class User < ApplicationRecord
          :trackable,
          :validatable
 
-  validates :name,     presence: true, on: :create
-  validates :username, presence: true,
-                     uniqueness: {case_sensitive: false},
-                         length: { maximum: 100 }
-  validates :bio,        length: { maximum: 250 }
-  validates :employer,   length: { maximum: 50 }
+  validates :name, presence: true, on: :create
+  validates :username, presence: true, uniqueness: {case_sensitive: false}, length: { maximum: 100 }
+  validates :bio, length: { maximum: 250 }
+  validates :employer, length: { maximum: 50 }
 
+  has_one :subscription_preference
   has_one  :cache_datum, dependent: :destroy
+
   has_many :flights,     dependent: :destroy
   has_many :locations,     through: :flights
   has_many :waypoints,     through: :flights
+  has_many :passive_relationships, foreign_key: :following_id, class_name: 'UserFollowing', dependent: :destroy
+  has_many :followers, through: :passive_relationships, source: :follower
+  has_many :active_relationships, foreign_key: :follower_id, class_name: 'UserFollowing', dependent: :destroy
+  has_many :following, through: :active_relationships, source: :following
+  has_many :user_ratings
+  has_many :ratings, through: :user_ratings, dependent: :destroy
+  has_many :stories, dependent: :destroy
+  has_many :notifications, foreign_key: :recipient_id
 
   belongs_to :home_base, class_name: 'Location', foreign_key: :home_base_id, optional: true
 
-  has_many :passive_relationships, foreign_key: :following_id,
-                                    class_name: 'UserFollowing',
-                                     dependent: :destroy
-  has_many :followers, through: :passive_relationships, source: :follower
-
-  has_many :active_relationships, foreign_key: :follower_id,
-                                   class_name: 'UserFollowing',
-                                    dependent: :destroy
-  has_many :following, through: :active_relationships, source: :following
-
-  has_one :subscription_preference
   before_create :add_subscription_preferences
-
-  has_many :user_ratings
-  has_many :ratings, through: :user_ratings, dependent: :destroy
-
-  has_many :stories, dependent: :destroy
 
   def add_subscription_preferences
     build_subscription_preference(unsubscribe_token: SecureRandom.hex)

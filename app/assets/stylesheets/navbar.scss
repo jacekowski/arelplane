@@ -1,8 +1,16 @@
 @import "colors";
 @import "fonts";
 
-.navbar {
+#application-navbar {
   .underline {
     border-bottom: 0.25rem solid $linkColor;
+  }
+  .octicon {
+    fill: white;
+  }
+  .notifications-button {
+    -webkit-appearance: none;
+    background-color: transparent;
+    border: none;
   }
 }

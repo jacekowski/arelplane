@@ -1,6 +1,20 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="application-navbar">
   <%#= link_to image_tag('arelplane.png', class: 'd-inline-block align-top', height: '40', width: '40'), root_path, class: 'navbar-brand' %>
   <%= link_to 'ARELPLANE', root_path, class: "navbar-brand #{'underline' if current_page?(root_path)}" %>
+  <ul class="navbar-nav flex-row">
+    <li class="nav-item active">
+      <div class="btn-group">
+        <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="notifications-button">
+          <%= octicon "bell", height: 20, class: 'align-bottom' %>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" href="#">Another action</a>
+          <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+      </div>
+    </li>
+  </ul>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -25,8 +39,7 @@
         <li class="nav-item active">
           <%= link_to 'Log Out', destroy_user_session_path, method: :delete, class: 'nav-link' %>
         </li>
-      <% end %>
-      <% if current_user %>
+
         <li class="nav-item active">
           <button href="#" data-toggle='modal' data-target='#logbookUploadModal' class='btn btn-primary'>Add Flights</button>
         </li>
