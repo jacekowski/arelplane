@@ -21,7 +21,7 @@ class Story < ApplicationRecord
   validate :presence_of_description_if_no_attachments
 
   after_create :fetch_image
-  after_create :add_subscription
+  after_create -> { add_subscription(self.user) }
 
   def presence_of_description_if_no_attachments
     if flights.blank? && ratings.blank? && description.blank?
@@ -40,10 +40,10 @@ class Story < ApplicationRecord
     end
   end
 
-  def add_subscription
-    if !self.user.subscription_preference.no_emails && self.user.subscription_preference.story_emails
-      if !self.subscribers.include?(self.user)
-        self.subscriptions.create(user: self.user)
+  def add_subscription(user)
+    if !user.subscription_preference.no_emails && user.subscription_preference.story_emails
+      if !self.subscribers.include?(user)
+        self.subscriptions.create(user: user)
       end
     end
   end

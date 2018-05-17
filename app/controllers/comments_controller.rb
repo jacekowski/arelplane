@@ -6,7 +6,7 @@ class CommentsController < ApplicationController
         @comment = @commentable.comments.new(comment_params)
         @comment.user = current_user
         if @comment.save
-          add_subscription(@commentable)
+          @commentable.add_subscription(current_user)
           send_email
           format.html { redirect_to root_path}
           format.js
