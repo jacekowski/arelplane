@@ -12,5 +12,11 @@
     -webkit-appearance: none;
     background-color: transparent;
     border: none;
+    cursor: pointer
+  }
+  .notifications-button:hover {
+    .octicon {
+      fill: $linkColor;
+    }
   }
 }
