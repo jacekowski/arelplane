@@ -37,6 +37,10 @@
         </div>
       </div>
 
+      <div class="alert alert-info">
+        Map image look funky on your post? After editing your flights, You can regenerate the image by clicking on this: <%= octicon "kebab-horizontal", width: 20 %> on your post and selecting "Regenerate Map" from the dropdown.
+      </div>
+
       <% nonconforming_flights = Flight.flights_with_missing_identifiers_for(current_user) %>
       <% if nonconforming_flights.count > 0 && params[:action] != "search" %>
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
