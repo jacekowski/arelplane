@@ -26,7 +26,7 @@ private
     @commentable.subscribers.each do |subscriber|
       if @comment.user != subscriber
         if @commentable.user == subscriber
-          StoryMailer.new_comment(@comment)
+          StoryMailer.new_comment(@comment).deliver_later
         else
           StoryMailer.following_story_comment(@comment, subscriber).deliver_later
         end
