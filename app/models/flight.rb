@@ -18,7 +18,7 @@ class Flight < ApplicationRecord
   def destroy_orphaned_story
     story = self.story
     yield # executes a DELETE database statement
-    if story && story.flights.length == 0
+    if story && story.flights.size == 0
       story.destroy
     end
   end
