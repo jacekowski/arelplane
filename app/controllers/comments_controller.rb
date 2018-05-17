@@ -25,7 +25,11 @@ private
   def send_email
     @commentable.subscribers.each do |subscriber|
       if @comment.user != subscriber
-        StoryMailer.following_story_comment(@comment, subscriber).deliver_later
+        if @commentable.user == subscriber
+          StoryMailer.new_comment(@comment)
+        else
+          StoryMailer.following_story_comment(@comment, subscriber).deliver_later
+        end
       end
     end
   end
