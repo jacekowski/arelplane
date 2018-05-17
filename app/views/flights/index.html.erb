@@ -38,7 +38,7 @@
       </div>
 
       <div class="alert alert-info">
-        Map image look funky on your post? After editing your flights, You can regenerate the image by clicking on this: <%= octicon "kebab-horizontal", width: 20 %> on your post and selecting "Regenerate Map" from the dropdown.
+        Does your map look funky? You can fix the flights here. The map on your profile will update automatically. Want to fix the map that shows up in the news feed? Look for this symbol: <%= octicon "kebab-horizontal", width: 20 %> on the post that was created when you uploaded your logbook. Click on it and select "Regenerate Map"
       </div>
 
       <% nonconforming_flights = Flight.flights_with_missing_identifiers_for(current_user) %>
