@@ -2,10 +2,21 @@
 @import "fonts";
 
 #application-navbar {
+  .navbar-brand {
+    color: white;
+    font-family: $baseFont;
+    font-weight: $black;
+    font-size: 1.5rem;
+    letter-spacing: 0.25rem;
+    margin-right: 1rem;
+  }
   .underline {
     border-bottom: 0.25rem solid $linkColor;
   }
   .notifications {
+    padding-left: 0;
+    padding-right: 1rem;
+    margin-bottom: 0;
     .octicon {
       fill: white;
     }
