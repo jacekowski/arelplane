@@ -2,10 +2,10 @@
   <%#= link_to image_tag('arelplane.png', class: 'd-inline-block align-top', height: '40', width: '40'), root_path, class: 'navbar-brand' %>
   <%= link_to 'ARELPLANE', root_path, class: "navbar-brand #{'underline' if current_page?(root_path)}" %>
   <% if current_user %>
-    <ul class="navbar-nav mr-auto">
+    <ul class="navbar-nav mr-auto notifications">
       <li class="nav-item btn-group" data-behavior='notifications'>
-        <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-behavior="notifications-link" class="notifications-button">
-          <%= octicon "bell", height: 20, class: 'align-bottom' %> <span data-behavior='unread-count'></span>
+        <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="button">
+          <%= octicon "bell", height: 20, class: 'align-bottom' %> <span class="count" data-behavior='unread-count'></span>
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" data-behavior='notification-items'>
         </div>
