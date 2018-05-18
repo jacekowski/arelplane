@@ -1,10 +1,5 @@
-var Notifications,
-  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-
-Notifications = (function() {
-  function Notifications() {
-    this.handleSuccess = bind(this.handleSuccess, this);
-    this.handleClick = bind(this.handleClick, this);
+var notifications = (function() {
+  function notifications() {
     this.notifications = $("[data-behavior='notifications']");
     if (this.notifications.length > 0) {
       this.handleSuccess(this.notifications.data("notifications"));
@@ -17,7 +12,7 @@ Notifications = (function() {
     }
   }
 
-  Notifications.prototype.getNewNotifications = function() {
+  notifications.prototype.getNewNotifications = function() {
     return $.ajax({
       url: "/api/v1/notifications.json",
       dataType: "JSON",
@@ -26,7 +21,7 @@ Notifications = (function() {
     });
   };
 
-  Notifications.prototype.handleClick = function(e) {
+  notifications.prototype.handleClick = function(e) {
     return $.ajax({
       url: "/api/v1/notifications/mark_as_read",
       dataType: "JSON",
@@ -37,7 +32,7 @@ Notifications = (function() {
     });
   };
 
-  Notifications.prototype.handleSuccess = function(data) {
+  notifications.prototype.handleSuccess = function(data) {
     var items, unread_count;
     items = $.map(data, function(notification) {
       return notification.template;
@@ -52,10 +47,10 @@ Notifications = (function() {
     return $("[data-behavior='notification-items']").html(items);
   };
 
-  return Notifications;
+  return notifications;
 
 })();
 
 jQuery(function() {
-  return new Notifications;
+  return new notifications;
 });
