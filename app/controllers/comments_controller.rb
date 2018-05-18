@@ -7,7 +7,7 @@ class CommentsController < ApplicationController
         @comment.user = current_user
         if @comment.save
           (@commentable.commenters + [@commentable.user] - [current_user]).uniq.each do |commenter|
-            Notification.create(recipient: commenter, actor: current_user, action:"posted", notifiable: @comment)
+            Notification.create(recipient: commenter, actor: current_user, action:"commented", notifiable: @comment)
           end
           @commentable.add_subscription(current_user)
           send_email

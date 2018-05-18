@@ -1,0 +1,5 @@
+<%= link_to story_path(notification.notifiable.commentable, anchor: dom_id(notification.notifiable)), class: "dropdown-item #{"unread" if !notification.read_at?}" do %>
+  <%= notification.actor.username %>
+  <%= notification.action %>
+  on your <%= notification.notifiable.commentable_type.underscore.humanize.downcase %>
+<% end %>

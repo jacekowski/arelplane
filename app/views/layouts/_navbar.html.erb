@@ -3,8 +3,8 @@
   <%= link_to 'ARELPLANE', root_path, class: "navbar-brand #{'underline' if current_page?(root_path)}" %>
   <% if current_user %>
     <ul class="navbar-nav mr-auto notifications">
-      <li class="nav-item btn-group" data-behavior='notifications'>
-        <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="button">
+      <li class="nav-item btn-group" data-behavior='notifications' data-notifications='<%= render template: "api/v1/notifications/index", formats: [:json] %>'>
+        <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-behavior="notifications-link" class="button">
           <%= octicon "bell", height: 20, class: 'align-bottom' %> <span class="count" data-behavior='unread-count'></span>
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" data-behavior='notification-items'>
