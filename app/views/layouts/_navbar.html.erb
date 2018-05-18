@@ -3,16 +3,11 @@
   <%= link_to 'ARELPLANE', root_path, class: "navbar-brand #{'underline' if current_page?(root_path)}" %>
   <% if current_user %>
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <div class="btn-group">
-          <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="notifications-button">
-            <%= octicon "bell", height: 20, class: 'align-bottom' %>
-          </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-          </div>
+      <li class="nav-item btn-group" data-behavior='notifications'>
+        <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-behavior="notifications-link" class="notifications-button">
+          <%= octicon "bell", height: 20, class: 'align-bottom' %> <span data-behavior='unread-count'></span>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" data-behavior='notification-items'>
         </div>
       </li>
     </ul>
