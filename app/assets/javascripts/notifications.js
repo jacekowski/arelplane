@@ -7,14 +7,19 @@ Notifications = (function() {
     this.handleClick = bind(this.handleClick, this);
     this.notifications = $("[data-behavior='notifications']");
     if (this.notifications.length > 0) {
-      this.setup();
+      this.handleSuccess(this.notifications.data("notifications"));
+      $("[data-behavior='notifications-link']").on("click", this.handleClick);
+      setInterval(((function(_this) {
+        return function() {
+          return _this.getNewNotifications();
+        };
+      })(this)), 5000);
     }
   }
 
-  Notifications.prototype.setup = function() {
-    $("[data-behavior='notifications-link']").on("click", this.handleClick);
+  Notifications.prototype.getNewNotifications = function() {
     return $.ajax({
-      url: "/api/v1/notifications.json",
+      url: "api/v1/notifications.json",
       dataType: "JSON",
       method: "GET",
       success: this.handleSuccess
@@ -24,8 +29,8 @@ Notifications = (function() {
   Notifications.prototype.handleClick = function(e) {
     return $.ajax({
       url: "api/v1/notifications/mark_as_read",
-      method: "POST",
       dataType: "JSON",
+      method: "POST",
       success: function() {
         return $("[data-behavior='unread-count']").text(0);
       }
@@ -33,11 +38,17 @@ Notifications = (function() {
   };
 
   Notifications.prototype.handleSuccess = function(data) {
-    var items;
+    var items, unread_count;
     items = $.map(data, function(notification) {
-      return "<a class='dropdown-item' href='" + notification.url + "'>" + notification.actor + " " + notification.action + " " + notification.notifiable.type + "</a>";
+      return notification.template;
     });
-    $("[data-behavior='unread-count']").text(items.length);
+    unread_count = 0;
+    $.each(data, function(i, notification) {
+      if (notification.unread) {
+        return unread_count += 1;
+      }
+    });
+    $("[data-behavior='unread-count']").text(unread_count);
     return $("[data-behavior='notification-items']").html(items);
   };
 
