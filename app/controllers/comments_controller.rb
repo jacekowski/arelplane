@@ -6,6 +6,9 @@ class CommentsController < ApplicationController
         @comment = @commentable.comments.new(comment_params)
         @comment.user = current_user
         if @comment.save
+          (@commentable.commenters + [@commentable.user] - [current_user]).uniq.each do |commenter|
+            Notification.create(recipient: commenter, actor: current_user, action:"commented", notifiable: @comment)
+          end
           @commentable.add_subscription(current_user)
           send_email
           format.html { redirect_to root_path}

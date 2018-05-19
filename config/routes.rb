@@ -26,6 +26,11 @@ Rails.application.routes.draw do
         end
       end
       resources :users, param: :username, only: :show
+      resources :notifications, only: :index do
+        collection do
+          post :mark_as_read
+        end
+      end
     end
   end
 

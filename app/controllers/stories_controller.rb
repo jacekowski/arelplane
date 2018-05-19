@@ -10,6 +10,9 @@ class StoriesController < ApplicationController
     @story.user_ratings.each {|user_rating| user_rating.user_id = current_user.id}
     respond_to do |format|
       if @story.save
+        current_user.followers.each do |follower|
+          Notification.create(recipient: follower, actor: current_user, action:"posted", notifiable: @story)
+        end
         cache_map_data if @story.flights.any?
         format.html { redirect_to root_path, notice: 'Post was successfully created.' }
         format.js

@@ -1,17 +1,26 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-xl navbar-dark bg-dark" id="application-navbar">
   <%#= link_to image_tag('arelplane.png', class: 'd-inline-block align-top', height: '40', width: '40'), root_path, class: 'navbar-brand' %>
   <%= link_to 'ARELPLANE', root_path, class: "navbar-brand #{'underline' if current_page?(root_path)}" %>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+  <% if current_user %>
+    <ul class="notifications mr-auto">
+      <li class="nav-item btn-group" data-behavior='notifications' data-notifications='<%= render template: "api/v1/notifications/index", formats: [:json] %>'>
+        <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-behavior="notifications-link" class="button align-bottom">
+          <%= octicon "bell", height: 20, class: 'align-bottom' %> <span class="count" data-behavior='unread-count'></span>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" data-behavior='notification-items'>
+        </div>
+      </li>
+    </ul>
+  <% end %>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
+  <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
     <%= form_with url: user_search_path, method: :post, local: true, class: 'form-inline' do |form| %>
       <%= form.collection_select :user_id, User.page, :id, :username, { include_blank: true}, class: 'user_lookup form-control mr-sm-2' %>
       <%= form.submit 'Go', class: 'btn btn-outline-light ml-2' %>
     <% end %>
-    <ul class="navbar-nav mr-auto">
-    </ul>
-    <ul class="navbar-nav">
+    <ul class="navbar-nav ml-auto">
       <% if current_user %>
         <li class="nav-item active <%= 'underline' if current_page?(username_path(current_user.try(:username))) %>">
           <%= link_to 'Profile', user_path(current_user.id), class: 'nav-link' %>
@@ -25,13 +34,11 @@
         <li class="nav-item active">
           <%= link_to 'Log Out', destroy_user_session_path, method: :delete, class: 'nav-link' %>
         </li>
-      <% end %>
-      <% if current_user %>
         <li class="nav-item active">
           <button href="#" data-toggle='modal' data-target='#logbookUploadModal' class='btn btn-primary'>Add Flights</button>
         </li>
       <% else %>
-        <li class="nav-item active mt-2">
+        <li class="nav-item mt-2 pull-right">
           <a href="#" data-toggle='modal' data-target='#loginModal' class='light_link'>Login</a>
           &nbsp;<%= link_to "Register", new_user_registration_path, class: 'btn btn-primary' %>
         </li>
