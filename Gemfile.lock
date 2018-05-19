@@ -70,10 +70,6 @@ GEM
       xpath (>= 2.0, < 4.0)
     childprocess (0.9.0)
       ffi (~> 1.0, >= 1.0.11)
-    coffee-script (2.4.1)
-      coffee-script-source
-      execjs
-    coffee-script-source (1.12.2)
     concurrent-ruby (1.0.5)
     crass (1.0.4)
     derailed_benchmarks (1.3.4)
@@ -292,7 +288,6 @@ DEPENDENCIES
   bugsnag
   byebug
   capybara (~> 2.13)
-  coffee-script
   derailed_benchmarks
   devise
   geocoder
