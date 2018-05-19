@@ -2,7 +2,7 @@
   <%#= link_to image_tag('arelplane.png', class: 'd-inline-block align-top', height: '40', width: '40'), root_path, class: 'navbar-brand' %>
   <%= link_to 'ARELPLANE', root_path, class: "navbar-brand #{'underline' if current_page?(root_path)}" %>
   <% if current_user %>
-    <ul class="notifications mr-auto">
+    <ul class="notifications pr-xl-3 mr-auto">
       <li class="nav-item btn-group" data-behavior='notifications' data-notifications='<%= render template: "api/v1/notifications/index", formats: [:json] %>'>
         <button data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-behavior="notifications-link" class="button align-bottom">
           <%= octicon "bell", height: 20, class: 'align-bottom' %> <span class="count" data-behavior='unread-count'></span>
@@ -16,7 +16,7 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-    <%= form_with url: user_search_path, method: :post, local: true, class: 'form-inline' do |form| %>
+    <%= form_with url: user_search_path, method: :post, local: true, class: 'form-inline mt-3 mt-xl-0' do |form| %>
       <%= form.collection_select :user_id, User.page, :id, :username, { include_blank: true}, class: 'user_lookup form-control mr-sm-2' %>
       <%= form.submit 'Go', class: 'btn btn-outline-light ml-2' %>
     <% end %>
