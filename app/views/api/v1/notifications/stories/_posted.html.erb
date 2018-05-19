@@ -1,0 +1,12 @@
+<% story = notification.notifiable %>
+<%= link_to story_path(story), class: "dropdown-item #{"unread" if !notification.read_at?}" do %>
+  <%= notification.actor.username %>
+  <% if story.flights.any? %>
+    added <%= pluralize(story.flights.count, "new flight") %>
+  <% elsif story.ratings.any? %>
+    added the rating <%= story.ratings.first.name %>
+  <% else %>
+    <%= notification.action %>
+    something new
+  <% end %>
+<% end %>

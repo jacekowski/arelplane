@@ -13,40 +13,4 @@
   .underline {
     border-bottom: 0.25rem solid $linkColor;
   }
-  .notifications {
-    padding-left: 0;
-    padding-right: 1rem;
-    margin-bottom: 0;
-    .octicon {
-      fill: white;
-    }
-    .button {
-      -webkit-appearance: none;
-      background-color: transparent;
-      border: none;
-      outline: none;
-      cursor: pointer
-    }
-    .count {
-      position: absolute;
-      top:-0.2rem;
-      right: -0.3rem;
-      padding: 0.1rem 0.4rem;
-      border-radius:0.15rem;
-      background: $linkColor;
-      -webkit-background-clip: padding-box;
-      font: $regular 0.8rem/1.125rem $baseFont;
-      color: white;
-      text-decoration: none;
-      opacity: 0.9;
-    }
-    .unread {
-      border-left: 0.18rem solid red;
-    }
-    .button:hover {
-      .octicon {
-        fill: $linkColor;
-      }
-    }
-  }
 }

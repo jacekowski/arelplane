@@ -4,6 +4,7 @@ class Stories::LikesController < ApplicationController
 
   def create
     @story.likes.where(user_id: current_user.id).first_or_create
+    Notification.create(recipient: @story.user, actor: current_user, action:"liked", notifiable: @story)
     send_email
     respond_to do |format|
       format.html { redirect_to root_path}
@@ -13,6 +14,7 @@ class Stories::LikesController < ApplicationController
 
   def destroy
     @story.likes.where(user_id: current_user.id).destroy_all
+    Notification.where(recipient: @story.user, actor: current_user, action:"liked", notifiable: @story).destroy_all
     respond_to do |format|
       format.html { redirect_to root_path}
       format.js

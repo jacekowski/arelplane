@@ -38,8 +38,10 @@ var notifications = (function() {
       return notification.template;
     });
     unread_count = 0;
+    $('.notifications .count').hide();
     $.each(data, function(i, notification) {
       if (notification.unread) {
+        $('.notifications .count').show();
         return unread_count += 1;
       }
     });
