@@ -33,11 +33,10 @@ var notifications = (function() {
   };
 
   notifications.prototype.handleSuccess = function(data) {
-    var items, unread_count;
-    items = $.map(data, function(notification) {
+    var items = $.map(data, function(notification) {
       return notification.template;
     });
-    unread_count = 0;
+    var unread_count = 0;
     $('.notifications .count').hide();
     $.each(data, function(i, notification) {
       if (notification.unread) {

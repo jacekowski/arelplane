@@ -10,6 +10,7 @@ class RegistrationsController < Devise::RegistrationsController
     super
     if @user.persisted?
       UserMailer.welcome_email(@user).deliver_later
+      Notification.create(recipient: @user, actor: User.find(64), action:"notified", notifiable: User.find(64))
     end
    end
 

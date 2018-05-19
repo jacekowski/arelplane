@@ -1,5 +1,10 @@
 <%= link_to story_path(notification.notifiable.commentable, anchor: dom_id(notification.notifiable)), class: "dropdown-item #{"unread" if !notification.read_at?}" do %>
   <%= notification.actor.username %>
-  <%= notification.action %>
-  on your <%= notification.notifiable.commentable_type.underscore.humanize.downcase %>
+  <% if notification.notifiable.commentable.user == notification.actor %>
+    also <%= notification.action %> on their <%= notification.notifiable.commentable_type.underscore.humanize.downcase %>
+  <% elsif notification.notifiable.commentable.user == notification.recipient %>
+    <%= notification.action %> on your <%= notification.notifiable.commentable_type.underscore.humanize.downcase %>
+  <% else %>
+    <%= notification.action %> on <%= notification.notifiable.commentable.user.username %>'s <%= notification.notifiable.commentable_type.underscore.humanize.downcase %> as well!
+  <% end %>
 <% end %>
