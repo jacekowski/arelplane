@@ -14,7 +14,7 @@ var notifications = (function() {
 
   notifications.prototype.getNewNotifications = function() {
     return $.ajax({
-      url: "/api/v1/notifications.json",
+      url: "/notifications.json",
       dataType: "JSON",
       method: "GET",
       success: this.handleSuccess
@@ -23,7 +23,7 @@ var notifications = (function() {
 
   notifications.prototype.handleClick = function(e) {
     return $.ajax({
-      url: "/api/v1/notifications/mark_as_read",
+      url: "/notifications/mark_as_read",
       dataType: "JSON",
       method: "POST",
       success: function() {
