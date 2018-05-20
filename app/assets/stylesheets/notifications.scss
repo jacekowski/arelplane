@@ -34,9 +34,22 @@
     }
   }
   .dropdown-menu {
+    left: auto;
+    right: 0;
+    max-width: 16rem;
+    min-width: 16rem}
+  .dropdown-item {
+    white-space: normal;
+    padding-bottom: 0.5rem;
+    padding-top: 0.5rem;
+  }
+  .dropdown-menu {
     .unread {
       border-left: 0.18rem solid $linkColor;
       background-color: $notificationBackground;
+    }
+    a {
+      border-bottom: 1px $linkColor solid;
     }
   }
 }
