@@ -1,8 +1,8 @@
 <nav class="nav nav-tabs mb-1" id="myTab" role="tablist">
-  <a class="nav-item nav-link active" id="nav-all-tab" data-toggle="tab" href="#nav-all" role="tab" aria-controls="nav-all" aria-selected="true">Everyone</a>
-  <a class="nav-item nav-link" id="nav-following-tab" data-toggle="tab" href="#nav-following" role="tab" aria-controls="nav-following" aria-selected="false">Following <span class="count"><%= @following.count %></span></a>
-  <a class="nav-item nav-link" id="nav-followers-tab" data-toggle="tab" href="#nav-followers" role="tab" aria-controls="nav-followers" aria-selected="false">Followers <span class="count"><%= @followers.count %></span></a>
-  <a class="nav-item nav-link" id="nav-you-tab" data-toggle="tab" href="#nav-you" role="tab" aria-controls="nav-you" aria-selected="false">You</span></a>
+  <a class="nav-item nav-link active" id="nav-all-tab" data-toggle="tab" data-tab-name="all" href="#nav-all" role="tab" aria-controls="nav-all" aria-selected="true">Everyone</a>
+  <a class="nav-item nav-link" id="nav-following-tab" data-toggle="tab" data-tab-name="following" href="#nav-following" role="tab" aria-controls="nav-following" aria-selected="false">Following <span class="count"><%= @following.count %></span></a>
+  <a class="nav-item nav-link" id="nav-followers-tab" data-toggle="tab" data-tab-name="followers" href="#nav-followers" role="tab" aria-controls="nav-followers" aria-selected="false">Followers <span class="count"><%= @followers.count %></span></a>
+  <a class="nav-item nav-link" id="nav-you-tab" data-toggle="tab" data-tab-name="you" href="#nav-you" role="tab" aria-controls="nav-you" aria-selected="false">You</span></a>
 </nav>
 <div class="tab-content" id="nav-tabContent">
   <div class="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab">
