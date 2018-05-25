@@ -1,6 +1,7 @@
 $(document).ready(function() {
   prepareTab();
   infiniteScroll();
+  $.getScript("news_feed")
 });
 
 function prepareTab() {
@@ -9,17 +10,17 @@ function prepareTab() {
     $('.nav-tabs a[href="#' + url.split('#')[1] + '"]').tab('show');
   }
 
-  $('.nav-tabs a').on('shown.bs.tab', function (e) {
+  $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
     if(history.pushState) {
       history.pushState(null, null, e.target.hash);
     } else {
       location.hash = e.target.hash;
     }
-    if (e.target.hash === "#nav-following" && $('.progress').length >= 1) {
+    if (e.target.hash === "#nav-following" && $('#nav-following .progress').length === 1) {
       $.getScript('users/following')
-    } else if (e.target.hash === "#nav-followers" && $('.progress').length >= 1) {
+    } else if (e.target.hash === "#nav-followers" && $('#nav-followers .progress').length === 1) {
       $.getScript('users/followers')
-    } else if (e.target.hash === "#nav-you" && $('.progress').length >= 1) {
+    } else if (e.target.hash === "#nav-you" && $('#nav-you .progress').length === 1) {
       $.getScript('users/stories')
     }
   })

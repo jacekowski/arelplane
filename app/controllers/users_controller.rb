@@ -15,35 +15,30 @@ class UsersController < ApplicationController
 
   def home
     @user = current_user
-    @stories = Kaminari.paginate_array(Story.smart_feed).page(params[:page]).per(5)
-    @followers = current_user.followers
-    @following = current_user.following
+    @followers_count = current_user.followers.count
+    @following_count = current_user.following.count
 
     @story = current_user.stories.new
     flight = @story.flights.build
     flight.waypoints.build
-    respond_to do |format|
-      format.html
-      format.js { render action: 'stories', locals: {type: 'main-feed'} }
-    end
   end
 
   def followers
-    @stories = Story.includes(:flights, :ratings).where(user: current_user.followers).page(params[:page]).per(10)
+    @stories = Story.includes(:flights, :ratings).where(user: current_user.followers).page(params[:page]).per(15)
     respond_to do |format|
       format.js { render action: 'stories', locals: {type: 'followers-feed'} }
     end
   end
 
   def following
-    @stories = Story.includes(:flights, :ratings).where(user: current_user.following).page(params[:page]).per(10)
+    @stories = Story.includes(:flights, :ratings).where(user: current_user.following).page(params[:page]).per(15)
     respond_to do |format|
       format.js { render action: 'stories', locals: {type: 'following-feed'} }
     end
   end
 
   def stories
-    @stories = current_user.stories.page(params[:page]).per(10)
+    @stories = current_user.stories.page(params[:page]).per(15)
     respond_to do |format|
       format.js { render action: 'stories', locals: {type: 'personal-feed'} }
     end
