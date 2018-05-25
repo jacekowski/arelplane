@@ -1,28 +1,42 @@
 <nav class="nav nav-tabs mb-1" id="myTab" role="tablist">
   <a class="nav-item nav-link active" id="nav-all-tab" data-toggle="tab" data-tab-name="all" href="#nav-all" role="tab" aria-controls="nav-all" aria-selected="true">Everyone</a>
-  <a class="nav-item nav-link" id="nav-following-tab" data-toggle="tab" data-tab-name="following" href="#nav-following" role="tab" aria-controls="nav-following" aria-selected="false">Following <span class="count"><%= @following.count %></span></a>
-  <a class="nav-item nav-link" id="nav-followers-tab" data-toggle="tab" data-tab-name="followers" href="#nav-followers" role="tab" aria-controls="nav-followers" aria-selected="false">Followers <span class="count"><%= @followers.count %></span></a>
+  <a class="nav-item nav-link" id="nav-following-tab" data-toggle="tab" data-tab-name="following" href="#nav-following" role="tab" aria-controls="nav-following" aria-selected="false">Following <span class="count"><%= @following_count %></span></a>
+  <a class="nav-item nav-link" id="nav-followers-tab" data-toggle="tab" data-tab-name="followers" href="#nav-followers" role="tab" aria-controls="nav-followers" aria-selected="false">Followers <span class="count"><%= @followers_count %></span></a>
   <a class="nav-item nav-link" id="nav-you-tab" data-toggle="tab" data-tab-name="you" href="#nav-you" role="tab" aria-controls="nav-you" aria-selected="false">You</span></a>
 </nav>
 <div class="tab-content" id="nav-tabContent">
   <div class="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab">
-    <div class="infinite-scroll" id="main-feed">
-      <%= render 'users/home_page/all_users' %>
+    <div class="news-feed" id="main-feed">
+      <div class='progress mt-3'>
+        <div class='progress-bar progress-bar-striped progress-bar-animated' role='progressbar' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100' style='width: 100%'>
+        </div>
+      </div>
+    </div>
+    <div class="infinite-scrolling">
     </div>
   </div>
   <div class="tab-pane fade" id="nav-followers" role="tabpanel" aria-labelledby="nav-followers-tab">
-    <div class="infinite-scroll">
-      <%= render 'users/home_page/followings', stories: @follower_stories, users: @followers %>
+    <div class="news-feed" id="followers-feed">
+      <div class='progress mt-3'>
+        <div class='progress-bar progress-bar-striped progress-bar-animated' role='progressbar' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100' style='width: 100%'>
+        </div>
+      </div>
     </div>
   </div>
   <div class="tab-pane fade" id="nav-following" role="tabpanel" aria-labelledby="nav-following-tab">
-    <div class="infinite-scroll">
-      <%= render 'users/home_page/followings', stories: @following_stories, users: @following %>
+    <div class="news-feed" id="following-feed">
+      <div class='progress mt-3'>
+        <div class='progress-bar progress-bar-striped progress-bar-animated' role='progressbar' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100' style='width: 100%'>
+        </div>
+      </div>
     </div>
   </div>
   <div class="tab-pane fade" id="nav-you" role="tabpanel" aria-labelledby="nav-you-tab">
-    <div class="infinite-scroll">
-      <%= render 'users/home_page/followings', stories: current_user.stories.page(params[:page]).per(10), users: nil %>
+    <div class="news-feed" id="personal-feed">
+      <div class='progress mt-3'>
+        <div class='progress-bar progress-bar-striped progress-bar-animated' role='progressbar' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100' style='width: 100%'>
+        </div>
+      </div>
     </div>
   </div>
 </div>

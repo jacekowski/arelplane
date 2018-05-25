@@ -34,7 +34,16 @@ Rails.application.routes.draw do
       post :mark_as_read
     end
   end
-  resources :users, only: :show
+
+  resources :users, only: :show do
+    collection do
+      get 'followers', to: 'users#followers'
+      get 'following', to: 'users#following'
+      get 'stories', to: 'users#stories'
+    end
+  end
+
+  resources :news_feed, only: :index
 
   resources :flights, except: :show do
     collection do
