@@ -1,0 +1,8 @@
+$('#<%= type %> .progress').remove();
+$("#<%= type %>").append("<%= j render 'users/home_page/stories', stories: @stories %>");
+<% if @stories.next_page %>
+  $('.pagination').replaceWith("<%= j paginate @stories, theme: 'bootstrap4' %>");
+<% else %>
+  $(window).off('scroll');
+  $('.pagination').remove();
+<% end %>

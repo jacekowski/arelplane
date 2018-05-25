@@ -17,6 +17,7 @@ class Story < ApplicationRecord
   has_many :likes, as: :likeable, dependent: :destroy
   has_many :subscriptions, as: :subscribable, dependent: :destroy
   has_many :subscribers, through: :subscriptions, source: :user
+  has_many :notifications, as: :notifiable, dependent: :destroy
 
   validate :presence_of_description_if_no_attachments
 
