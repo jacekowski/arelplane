@@ -4,11 +4,11 @@ var notifications = (function() {
     if (this.notifications.length > 0) {
       this.handleSuccess(this.notifications.data("notifications"));
       $("[data-behavior='notifications-link']").on("click", this.handleClick);
-      // setInterval(((function(_this) {
-      //   return function() {
-      //     return _this.getNewNotifications();
-      //   };
-      // })(this)), 5000);
+      setInterval(((function(_this) {
+        return function() {
+          return _this.getNewNotifications();
+        };
+      })(this)), 5000);
     }
   }
 
