@@ -11,11 +11,11 @@
           <% end %>
         </div>
       </div>
-        <div id="comments_<%= story.id %>">
-          <% story.comments.each do |comment| %>
-            <%= render 'stories/comment', comment: comment %>
-          <% end %>
-        </div>
+      <div id="comments_<%= story.id %>">
+        <% story.comments.each do |comment| %>
+          <%= render 'stories/comment', comment: comment %>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>

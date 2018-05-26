@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   get 'unsubscribe_confirmation', to: 'pages#unsubscribe_confirmation'
   get 'privacy', to: 'pages#privacy_policy'
 
+  resources :news_feed, only: :index
+
   namespace :api, constraints: {format: :json} do
     namespace :v1 do
       resources :users, only: [] do
@@ -42,8 +44,6 @@ Rails.application.routes.draw do
       get 'stories', to: 'users#stories'
     end
   end
-
-  resources :news_feed, only: :index
 
   resources :flights, except: :show do
     collection do

@@ -1,7 +1,9 @@
 $(document).ready(function() {
   prepareTab();
   infiniteScroll();
-  $.getScript("news_feed")
+  if ($('#main-feed').length > 0) {
+    $.getScript("news_feed")
+  }
 });
 
 function prepareTab() {
