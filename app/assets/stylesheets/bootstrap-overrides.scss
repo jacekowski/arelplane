@@ -2,23 +2,23 @@
 @import "fonts";
 
 .btn-primary {
-  background-color: #00CED6;
-  border-color: #00CED6;
+  background-color: $btnColor;
+  border-color: $btnColor;
 }
 
 .bg-dark {
-  background-color: #191A1A !important;
+  background-color: $darkBackgroundColor !important;
 }
 
 .btn-primary:hover {
-  background-color: #00E6F0;
-  border-color: #00E6F0;
+  background-color: $btnHover;
+  border-color: $btnHover;
   color: $lightTextColor;
 }
 
 .btn-primary:disabled {
-  background-color: #00E6F0;
-  border-color: #00E6F0;
+  background-color: $btnHover;
+  border-color: $btnHover;
 }
 
 .btn-primary a {

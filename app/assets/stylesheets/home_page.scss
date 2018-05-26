@@ -94,6 +94,9 @@
     }
     .progress {
       width: 100%;
+      .progress-bar {
+        background-color: $btnColor;
+      }
     }
   }
 }
