@@ -16,6 +16,7 @@ Or, if you don't want/need a background service you can just run:
 ```
 
 #### Javascript Dependencies:
+
 ##### Install Dependencies:
 * `yarn install`
 
