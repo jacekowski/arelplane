@@ -383,23 +383,38 @@ class Flight < ApplicationRecord
 
   def self.parse_pilot_pro(logbook_csv, user)
     story = Story.new(user_id: user.id)
-    CSV.parse(logbook_csv, headers: true, skip_blanks: true) do |row|
+    CSV.foreach(logbook_csv, headers: [
+      :flight_date,
+      :aircraft_identifier,
+      :origin,
+      :destination,
+      :duration,
+      :day_landings,
+      :night_landings,
+      :flight_start_time,
+      :flight_stop_time,
+      :approaches,
+      :route,
+      :distance,
+      :pic
+    ]) do |row|
       r = row.to_hash
+      next unless date_format_six =~ r[:flight_date]
       f = Flight.find_or_initialize_by(
         user_id: user.id,
-        flight_date: r["Date"],
-        aircraft_identifier: r["AircraftID"],
-        aircraft_id: find_aircraft_id(r["AircraftID"]),
-        origin_id: find_location_from(r["From"]),
-        destination_id: find_location_from(r["To"]),
-        time_out: r["TimeOut"],
-        time_in: r["TimeIn"],
-        pic: r["PIC"],
-        total_time: r["TotalTime"],
-        distance: r["Distance"]
+        flight_date: r[:flight_date],
+        aircraft_identifier: r[:aircraft_identifier],
+        aircraft_id: find_aircraft_id(r[:aircraft_identifier]),
+        origin_id: find_location_from(r[:origin]),
+        destination_id: find_location_from(r[:destination]),
+        time_out: r[:flight_start_time],
+        time_in: r[:flight_stop_time],
+        pic: r[:pic],
+        total_time: r[:duration],
+        distance: r[:distance]
       )
       if f.save
-        f.add_waypoints(r, "Route", "From", "To")
+        f.add_waypoints(r, :route, :origin, :destination)
         add_to_story(story, f)
       end
     end
@@ -497,6 +512,11 @@ private
   def self.date_format_five
     # 5/5/2017
     /^\d{1,2}\/{1}\d{1,2}\/{1}\d{2,4}$/
+  end
+
+  def self.date_format_six
+    # 2013-06-15 00:00:00
+    /^\d{4}-{1}\d{2}-{1}\d{2} \d{2}:\d{2}:\d{2}$/
   end
 
   def self.sniff(path)
