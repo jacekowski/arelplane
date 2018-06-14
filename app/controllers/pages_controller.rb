@@ -6,4 +6,7 @@ class PagesController < ApplicationController
   def privacy_policy
   end
 
+  def craftpad
+  end
+
 end

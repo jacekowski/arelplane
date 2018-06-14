@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get 'upload_instructions', to: 'pages#upload_instructions'
   get 'unsubscribe_confirmation', to: 'pages#unsubscribe_confirmation'
   get 'privacy', to: 'pages#privacy_policy'
+  get 'craftpad', to: 'pages#craftpad'
 
   resources :news_feed, only: :index
 
