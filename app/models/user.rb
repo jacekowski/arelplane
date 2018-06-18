@@ -27,6 +27,7 @@ class User < ApplicationRecord
   has_many :ratings, through: :user_ratings, dependent: :destroy
   has_many :stories, dependent: :destroy
   has_many :notifications, foreign_key: :recipient_id
+  has_many :purchases
 
   belongs_to :home_base, class_name: 'Location', foreign_key: :home_base_id, optional: true
 
