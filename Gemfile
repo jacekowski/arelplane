@@ -62,6 +62,9 @@ gem "bugsnag"
 # sending email
 gem 'postmark-rails'
 
+# charging creditcards
+gem 'stripe'
+
 group :production do
 end
 

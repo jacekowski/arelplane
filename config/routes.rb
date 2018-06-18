@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get 'unsubscribe_confirmation', to: 'pages#unsubscribe_confirmation'
   get 'privacy', to: 'pages#privacy_policy'
   get 'craftpad', to: 'pages#craftpad'
+  resources :purchases, only: :create
 
   resources :news_feed, only: :index
 
