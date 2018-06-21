@@ -30,33 +30,13 @@
         </div>
         <div class="card-body">
           <h5 class="card-title">CRAFT pad</h5>
+          <a href="https://amzn.to/2MN2BuY" target="_blank">
+            <button type="button" class="btn btn-primary">Buy Now!</button>
+          </a>
+          <p></p>
           <p class="card-text">Three 50 page CRAFT IFR notepads for one low price!</p>
           <p>Write clearances like a boss with this CRAFT notepad. When you're done with the clearance, tear the sheet off and you're ready for your next clearance.</p>
           <p>Forget scrambling to find a piece of paper, or quickly scribbling down CRAFT while trying to get ready to write your clearance. Always be ready with this handy CRAFT IFR notepad!</p>
-          <%= form_tag purchases_path do %>
-            <article>
-              <% if flash[:error].present? %>
-                <div id="error_explanation">
-                  <p><%= flash[:error] %></p>
-                </div>
-              <% end %>
-              <label class="amount">
-                <b>$14.99 for a package of three</b>
-              </label>
-            </article>
-            <script
-              src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-              data-key="pk_07TfCGBsA8fSWzQ758tjXqTqdeSer"
-              data-amount="1499"
-              data-email="<%= current_user.email if current_user %>"
-              data-billing-address="true"
-              data-shipping-address="true"
-              data-name="Arelplane"
-              data-zip-code="true"
-              data-description="Three CRAFTpads"
-              data-locale="auto">
-            </script>
-          <% end %>
         </div>
       </div>
     </div>
