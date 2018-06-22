@@ -1,4 +1,5 @@
-<%= image @story.map_image_url %>
+<%= image @story.map_image_url || image_url('icons/rating_award.png') %>
+<%= title "#{@story.description}" %>
 
 <div class='container-fluid story-show'>
   <div class='row'>
