@@ -1,0 +1,29 @@
+#marketing-page {
+  .container {
+    min-height: 60vh;
+    min-width: 100%;
+    padding: 0;
+    background: asset_url("marketing_page/map_background.png") no-repeat top left;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    .layer {
+      background-color: rgba(255,255,255, 0.5);
+      width: 100%;
+      height: 60vh;
+    }
+  }
+  .headline {
+    color: white;
+  }
+  button {
+    a {
+      color: white !important;
+    }
+  }
+  .feature-callout {
+    background-color: white;
+    height: 20rem;
+  }
+}

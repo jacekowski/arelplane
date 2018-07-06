@@ -1,32 +1,33 @@
-<span id="run-cesium" data-map="true"></span>
-<%= content_tag :div, id: "current_page", data: {page: "homepage"} do %>
-<% end %>
-<div class='container mt-2 mb-2'>
-  <div class='row'>
-    <div class="col">
-        <p class='light-sub-text align-center'>Are you a pilot with a digital logbook? Sign up to make a map of all your flights!</p>
-        <p class='light-sub-text align-center'>Not a pilot? Like aviation? Create an account and see where everyone is flying!</p>
-        <p class='light-sub-text align-center'>Want more info? See our <%= link_to 'upload instructions', upload_instructions_path %> and see a sample <%= link_to "profile", username_path("@arelenglish") %></p>
+<div id="marketing-page">
+  <div class='container'>
+    <div class="layer">
+      <div class='row'>
+        <div class="col-12 mt-5">
+          <h1 class="headline text-center mt-5">
+            Visualize and share your flying
+          </h1>
+            <!-- <p class='light-sub-text align-center'>Are you a pilot with a digital logbook? Sign up to make a map of all your flights!</p>
+            <p class='light-sub-text align-center'>Not a pilot? Like aviation? Create an account and see where everyone is flying!</p>
+            <p class='light-sub-text align-center'>Want more info? See our <%= link_to 'upload instructions', upload_instructions_path %> and see a sample <%= link_to "profile", username_path("@arelenglish") %></p> -->
+        </div>
+        <div class="col-12 text-center mt-5">
+          <button type="button" class="btn-outline-light btn-lg">
+            <a href="#" data-toggle='modal' data-target='#loginOrRegisterModal'>
+              Get Started
+            </a>
+          </button>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class='row justify-content-center'>
-    <div class='col-8'>
-      <div class='form-inline'>
-          <%= form_with model: User.new, local: true, url: user_registration_path do |form| %>
-            <div class='form-inline'>
-              <%= form.email_field :email, placeholder: 'email', class: 'form-control' %>
-              <%= form.text_field :name, placeholder: 'name', class: 'form-control' %>
-              <%= form.password_field :password, placeholder: 'password', class: 'form-control' %>
-              <%= form.submit 'Register', class: 'btn btn-primary', id: 'registerButton' %>
-            </div>
-            <p class='light-sub-text'> Already have an account?
-            <a href="#" data-toggle='modal' data-target='#loginModal'>login</a></p>
-        <% end %>
+    <div class="row">
+      <div class="col-6 feature-callout">
+        Hello
+      </div>
+      <div class="col-6 feature-callout">
+        Side by side
       </div>
     </div>
   </div>
 </div>
-<div class='homepage-map' id='cesiumContainer'></div>
-<%= render 'vendors/fb_pixel_register' %>
 
-<script src="../Cesium/Cesium.js"></script>
+<%= render 'vendors/fb_pixel_register' %>
