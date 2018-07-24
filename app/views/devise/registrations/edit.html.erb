@@ -70,6 +70,8 @@
           <%= link_to "Back", :back %>
         </div>
       <% end %>
+      <br>
+      <%= link_to "Delete Account", registration_path(current_user), data: { confirm: "Are you sure? This can't be undone! Your account will be gone forever!" }, method: :delete %>
     </div>
     <div class='col-1 col-md-4'></div>
   </div>
