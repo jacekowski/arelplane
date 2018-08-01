@@ -144,8 +144,8 @@ class Flight < ApplicationRecord
           flight_date: r[:flight_date],
           aircraft_identifier: r[:aircraft_identifier],
           aircraft_id: find_aircraft_id(r[:aircraft_identifier]),
-          origin_id: find_location_from(r[:origin_id]),
-          destination_id: find_location_from(r[:destination_id]),
+          origin_id: Location.find_from(r[:origin_id]),
+          destination_id: Location.find_from(r[:destination_id]),
           time_out: r[:time_out],
           time_in: r[:time_in],
           total_time: r[:total_time],
@@ -171,8 +171,8 @@ class Flight < ApplicationRecord
         flight_date: r["Date"],
         aircraft_identifier: r["Aircraft ID"],
         aircraft_id: find_aircraft_id(r["Aircraft ID"]),
-        origin_id: find_location_from(r["From"]),
-        destination_id: find_location_from(r["To"]),
+        origin_id: Location.find_from(r["From"]),
+        destination_id: Location.find_from(r["To"]),
         total_time: convert_time(r["Total Time"]),
         pic: convert_time(r["PIC"]),
       )
@@ -196,8 +196,8 @@ class Flight < ApplicationRecord
         flight_date: r["mcc_DATE"],
         aircraft_identifier: r["AC_REG"],
         aircraft_id: find_aircraft_id(r["AC_REG"]),
-        origin_id: find_location_from(r["AF_DEP"]),
-        destination_id: find_location_from(r["AF_ARR"]),
+        origin_id: Location.find_from(r["AF_DEP"]),
+        destination_id: Location.find_from(r["AF_ARR"]),
         time_out: r["TIME_DEP"],
         time_in: r["TIME_ARR"],
         total_time: r["TIME_TOTAL"].to_f/60,
@@ -248,8 +248,8 @@ class Flight < ApplicationRecord
         flight_date: r["Date"],
         aircraft_identifier: r["Aircraft ID"],
         aircraft_id: find_aircraft_id(r["Aircraft ID"]),
-        origin_id: find_location_from(route.first),
-        destination_id: find_location_from(route.last),
+        origin_id: Location.find_from(route.first),
+        destination_id: Location.find_from(route.last),
         pic: r["PIC"],
         total_time: r["Total Time"]
       )
@@ -257,7 +257,7 @@ class Flight < ApplicationRecord
         route.shift
         route.pop
         route.each do |waypoint|
-          f.waypoints.create(location_id: find_location_from(waypoint))
+          f.waypoints.create(location_id: Location.find_from(waypoint))
         end
         add_to_story(story, f)
       end
@@ -279,8 +279,8 @@ class Flight < ApplicationRecord
           flight_date: r["Date"],
           aircraft_identifier: r["Tail Number"],
           aircraft_id: find_aircraft_id(r["Tail Number"]),
-          origin_id: find_location_from(route.first),
-          destination_id: find_location_from(route.last),
+          origin_id: Location.find_from(route.first),
+          destination_id: Location.find_from(route.last),
           time_out: r["Engine Start"],
           time_in: r["Engine End"],
           pic: r["PIC"],
@@ -290,7 +290,7 @@ class Flight < ApplicationRecord
           route.shift
           route.pop
           route.each do |waypoint|
-            f.waypoints.create(location_id: find_location_from(waypoint))
+            f.waypoints.create(location_id: Location.find_from(waypoint))
           end
           add_to_story(story, f)
         end
@@ -313,8 +313,8 @@ class Flight < ApplicationRecord
         flight_date: r["DATE"],
         aircraft_identifier: r["AIRCRAFT IDENT"],
         aircraft_id: find_aircraft_id(r["AIRCRAFT IDENT"]),
-        origin_id: find_location_from(route.first),
-        destination_id: find_location_from(route.last),
+        origin_id: Location.find_from(route.first),
+        destination_id: Location.find_from(route.last),
         pic: r["PILOT IN COMMAND"],
         total_time: r["DURATION"]
       )
@@ -322,7 +322,7 @@ class Flight < ApplicationRecord
         route.shift
         route.pop
         route.each do |waypoint|
-          f.waypoints.create(location_id: find_location_from(waypoint))
+          f.waypoints.create(location_id: Location.find_from(waypoint))
         end
         add_to_story(story, f)
       end
@@ -340,8 +340,8 @@ class Flight < ApplicationRecord
         flight_date: r["Date"],
         aircraft_identifier: r["Aircraft ID"],
         aircraft_id: find_aircraft_id(r["Aircraft ID"]),
-        origin_id: find_location_from(r["Departure"]),
-        destination_id: find_location_from(r["Destination"]),
+        origin_id: Location.find_from(r["Departure"]),
+        destination_id: Location.find_from(r["Destination"]),
         time_out: r["Time Out"],
         time_in: r["Time In"],
         pic: r["PIC Duration"],
@@ -366,8 +366,8 @@ class Flight < ApplicationRecord
         flight_date: r["date"],
         aircraft_identifier: r["aircraft_registration"],
         aircraft_id: find_aircraft_id(r["aircraft_registration"]),
-        origin_id: find_location_from(r["departure_airport"]),
-        destination_id: find_location_from(r["arrival_airport"]),
+        origin_id: Location.find_from(r["departure_airport"]),
+        destination_id: Location.find_from(r["arrival_airport"]),
         time_out: r["departure_time"],
         time_in: r["arrival_time"],
         pic: convert_time(r["pic"]),
@@ -405,8 +405,8 @@ class Flight < ApplicationRecord
         flight_date: r[:flight_date],
         aircraft_identifier: r[:aircraft_identifier],
         aircraft_id: find_aircraft_id(r[:aircraft_identifier]),
-        origin_id: find_location_from(r[:origin]),
-        destination_id: find_location_from(r[:destination]),
+        origin_id: Location.find_from(r[:origin]),
+        destination_id: Location.find_from(r[:destination]),
         time_out: r[:flight_start_time],
         time_in: r[:flight_stop_time],
         pic: r[:pic],
@@ -431,8 +431,8 @@ class Flight < ApplicationRecord
         flight_date: r["Depature_Date"],
         aircraft_identifier: r["Registration"],
         aircraft_id: find_aircraft_id(r["Registration"]),
-        origin_id: find_location_from(r["ICAO_Depature"]),
-        destination_id: find_location_from(r["ICAO_Destination"]),
+        origin_id: Location.find_from(r["ICAO_Depature"]),
+        destination_id: Location.find_from(r["ICAO_Destination"]),
         time_out: r["Off_Block"],
         time_in: r["On_Block"],
         pic: convert_time(r["Block_Time"]),
@@ -460,7 +460,7 @@ class Flight < ApplicationRecord
       if route.first == logbook_row[origin_column] then route.shift end
       if route.last == logbook_row[destination_column] then route.pop end
       route.each do |waypoint|
-        waypoints.create(location_id: Flight.find_location_from(waypoint))
+        waypoints.create(location_id: Location.find_from(waypoint))
       end
     end
   end
@@ -542,29 +542,21 @@ private
 
   def self.get_safelog_departure(row)
     if identifier = row["Mission Departure"]
-      find_location_from(identifier)
+      Location.find_from(identifier)
     elsif identifier = row["Flight Details From"]
-      find_location_from(identifier)
+      Location.find_from(identifier)
     elsif identifier = row["Flight Details Departure"]
-      find_location_from(identifier)
+      Location.find_from(identifier)
     end
   end
 
   def self.get_safelog_arrival(row)
     if identifier = row["Mission Arrival"]
-      find_location_from(identifier)
+      Location.find_from(identifier)
     elsif identifier = row["Flight Details To"]
-      find_location_from(identifier)
+      Location.find_from(identifier)
     elsif identifier = row["Flight Details Arrival"]
-      find_location_from(identifier)
-    end
-  end
-
-  def self.find_location_from(identifier)
-    if location = Location.find_by(identifier: identifier.try(:upcase).try(:strip)).try(:id)
-      location
-    else
-      Location.find_by(identifier: "XXXX").id
+      Location.find_from(identifier)
     end
   end
 

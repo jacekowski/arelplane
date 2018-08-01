@@ -22,4 +22,21 @@ class Location < ApplicationRecord
     degree + (minute/60.0) + (second/3600.0)
   end
 
+  def self.find_from(identifier)
+    locations = where(identifier: identifier.try(:upcase).try(:strip))
+    case locations.count
+    when 0
+      find_by(identifier: "XXXX").id
+    when 1
+      locations.first.id
+    else
+      last_location = Flight.last.origin
+      results = {}
+      locations.each do |location|
+        results[location] = Geocoder::Calculations.distance_between([location.latitude,location.longitude], [last_location.latitude,last_location.longitude])
+      end
+      results.sort_by(&:last).flatten.first.id
+    end
+  end
+
 end
