@@ -134,8 +134,7 @@ class Flight < ApplicationRecord
       :sic,
       :night,
       :solo,
-      :cross_country,
-      :distance
+      :cross_country
       ]) do |row|
         r = row.to_hash
         next unless date_format_one =~ r[:flight_date] || date_format_five =~ r[:flight_date]
@@ -149,8 +148,7 @@ class Flight < ApplicationRecord
           time_out: r[:time_out],
           time_in: r[:time_in],
           total_time: r[:total_time],
-          pic: r[:pic],
-          distance: r[:distance]
+          pic: r[:pic]
         )
         if f.save
           f.add_waypoints(r, :route, :origin_id, :destination_id)
@@ -395,7 +393,6 @@ class Flight < ApplicationRecord
       :flight_stop_time,
       :approaches,
       :route,
-      :distance,
       :pic
     ]) do |row|
       r = row.to_hash
@@ -410,8 +407,7 @@ class Flight < ApplicationRecord
         time_out: r[:flight_start_time],
         time_in: r[:flight_stop_time],
         pic: r[:pic],
-        total_time: r[:duration],
-        distance: r[:distance]
+        total_time: r[:duration]
       )
       if f.save
         f.add_waypoints(r, :route, :origin, :destination)
