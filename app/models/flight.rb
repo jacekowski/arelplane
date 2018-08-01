@@ -460,7 +460,7 @@ class Flight < ApplicationRecord
       if route.first == logbook_row[origin_column] then route.shift end
       if route.last == logbook_row[destination_column] then route.pop end
       route.each do |waypoint|
-        waypoints.create(location_id: Flight.Location.find_from(waypoint))
+        waypoints.create(location_id: Location.find_from(waypoint))
       end
     end
   end

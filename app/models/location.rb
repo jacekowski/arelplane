@@ -30,7 +30,12 @@ class Location < ApplicationRecord
     when 1
       locations.first.id
     else
-      # figure out which location to use
+      last_location = Flight.last.origin
+      results = {}
+      locations.each do |location|
+        results[location] = Geocoder::Calculations.distance_between([location.latitude,location.longitude], [last_location.latitude,last_location.longitude])
+      end
+      results.sort_by(&:last).flatten.first.id
     end
   end
 
