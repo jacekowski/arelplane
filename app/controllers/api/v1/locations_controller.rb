@@ -2,7 +2,8 @@ class Api::V1::LocationsController < ApiController
   before_action :set_location, only: :show
 
   def search
-    query = Location.where("identifier like :q", q: "%#{params[:q]}%".upcase)
+    query = Location.where("identifier like :q", q: "%#{params[:q]}%".upcase).
+    or(Location.where("iata_code like :q", q: "%#{params[:q]}%".upcase))
     @locations = query.order('identifier').page(params[:page])
 
     respond_to do |format|

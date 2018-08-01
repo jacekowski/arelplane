@@ -3,7 +3,13 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Login or register to do that</h5>
+        <h5 class="modal-title">
+          <% if current_page?(root_path) %>
+            Register
+          <% else %>
+            Login or register to do that
+          <% end %>
+        </h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

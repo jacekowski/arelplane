@@ -1,0 +1,56 @@
+@import "colors";
+
+#marketing-page {
+  .container {
+    min-width: 100%;
+    vertical-align: middle;
+    text-align: center;
+  }
+  #cover-image {
+    min-height: 60vh;
+    min-width: 100%;
+    padding: 0;
+    background: asset_url("marketing_page/map_background.png") no-repeat top left;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    .layer {
+      background-color: rgba(6,2,24, 0.55);
+      width: 100%;
+      height: 60vh;
+    }
+  }
+  .headline {
+    color: white;
+    text-shadow: 3px 3px rgba(6,2,24,1);
+    text-align: center;
+    margin-top: 7rem;
+    margin-bottom: 2rem;
+  }
+  button {
+    a {
+      color: white !important;
+    }
+  }
+  button:hover {
+    a { color: black !important;
+    }
+  }
+  .feature-callout {
+    padding: 8em;
+  }
+
+  .row1 {
+    background-color: $backgroundColor;
+  }
+
+  .row2 {
+    color: white !important;
+  }
+  @media (max-width: 767px) {
+    .feature-callout {
+      padding: 2em;
+    }
+  }
+}

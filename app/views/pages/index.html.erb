@@ -1,32 +1,56 @@
-<span id="run-cesium" data-map="true"></span>
-<%= content_tag :div, id: "current_page", data: {page: "homepage"} do %>
-<% end %>
-<div class='container mt-2 mb-2'>
-  <div class='row'>
-    <div class="col">
-        <p class='light-sub-text align-center'>Are you a pilot with a digital logbook? Sign up to make a map of all your flights!</p>
-        <p class='light-sub-text align-center'>Not a pilot? Like aviation? Create an account and see where everyone is flying!</p>
-        <p class='light-sub-text align-center'>Want more info? See our <%= link_to 'upload instructions', upload_instructions_path %> and see a sample <%= link_to "profile", username_path("@arelenglish") %></p>
+<div id="marketing-page">
+  <div class='container'>
+    <div class='row' id="cover-image">
+      <div class="layer">
+        <div class="container">
+          <h1 class="headline">
+            Visualize and share your flights
+          </h1>
+          <button type="button" class="btn-outline-light btn-lg">
+            <a href="#" data-toggle='modal' data-target='#loginOrRegisterModal'>
+              Get Started
+            </a>
+          </button>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class='row justify-content-center'>
-    <div class='col-8'>
-      <div class='form-inline'>
-          <%= form_with model: User.new, local: true, url: user_registration_path do |form| %>
-            <div class='form-inline'>
-              <%= form.email_field :email, placeholder: 'email', class: 'form-control' %>
-              <%= form.text_field :name, placeholder: 'name', class: 'form-control' %>
-              <%= form.password_field :password, placeholder: 'password', class: 'form-control' %>
-              <%= form.submit 'Register', class: 'btn btn-primary', id: 'registerButton' %>
-            </div>
-            <p class='light-sub-text'> Already have an account?
-            <a href="#" data-toggle='modal' data-target='#loginModal'>login</a></p>
-        <% end %>
+    <div class="row row1">
+      <div class="col-md-6 col-12 feature-callout">
+        <%= image_tag 'marketing_page/globe.png', class: 'img-fluid' %>
+      </div>
+      <div class="col-md-6 col-12 feature-callout">
+        <h2>Create a map from your logbook</h2>
+        <p>Add your flights directly to Arelplane, or upload your digital logbook to instantly map everywhere you've flown onto an interactive globe. We support Foreflight, LogTen Pro, mccPILOTLOG, Safelog, ZuluLog, MyFlightbook, Logbook Pro, FlyLogio and Avation Pilot Logbook.</p>
+      </div>
+    </div>
+    <div class="row row2">
+      <div class="col-md-6 col-12 feature-callout">
+        <h2>Get insights on your flying</h2>
+        <p>See stats like your total distance and hours flown, number of airports and regions visited, and your top region, airport, and aircraft.</p>
+      </div>
+      <div class="col-md-6 col-12 feature-callout">
+        <%= image_tag 'marketing_page/stats.png', class: 'img-fluid' %>
+      </div>
+    </div>
+    <div class="row row1">
+      <div class="col-md-6 col-12 feature-callout">
+        <%= image_tag 'marketing_page/trip.png', class: 'img-fluid' %>
+      </div>
+      <div class="col-md-6 col-12 feature-callout">
+        <h2>Share your flights</h2>
+        <p>Easily share visualizations of your flights to Facebook, Twitter and more.</p>
+      </div>
+    </div>
+    <div class="row row2">
+      <div class="col-md-6 col-12 feature-callout">
+        <h2>Add ratings and more</h2>
+        <p>Celebrate your achievements by sharing new ratings and milestones.</p>
+      </div>
+      <div class="col-md-6 col-12 feature-callout">
+        <%= image_tag 'marketing_page/rating.png', class: 'img-fluid' %>
       </div>
     </div>
   </div>
 </div>
-<div class='homepage-map' id='cesiumContainer'></div>
-<%= render 'vendors/fb_pixel_register' %>
 
-<script src="../Cesium/Cesium.js"></script>
+<%= render 'vendors/fb_pixel_register' %>
