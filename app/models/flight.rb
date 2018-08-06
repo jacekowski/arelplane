@@ -147,8 +147,8 @@ class Flight < ApplicationRecord
           destination_id: Location.find_from(r[:destination_id]),
           time_out: r[:time_out],
           time_in: r[:time_in],
-          total_time: r[:total_time],
-          pic: r[:pic]
+          total_time: convert_time(r[:total_time]),
+          pic: convert_time(r[:pic])
         )
         if f.save
           f.add_waypoints(r, :route, :origin_id, :destination_id)
