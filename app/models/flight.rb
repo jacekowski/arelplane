@@ -126,6 +126,8 @@ class Flight < ApplicationRecord
       :destination_id,
       :route,
       :time_out,
+      :time_off,
+      :time_on,
       :time_in,
       :on_duty,
       :off_duty,
