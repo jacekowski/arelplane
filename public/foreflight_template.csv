@@ -1,3 +1,3 @@
-Date,AircraftID,From,To,Route,TimeOut,TimeIn,OnDuty,OffDuty,TotalTime,PIC,SIC,Night,Solo,CrossCountry,Distance
-2017-01-15,N4508X,KRUT,KHPN,EBERT KVSF,16:22,18:07,,,1.8,1.8,0,0,1.8,1.8,171
-2017-01-14,N4508X,KHPN,KRUT,CMK KGBR KPSF KAQW,15:50,17:32,,,1.7,1.7,0,0,1.7,1.7,152.2
+Date,AircraftID,From,To,Route,TimeOut,TimeOff,TimeOn,TimeIn,OnDuty,OffDuty,TotalTime,PIC,SIC,Night,Solo,CrossCountry,Distance
+2017-01-15,N4508X,KRUT,KHPN,EBERT KVSF,16:22,,,18:07,,,1.8,1.8,0,0,1.8,1.8,171
+2017-01-14,N4508X,KHPN,KRUT,CMK KGBR KPSF KAQW,15:50,,,17:32,,,1.7,1.7,0,0,1.7,1.7,152.2

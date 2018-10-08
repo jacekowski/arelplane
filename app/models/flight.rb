@@ -152,7 +152,7 @@ class Flight < ApplicationRecord
           total_time: convert_time(r[:total_time]),
           pic: convert_time(r[:pic])
         )
-        if f.save
+        if f.new_record? && f.save
           f.add_waypoints(r, :route, :origin_id, :destination_id)
           add_to_story(story, f)
         end
@@ -176,7 +176,7 @@ class Flight < ApplicationRecord
         total_time: convert_time(r["Total Time"]),
         pic: convert_time(r["PIC"]),
       )
-      if f.save
+      if f.new_record? && f.save
         f.add_waypoints(r, "Route", "From", "To")
         add_to_story(story, f)
       end
@@ -203,7 +203,7 @@ class Flight < ApplicationRecord
         total_time: r["TIME_TOTAL"].to_f/60,
         pic: r["TIME_TOTAL"].to_f/60
       )
-      if f.save
+      if f.new_record? && f.save
         add_to_story(story, f)
       end
     end
@@ -228,7 +228,7 @@ class Flight < ApplicationRecord
         pic: r["Day Single-Engine (SE) Pilot"] || convert_time(r["Day Single-Engine (SE) in Command"]),
         total_time: r["Mission Duration"] || convert_time(r["Total Flight Time"])
       )
-      if f.save
+      if f.new_record? && f.save
         f.add_waypoints(r, "Mission Via", "Mission Departure", "Mission Arrival")
         add_to_story(story, f)
       end
@@ -253,7 +253,7 @@ class Flight < ApplicationRecord
         pic: r["PIC"],
         total_time: r["Total Time"]
       )
-      if f.save
+      if f.new_record? && f.save
         route.shift
         route.pop
         route.each do |waypoint|
@@ -286,7 +286,7 @@ class Flight < ApplicationRecord
           pic: r["PIC"],
           total_time: r["Total Flight Time"]
         )
-        if f.save
+        if f.new_record? && f.save
           route.shift
           route.pop
           route.each do |waypoint|
@@ -318,7 +318,7 @@ class Flight < ApplicationRecord
         pic: r["PILOT IN COMMAND"],
         total_time: r["DURATION"]
       )
-      if f.save
+      if f.new_record? && f.save
         route.shift
         route.pop
         route.each do |waypoint|
@@ -347,7 +347,7 @@ class Flight < ApplicationRecord
         pic: r["PIC Duration"],
         total_time: r["Total Duration"]
       )
-      if f.save
+      if f.new_record? && f.save
         f.add_waypoints(r, "Route", "Departure", "Destination")
         add_to_story(story, f)
       end
@@ -373,7 +373,7 @@ class Flight < ApplicationRecord
         pic: convert_time(r["pic"]),
         total_time: convert_time(r["total_time"])
       )
-      if f.save
+      if f.new_record? && f.save
         add_to_story(story, f)
       end
     end
@@ -411,7 +411,7 @@ class Flight < ApplicationRecord
         pic: r[:pic],
         total_time: r[:duration]
       )
-      if f.save
+      if f.new_record? && f.save
         f.add_waypoints(r, :route, :origin, :destination)
         add_to_story(story, f)
       end
@@ -436,7 +436,7 @@ class Flight < ApplicationRecord
         pic: convert_time(r["Block_Time"]),
         total_time: convert_time(r["Block_Time"])
       )
-      if f.save
+      if f.new_record? && f.save
         add_to_story(story, f)
       end
     end
