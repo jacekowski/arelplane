@@ -76,37 +76,6 @@ class Story < ApplicationRecord
     Location.find(locations.uniq).pluck(:iso_region).uniq.count
   end
 
-  def self.smart_feed
-    feed = []
-    self.includes(:flights, :ratings).find_each(batch_size: 10).group_by do |story|
-      [story.user_id, story.created_at.beginning_of_hour]
-    end.map do |match|
-      stories = match.second
-      user_id = match.first.first
-      if stories.count > 1
-        temp_story = self.new(user_id: user_id)
-        stories.map do |story|
-          if story.ratings.any?
-            temp_story.ratings.append(story.ratings)
-          elsif story.flights.any?
-            temp_story.flights.append(story.flights)
-          end
-        end
-        if temp_story.ratings.any? && temp_story.flights.any?
-          temp_story.description = "Added #{ActionController::Base.helpers.pluralize(temp_story.ratings.size, 'new rating')} and #{ActionController::Base.helpers.pluralize(temp_story.flights.size, 'new flight')}."
-        elsif temp_story.ratings.any?
-          temp_story.description = "Added #{ActionController::Base.helpers.pluralize(temp_story.ratings.size, 'new rating')}."
-        elsif temp_story.flights.any?
-          temp_story.description = "Added #{ActionController::Base.helpers.pluralize(temp_story.flights.size, 'new flight')}."
-        end
-        feed.append(temp_story)
-      else
-        feed.append(stories.first)
-      end
-    end
-    return feed.reverse
-  end
-
   def persist_if_flights
     if self.flights.any?
       self.save
