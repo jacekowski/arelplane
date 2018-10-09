@@ -94,6 +94,12 @@ $(document).ready(function() {
     fadeInOrOut(form, button)
   })
 
+  $("#smartlogbook-lb").click(function(){
+    var form = "div#smartlogbook-form"
+    var button = "#smartlogbook-lb"
+    fadeInOrOut(form, button)
+  })
+
   loadUserData();
 });
 

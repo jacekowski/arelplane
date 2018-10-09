@@ -17,7 +17,7 @@
           <div class="col-12 col-lg-6">
             <div class="mb-3">
               <%= form.label :flight_date, class: 'light-sub-text' %><br />
-              <%= form.date_field :flight_date, id: :flight_flight_date, class: 'form-control', value: form.object.flight_date || Date.today %><br />
+              <%= form.date_field :flight_date, id: :flight_flight_date, class: 'form-control', value: form.object.flight_date.try(:to_date) || Date.today %><br />
             </div>
           </div>
           <div class="col-12 col-lg-6">

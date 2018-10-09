@@ -444,6 +444,30 @@ class Flight < ApplicationRecord
     story.persist_if_flights
   end
 
+  def self.parse_smart_logbook(logbook_csv, user)
+    story = Story.new(user_id: user.id)
+    file = File.read(logbook_csv).gsub(/[\"\r]/," ")
+    CSV.parse(file, headers: true, skip_blanks: true) do |row|
+      r = row.to_hash
+      next unless date_format_two =~ r["Date (dd/mm/yyyy)"]
+      f = Flight.find_or_initialize_by(
+        user_id: user.id,
+        flight_date: r["Date (dd/mm/yyyy)"],
+        aircraft_identifier: r["Aircraft"],
+        aircraft_id: find_aircraft_id(r["Aircraft"]),
+        origin_id: Location.find_from(r["From (ICAO)"]),
+        destination_id: Location.find_from(r["To"]),
+        time_out: r["Departed (zulu)"],
+        time_in: r["Arrived (zulu)"]
+      )
+      f.pic = convert_time(r["Pilot in Command (duration)"])
+      f.total_time = convert_time(r["Total (hh:mm)"])
+      if f.new_record? && f.save
+        add_to_story(story, f)
+      end
+    end
+  end
+
   def self.add_to_story(story, flight)
     if flight
       story.flights << flight

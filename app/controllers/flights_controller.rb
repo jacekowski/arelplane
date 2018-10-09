@@ -74,6 +74,10 @@ class FlightsController < ApplicationController
         Flight.parse_aviation_pilot_logbook(file.tempfile, current_user)
         cache_map_data
         redirect_back
+      elsif file = params["smartlogbook"]
+        Flight.parse_smart_logbook(file.tempfile, current_user)
+        cache_map_data
+        redirect_back
       else
         @flight = current_user.flights.new(flight_params)
         set_aircraft_id(flight_params["aircraft_identifier"])
