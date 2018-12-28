@@ -316,7 +316,7 @@ class Flight < ApplicationRecord
         origin_id: Location.find_from(route.first),
         destination_id: Location.find_from(route.last),
         pic: r["PILOT IN COMMAND"],
-        total_time: r["DURATION"]
+        total_time: if r["DURATION"].is_a? Numeric then r["DURATION"] end
       )
       if f.new_record? && f.save
         route.shift
