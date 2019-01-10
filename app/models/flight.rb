@@ -449,10 +449,9 @@ class Flight < ApplicationRecord
     file = File.read(logbook_csv).gsub(/[\"\r]/," ")
     CSV.parse(file, headers: true, skip_blanks: true) do |row|
       r = row.to_hash
-      next unless date_format_two =~ r["Date (dd/mm/yyyy)"]
       f = Flight.find_or_initialize_by(
         user_id: user.id,
-        flight_date: r["Date (dd/mm/yyyy)"],
+        flight_date: r["Date (dd/mm/yyyy)"] || r["Date (yyyy-mm-dd)"],
         aircraft_identifier: r["Aircraft"],
         aircraft_id: find_aircraft_id(r["Aircraft"]),
         origin_id: Location.find_from(r["From (ICAO)"]),
