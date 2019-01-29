@@ -5,7 +5,7 @@ class FlightsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @flights = current_user.flights.includes(:origin, :destination, :aircraft, :waypoints).page params[:page]
+    @flights = current_user.flights.includes(:origin, :destination, :aircraft, :waypoints).order('created_at DESC').page params[:page]
   end
 
   def search
