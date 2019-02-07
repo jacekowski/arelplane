@@ -14,3 +14,9 @@ To have launchd start postgresql now and restart at login:
 Or, if you don't want/need a background service you can just run:
   pg_ctl -D /usr/local/var/postgres start
 ```
+
+## Things to Add to airport pages
+  * Form to submit updates to name, identifier, location, etc.
+  * Form to submit new locations
+  * Show relevant data about the location
+  * Ability to upload images of airport maybe
