@@ -58,7 +58,7 @@ Rails.application.routes.draw do
   resources :waypoints, only: :destroy
   resources :user_followings, only: [:create, :destroy]
 
-  # resources :locations
+  resources :locations, param: :identifier, only: :show
 
   devise_for :users,
     controllers: {

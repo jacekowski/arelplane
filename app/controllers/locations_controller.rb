@@ -80,7 +80,7 @@ class LocationsController < ApplicationController
 
 private
   def set_location
-    @location = Location.find(params[:id])
+    @location = Location.find_by(identifier: params[:identifier].upcase) or not_found
   end
 
   def location_params
