@@ -1,7 +1,8 @@
 require 'csv'
 
 class LocationsController < ApplicationController
-  before_action :set_location, only: [:show, :edit, :update, :destroy]
+  before_action :set_paper_trail_whodunnit
+  before_action :set_location, only: [:show, :edit, :destroy]
 
   # GET /locations
   # GET /locations.json
@@ -57,10 +58,11 @@ class LocationsController < ApplicationController
   # PATCH/PUT /locations/1
   # PATCH/PUT /locations/1.json
   def update
+    @location = Location.find(params[:identifier]) # Actually the ID
     respond_to do |format|
       if @location.update(location_params)
-        format.html { redirect_to @location, notice: 'Location was successfully updated.' }
-        format.json { render :show, status: :ok, location: @location }
+        format.html { redirect_to location_path(@location.identifier), notice: 'Location was successfully updated.' }
+        format.json { render :show, status: :ok, location: @location.identifier }
       else
         format.html { render :edit }
         format.json { render json: @location.errors, status: :unprocessable_entity }

@@ -1,3 +1,8 @@
-// Place all the styles related to the locations controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+@import "colors";
+@import "fonts";
+
+.locations_page {
+  background-color: $backgroundColor;
+  font-family: $baseFont;
+  min-height: 90vh;
+}

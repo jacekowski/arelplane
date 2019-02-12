@@ -1,8 +1,22 @@
-<p id="notice"><%= notice %></p>
+<%= title "Arelplane | #{@location.identifier}" %>
 
-<p>
-  <strong>Identifier:</strong>
-  <%= @location.identifier %>
-  <strong>Name:</strong>
-  <%= @location.name %>
-</p>
+<div class='container-fluid locations_page'>
+  <div class='row'>
+    <div class='col-1'></div>
+    <div class='col-10'>
+      <p>
+        <strong>Identifier:</strong>
+        <%= @location.identifier %>
+      </p>
+      <p>
+        <strong>Name:</strong>
+        <%= @location.name %>
+      </p>
+
+      <p>Info out of date?</p>
+      <p><%= link_to 'Edit Location', edit_location_path(@location.identifier) %></p>
+
+    </div>
+    <div class='col-1'></div>
+  </div>
+</div>

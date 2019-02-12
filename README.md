@@ -25,4 +25,3 @@ Or, if you don't want/need a background service you can just run:
   * show airplanes that have landed there
   * show how many times users have flown to the airport
   * Show logged in users their stats for the airport
-  

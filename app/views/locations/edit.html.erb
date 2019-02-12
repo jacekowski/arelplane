@@ -1,0 +1,6 @@
+<h1>Editing <%= @location.identifier %></h1>
+
+<%= render 'form', location: @location %>
+
+<%= link_to 'Show', @location %> |
+<%= link_to 'Back', location_path(@location.identifier) %>
