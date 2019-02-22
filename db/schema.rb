@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_12_040319) do
+ActiveRecord::Schema.define(version: 2019_02_12_224800) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -221,6 +221,7 @@ ActiveRecord::Schema.define(version: 2019_02_12_040319) do
     t.bigint "home_base_id"
     t.text "bio"
     t.string "employer"
+    t.string "role"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["flights_count"], name: "index_users_on_flights_count"
     t.index ["home_base_id"], name: "index_users_on_home_base_id"

@@ -35,7 +35,7 @@ gem 'resque'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 # Use Bootstrap for styling
-gem 'bootstrap', '~> 4.2.1'
+gem 'bootstrap', '~> 4.3.1'
 # Tooltips and popovers depend on tether (http://github.hubspot.com/tether) for positioning
 source 'https://rails-assets.org' do
   gem 'rails-assets-tether', '>= 1.3.3'

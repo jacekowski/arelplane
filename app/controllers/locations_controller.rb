@@ -1,62 +1,39 @@
-require 'csv'
-
 class LocationsController < ApplicationController
   before_action :set_paper_trail_whodunnit
   before_action :set_location, only: [:show, :edit, :destroy]
 
-  # GET /locations
-  # GET /locations.json
+  # When a location is updated, if Admin - Update
+  #  else mark as pending then rollback to previous version
+  #   Send an email to admin to approve or disapprove
+  # Probably need to build some kind of admin view to see and approve/disapprove changes
+
   def index
     @locations = Location.order(:identifier).page params[:page]
   end
 
-  # GET /locations/1
-  # GET /locations/1.json
   def show
   end
 
-  # GET /locations/new
   def new
     @location = Location.new
   end
 
-  # GET /locations/1/edit
   def edit
   end
 
-  # POST /locations
-  # POST /locations.json
   def create
-    if params["location_db"]
-      locations = File.read(params["location_db"].tempfile)
-      CSV.parse(locations, headers: true, skip_blanks: true) do |row|
-        r = row.to_hash
-        f = Location.find_or_create_by(
-          identifier: r["identifier"],
-          name: r["name"],
-          latitude: Location.convert_cords(r["latitude"]),
-          longitude: Location.convert_cords(r["longitude"]),
-          continent: r["continent"],
-          iso_country: r["iso_country"]
-        )
-      end
-    else
-      @location = Location.new(location_params)
-
-      respond_to do |format|
-        if @location.save
-          format.html { redirect_to @location, notice: 'Location was successfully created.' }
-          format.json { render :show, status: :created, location: @location }
-        else
-          format.html { render :new }
-          format.json { render json: @location.errors, status: :unprocessable_entity }
-        end
+    @location = Location.new(location_params)
+    respond_to do |format|
+      if @location.save
+        format.html { redirect_to @location, notice: 'Location was successfully created.' }
+        format.json { render :show, status: :created, location: @location }
+      else
+        format.html { render :new }
+        format.json { render json: @location.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # PATCH/PUT /locations/1
-  # PATCH/PUT /locations/1.json
   def update
     @location = Location.find(params[:identifier]) # Actually the ID
     respond_to do |format|
@@ -70,8 +47,6 @@ class LocationsController < ApplicationController
     end
   end
 
-  # DELETE /locations/1
-  # DELETE /locations/1.json
   def destroy
     @location.destroy
     respond_to do |format|
