@@ -11,8 +11,10 @@ class Api::V1::FlightsController < ApiController
         CacheUserMapJob.perform_later(user)
       end
     elsif story_id = params[:story_id]
-      story = Story.find(story_id)
-      @flights = Flight.map_data(story.flights)
+      if params[:auth] == ENV['TEMP_STORIES_API_KEY']
+        story = Story.find(story_id)
+        @flights = Flight.map_data(story.flights)
+      end
     else
       arel = User.find_by(email: 'arelenglish@gmail.com')
       @flights = arel.cache_datum.map_data
