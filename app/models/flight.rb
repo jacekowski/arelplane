@@ -229,7 +229,12 @@ class Flight < ApplicationRecord
         total_time: r["Mission Duration"] || convert_time(r["Total Flight Time"])
       )
       if f.new_record? && f.save
-        f.add_waypoints(r, "Mission Via", "Mission Departure", "Mission Arrival")
+        if r["Route of Flight Via"]
+          waypoint_column = "Route of Flight Via"
+        else
+          waypoint_column = "Mission Via"
+        end
+        f.add_waypoints(r, waypoint_column, "Mission Departure", "Mission Arrival")
         add_to_story(story, f)
       end
     end
@@ -568,6 +573,8 @@ private
       Location.find_from(identifier)
     elsif identifier = row["Flight Details Departure"]
       Location.find_from(identifier)
+    elsif identifier = row["Route of Flight From"]
+      Location.find_from(identifier)
     end
   end
 
@@ -577,6 +584,8 @@ private
     elsif identifier = row["Flight Details To"]
       Location.find_from(identifier)
     elsif identifier = row["Flight Details Arrival"]
+      Location.find_from(identifier)
+    elsif identifier = row["Route of Flight To"]
       Location.find_from(identifier)
     end
   end
