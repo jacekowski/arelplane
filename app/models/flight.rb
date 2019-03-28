@@ -225,8 +225,8 @@ class Flight < ApplicationRecord
         destination_id: get_safelog_arrival(row),
         time_out: r["Depart Time"],
         time_in: r["Arrival Time"],
-        pic: r["Day Single-Engine (SE) Pilot"] || convert_time(r["Day Single-Engine (SE) in Command"]),
-        total_time: r["Mission Duration"] || convert_time(r["Total Flight Time"])
+        pic: convert_time(r["Day Single-Engine (SE) Pilot"]) || convert_time(r["Day Single-Engine (SE) in Command"]),
+        total_time: convert_time(r["Mission Duration"]) || convert_time(r["Total Flight Time"]) || convert_time(r["Duration of Flight"])
       )
       if f.new_record? && f.save
         if r["Route of Flight Via"]
