@@ -45,4 +45,10 @@ class Location < ApplicationRecord
     end
   end
 
+  def rollback_unless_authorized(user)
+    if user.role == "admin"
+      self.update(self.versions.last.reify.attributes)
+    end
+  end
+
 end

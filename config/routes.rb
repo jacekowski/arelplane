@@ -58,7 +58,11 @@ Rails.application.routes.draw do
   resources :waypoints, only: :destroy
   resources :user_followings, only: [:create, :destroy]
 
-  resources :locations, param: :identifier, only: [:show, :edit, :update]
+  resources :locations, param: :identifier, only: [:show, :edit, :update] do
+    collection do
+      post 'select_version', to: 'locations#select_version' 
+    end
+  end
 
   devise_for :users,
     controllers: {

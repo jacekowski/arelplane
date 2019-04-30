@@ -18,18 +18,23 @@
 
       <% if current_user.role == "admin" %>
         <b>Current Version:</b> <%= @location.paper_trail.live? %>
-        <hr>
         <% @location.versions.each do |version| %>
-          <b>Event:</b> <%= version.event %><br>
-          <b>User:</b> <%= User.find(version.whodunnit).name if version.whodunnit %><br>
-          <b>Version Number:</b> <%= version.index + 1 %><br>
-          <b>Changes:</b> <% version.changeset.each do |change| %><br>
-            <b><%= change[0].titlecase %>:</b> from: <%= change[1][0] %> to: <%= change[1][1] %>
-          <% end %>
-          <hr>
+        <hr>
+          <div class="row">
+            <div class="col-6">
+              <b>Event:</b> <%= version.event %><br>
+              <b>User:</b> <%= User.find(version.whodunnit).name if version.whodunnit %><br>
+              <b>Version Number:</b> <%= version.index + 1 %><br>
+              <b>Changes:</b> <% version.changeset.each do |change| %><br>
+                <b><%= change[0].titlecase %>:</b> from: <%= change[1][0] %> to: <%= change[1][1] %>
+              <% end %>
+            </div>
+            <div class="col-6">
+              <%= link_to 'Revert to this version', select_version_locations_path(version.index + 1) %>
+            </div>
+          </div>
         <% end %>
       <% end %>
-
     </div>
     <div class='col-1'></div>
   </div>

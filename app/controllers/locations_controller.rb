@@ -1,6 +1,6 @@
 class LocationsController < ApplicationController
   before_action :set_paper_trail_whodunnit
-  before_action :set_location, only: [:show, :edit, :destroy]
+  before_action :set_location, only: [:show, :edit, :destroy, :select_version]
 
   # When a location is updated, if Admin - Update
   #  else mark as pending then rollback to previous version
@@ -38,6 +38,7 @@ class LocationsController < ApplicationController
     @location = Location.find(params[:identifier]) # Actually the ID
     respond_to do |format|
       if @location.update(location_params)
+        @location.rollback_unless_authorized(current_user)
         format.html { redirect_to location_path(@location.identifier), notice: 'Location was successfully updated.' }
         format.json { render :show, status: :ok, location: @location.identifier }
       else
@@ -53,6 +54,10 @@ class LocationsController < ApplicationController
       format.html { redirect_to locations_url, notice: 'Location was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def select_version
+    @location.update(@location.versions.find(params[:version]).reify.attributes)
   end
 
 private
