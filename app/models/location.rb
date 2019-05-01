@@ -8,6 +8,10 @@ class Location < ApplicationRecord
 
   validates :latitude, uniqueness: { scope: :longitude }
 
+  def identifier=(val)
+    write_attribute :identifier, val.upcase
+  end
+
   def name_and_identifier
     if name
       identifier + " (#{name})"
@@ -46,15 +50,16 @@ class Location < ApplicationRecord
   end
 
   def rollback_unless_authorized(user)
-    unless user.role != "admin"
-      self.update(self.versions.last.reify.attributes)
+    temp_version = self.versions.last
+    unless user.role == "admin"
+      self.update_attributes(self.paper_trail.previous_version.attributes)
+      notify_admin(user)
     end
+    temp_version.destroy
   end
 
   def notify_admin(user)
-    unless user.role == "admin"
-      LocationMailer.update_submitted(self).deliver_later
-    end
+    LocationMailer.update_submitted(self).deliver_later
   end
 
 end

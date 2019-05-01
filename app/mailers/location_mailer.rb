@@ -6,7 +6,7 @@ class LocationMailer < ApplicationMailer
     mail(
      to: 'arel@arelplane.com',
      reply_to: "arel@arelplane.com",
-     subject: "#{location.identifier} was updated"
+     subject: "#{@location.identifier} was updated"
    )
   end
 end

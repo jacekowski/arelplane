@@ -40,7 +40,6 @@ class LocationsController < ApplicationController
     respond_to do |format|
       if @location.update(location_params)
         @location.rollback_unless_authorized(current_user)
-        @location.notify_admin(current_user)
         format.html { redirect_to location_path(@location.identifier), notice: 'Location was successfully updated.' }
         format.json { render :show, status: :ok, location: @location.identifier }
       else
@@ -67,8 +66,10 @@ class LocationsController < ApplicationController
   end
 
   def select_version
+    PaperTrail.request.enabled = false
     respond_to do |format|
       if @location.update(@version.reify.attributes)
+        @version.destroy
         format.html { redirect_to location_path(@location.identifier), notice: 'Location was successfully updated.' }
         format.json { render :show, status: :ok, location: @location.identifier }
       else
@@ -76,6 +77,7 @@ class LocationsController < ApplicationController
         format.json { render json: @location.errors, status: :unprocessable_entity }
       end
     end
+    PaperTrail.request.enabled = true
   end
 
 private

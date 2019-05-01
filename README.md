@@ -16,12 +16,10 @@ Or, if you don't want/need a background service you can just run:
 ```
 ## Things to Add to airport pages
   * [WIP] Form to submit updates to name, identifier, location, etc.
-    * updates create two papertrail records - don't create a new record when reify maybe?
-    * Verify proper record is created/destroyed when approving/denying
     * Verify only admins can approve/deny changes
     * Verify only logged in users can submit updates
-    * confirm email is being sent when update submitted
     * Create notifications
+    * Email users when their edits are approved or denied
   * Form to submit new locations
   * Show relevant data about the location
   * Ability to upload images of airport maybe
@@ -30,3 +28,5 @@ Or, if you don't want/need a background service you can just run:
   * show airplanes that have landed there
   * show how many times users have flown to the airport
   * Show logged in users their stats for the airport
+  * Link from wherever a location identifier shows to the appropriate location page
+  * SEO location pages
