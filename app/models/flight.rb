@@ -255,8 +255,8 @@ class Flight < ApplicationRecord
         aircraft_id: find_aircraft_id(r["Aircraft ID"]),
         origin_id: Location.find_from(route.first),
         destination_id: Location.find_from(route.last),
-        pic: r["PIC"],
-        total_time: r["Total Time"]
+        pic: convert_time(r["PIC"]),
+        total_time: convert_time(r["Total Time"])
       )
       if f.new_record? && f.save
         route.shift
