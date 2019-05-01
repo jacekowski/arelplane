@@ -57,7 +57,16 @@ class LocationsController < ApplicationController
   end
 
   def select_version
-    @location.update(@location.versions.find(params[:version]).reify.attributes)
+    # @location = Location.find(params[:identifier]) # Actually the ID
+    respond_to do |format|
+      if @location.update(@location.versions.find(params[:version]).reify.attributes)
+        format.html { redirect_to location_path(@location.identifier), notice: 'Location was successfully updated.' }
+        format.json { render :show, status: :ok, location: @location.identifier }
+      else
+        format.html { render :edit }
+        format.json { render json: @location.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
 private

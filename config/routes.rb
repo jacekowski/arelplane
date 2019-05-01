@@ -59,8 +59,8 @@ Rails.application.routes.draw do
   resources :user_followings, only: [:create, :destroy]
 
   resources :locations, param: :identifier, only: [:show, :edit, :update] do
-    collection do
-      post 'select_version', to: 'locations#select_version' 
+    member do
+      post 'select_version', to: 'locations#select_version'
     end
   end
 

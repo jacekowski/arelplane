@@ -30,7 +30,7 @@
               <% end %>
             </div>
             <div class="col-6">
-              <%= link_to 'Revert to this version', select_version_locations_path(version.index + 1) %>
+              <%= link_to 'Revert to this version', select_version_location_path(@location.identifier, version: version.index + 2), method: :post %>
             </div>
           </div>
         <% end %>
