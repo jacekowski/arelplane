@@ -225,11 +225,16 @@ class Flight < ApplicationRecord
         destination_id: get_safelog_arrival(row),
         time_out: r["Depart Time"],
         time_in: r["Arrival Time"],
-        pic: r["Day Single-Engine (SE) Pilot"] || convert_time(r["Day Single-Engine (SE) in Command"]),
-        total_time: r["Mission Duration"] || convert_time(r["Total Flight Time"])
+        pic: convert_time(r["Day Single-Engine (SE) Pilot"]) || convert_time(r["Day Single-Engine (SE) in Command"]),
+        total_time: convert_time(r["Mission Duration"]) || convert_time(r["Total Flight Time"]) || convert_time(r["Duration of Flight"])
       )
       if f.new_record? && f.save
-        f.add_waypoints(r, "Mission Via", "Mission Departure", "Mission Arrival")
+        if r["Route of Flight Via"]
+          waypoint_column = "Route of Flight Via"
+        else
+          waypoint_column = "Mission Via"
+        end
+        f.add_waypoints(r, waypoint_column, "Mission Departure", "Mission Arrival")
         add_to_story(story, f)
       end
     end
@@ -250,8 +255,8 @@ class Flight < ApplicationRecord
         aircraft_id: find_aircraft_id(r["Aircraft ID"]),
         origin_id: Location.find_from(route.first),
         destination_id: Location.find_from(route.last),
-        pic: r["PIC"],
-        total_time: r["Total Time"]
+        pic: convert_time(r["PIC"]),
+        total_time: convert_time(r["Total Time"])
       )
       if f.new_record? && f.save
         route.shift
@@ -568,6 +573,8 @@ private
       Location.find_from(identifier)
     elsif identifier = row["Flight Details Departure"]
       Location.find_from(identifier)
+    elsif identifier = row["Route of Flight From"]
+      Location.find_from(identifier)
     end
   end
 
@@ -577,6 +584,8 @@ private
     elsif identifier = row["Flight Details To"]
       Location.find_from(identifier)
     elsif identifier = row["Flight Details Arrival"]
+      Location.find_from(identifier)
+    elsif identifier = row["Route of Flight To"]
       Location.find_from(identifier)
     end
   end
