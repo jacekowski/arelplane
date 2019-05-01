@@ -46,8 +46,14 @@ class Location < ApplicationRecord
   end
 
   def rollback_unless_authorized(user)
-    if user.role == "admin"
+    unless user.role != "admin"
       self.update(self.versions.last.reify.attributes)
+    end
+  end
+
+  def notify_admin(user)
+    unless user.role == "admin"
+      LocationMailer.update_submitted(self).deliver_later
     end
   end
 

@@ -61,6 +61,7 @@ Rails.application.routes.draw do
   resources :locations, param: :identifier, only: [:show, :edit, :update] do
     member do
       post 'select_version', to: 'locations#select_version'
+      delete 'destroy_version', to: 'locations#destroy_version'
     end
   end
 

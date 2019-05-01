@@ -1,6 +1,7 @@
 class LocationsController < ApplicationController
   before_action :set_paper_trail_whodunnit
-  before_action :set_location, only: [:show, :edit, :destroy, :select_version]
+  before_action :set_location, only: [:show, :edit, :destroy, :select_version, :destroy_version]
+  before_action :set_version, only: [:select_version, :destroy_version]
 
   # When a location is updated, if Admin - Update
   #  else mark as pending then rollback to previous version
@@ -39,6 +40,7 @@ class LocationsController < ApplicationController
     respond_to do |format|
       if @location.update(location_params)
         @location.rollback_unless_authorized(current_user)
+        @location.notify_admin(current_user)
         format.html { redirect_to location_path(@location.identifier), notice: 'Location was successfully updated.' }
         format.json { render :show, status: :ok, location: @location.identifier }
       else
@@ -56,10 +58,17 @@ class LocationsController < ApplicationController
     end
   end
 
-  def select_version
-    # @location = Location.find(params[:identifier]) # Actually the ID
+  def destroy_version
+    @version.destroy
     respond_to do |format|
-      if @location.update(@location.versions.find(params[:version]).reify.attributes)
+      format.html { redirect_to location_path(@location.identifier), notice: 'Version was successfully destroyed.' }
+      format.js   { render layout: false }
+    end
+  end
+
+  def select_version
+    respond_to do |format|
+      if @location.update(@version.reify.attributes)
         format.html { redirect_to location_path(@location.identifier), notice: 'Location was successfully updated.' }
         format.json { render :show, status: :ok, location: @location.identifier }
       else
@@ -72,6 +81,10 @@ class LocationsController < ApplicationController
 private
   def set_location
     @location = Location.find_by(identifier: params[:identifier].upcase) or not_found
+  end
+
+  def set_version
+    @version = @location.versions.find(params[:version])
   end
 
   def location_params
