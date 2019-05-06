@@ -34,4 +34,4 @@
 !.elasticbeanstalk/*.global.yml
 
 # Local config
-/local_env.yml
+config/local_env.yml
