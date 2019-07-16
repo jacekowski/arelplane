@@ -13,8 +13,8 @@ module LogbookViz
 
     config.middleware.insert_before 0, Rack::Cors do
       allow do
-        origins '*'
-        resource '*', headers: :any, methods: [:get, :post, :options]
+        origins ENV['MAPSNAP_ROOT_URL']
+        resource '*', headers: :any, methods: :get
       end
     end
 
