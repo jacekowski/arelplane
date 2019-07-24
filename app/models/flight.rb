@@ -107,7 +107,7 @@ class Flight < ApplicationRecord
       if location.latitude == nil
         next
       end
-      if waypoint.location.location_type.try(:include?, "airport")
+      if ["seaplane_base", "airport"].any? { |airport| waypoint.location_type.try(:include?, airport) }
         waypoint_type = :airport
       else
         waypoint_type = :waypoint
