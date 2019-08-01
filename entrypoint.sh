@@ -15,7 +15,8 @@ upgrade() {
 
 start() {
     echo "arelplane: start()"
-    exec rails server -b 0.0.0.0
+    #exec rails server -b 0.0.0.0
+    exec foreman start
 }
 
 if [ ! -f $INSTALL_FLAG ]; then
